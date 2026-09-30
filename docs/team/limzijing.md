@@ -1,4 +1,4 @@
-# John Doe - Project Portfolio Page
+# Lim Zi Jing - Project Portfolio Page
 
 ## Overview
 
