@@ -6,6 +6,14 @@ import java.util.Scanner;
  * Handles reading user input and displaying messages to the console.
  */
 public class Ui {
+    /** ASCII art banner displayed on startup. */
+    private static final String BANNER = "    ____  __                __        __  _                   ___ \n"
+            + "   / __ \\/ /___ ___  ______/ /_____ _/ /_(_)___  ____   _   <  / \n"
+            + "  / /_/ / / __ `/ / / / __/ __/ __ `/ __/ / __ \\/ __ \\ |_|  / /  \n"
+            + " / ____/ / /_/ / /_/ /\\__ \\ / /_/ / /_/ / /_/ / / / /      / /   \n"
+            + "/_/   /_/\\__,_/\\__, /___/\\__\\__,_/\\__/_/\\____/_/ /_/      /_/    \n"
+            + "              /____/\n";
+
     private final Scanner scanner;
 
     public Ui() {
@@ -34,13 +42,7 @@ public class Ui {
      * Prints the welcome banner.
      */
     public void showBanner() {
-        String banner = "    ____  __                __        __  _                   ___ \n"
-                + "   / __ \\/ /___ ___  ______/ /_____ _/ /_(_)___  ____   _   <  / \n"
-                + "  / /_/ / / __ `/ / / / __/ __/ __ `/ __/ / __ \\/ __ \\ |_|  / /  \n"
-                + " / ____/ / /_/ / /_/ /\\__ \\ / /_/ / /_/ / /_/ / / / /      / /   \n"
-                + "/_/   /_/\\__,_/\\__, /___/\\__\\__,_/\\__/_/\\____/_/ /_/      /_/    \n"
-                + "              /____/\n";
-        System.out.println(banner);
+        System.out.println(BANNER);
     }
 
     /**
