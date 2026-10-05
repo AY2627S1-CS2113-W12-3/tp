@@ -14,9 +14,15 @@ public class Duke {
                 + "/_/   /_/\\__,_/\\__, /___/\\__\\__,_/\\__/_/\\____/_/ /_/      /_/    \n"
                 + "              /____/\n";
         System.out.println(banner);
-        System.out.println("What is your name?");
-
         Scanner in = new Scanner(System.in);
-        System.out.println("Hello " + in.nextLine());
+        String input;
+        while (true) {
+            input = in.nextLine();
+            if (input.equals("exit")) {
+                System.out.println("Bye!");
+                break;
+            }
+            System.out.println(input);
+        }
     }
 }
