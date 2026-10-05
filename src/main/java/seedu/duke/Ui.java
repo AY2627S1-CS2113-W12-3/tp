@@ -44,6 +44,15 @@ public class Ui {
     }
 
     /**
+     * Prints the list of available commands.
+     */
+    public void showHelp() {
+        System.out.println("Available commands:");
+        System.out.println("  help  - Show this help message");
+        System.out.println("  exit  - Exit the application");
+    }
+
+    /**
      * Prints the goodbye message.
      */
     public void showGoodbye() {

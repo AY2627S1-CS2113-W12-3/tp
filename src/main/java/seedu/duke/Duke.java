@@ -17,10 +17,12 @@ public class Duke {
             if (command.equals("exit")) {
                 ui.showGoodbye();
                 break;
+            } else if (command.equals("help")) {
+                ui.showHelp();
             } else if (command.isEmpty()) {
                 continue;
             } else {
-                ui.showMessage("Command: " + command + " | Args: " + arguments);
+                ui.showMessage("Unknown command: " + command);
             }
         }
     }
