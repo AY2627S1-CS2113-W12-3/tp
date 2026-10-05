@@ -10,11 +10,18 @@ public class Duke {
         String input;
         while (true) {
             input = ui.readLine();
-            if (input.equals("exit")) {
+            String[] parsed = Parser.parse(input);
+            String command = parsed[0];
+            String arguments = parsed[1];
+
+            if (command.equals("exit")) {
                 ui.showGoodbye();
                 break;
+            } else if (command.isEmpty()) {
+                continue;
+            } else {
+                ui.showMessage("Command: " + command + " | Args: " + arguments);
             }
-            ui.showMessage(input);
         }
     }
 }
