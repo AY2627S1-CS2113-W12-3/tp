@@ -1,21 +1,29 @@
 package seedu.duke;
 
-import java.util.Scanner;
-
 public class Duke {
     /**
      * Main entry-point for the java.duke.Duke application.
      */
     public static void main(String[] args) {
-        String banner = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println(banner);
-        System.out.println("What is your name?");
+        Ui ui = new Ui();
+        ui.showBanner();
+        String input;
+        while (true) {
+            input = ui.readLine();
+            String[] parsed = Parser.parse(input);
+            String command = parsed[0];
+            String arguments = parsed[1];
 
-        Scanner in = new Scanner(System.in);
-        System.out.println("Hello " + in.nextLine());
+            if (command.equals("exit")) {
+                ui.showGoodbye();
+                break;
+            } else if (command.equals("help")) {
+                ui.showHelp();
+            } else if (command.isEmpty()) {
+                continue;
+            } else {
+                ui.showMessage("Unknown command: " + command);
+            }
+        }
     }
 }
