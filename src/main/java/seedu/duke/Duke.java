@@ -1,6 +1,14 @@
 package seedu.duke;
 
+import java.util.logging.Logger;
+
+/**
+ * Starts the application and coordinates command handling.
+ */
 public class Duke {
+    /** Records diagnostic events without changing the user-facing output. */
+    private static final Logger LOGGER = Logger.getLogger(Duke.class.getName());
+
     /**
      * Main entry-point for the java.duke.Duke application.
      */
@@ -9,12 +17,21 @@ public class Duke {
         ui.showBanner();
         String input;
         while (true) {
-            input = ui.readLine();
+            try {
+                input = ui.readLine();
+            } catch (IllegalStateException e) {
+                LOGGER.info("Input stream ended; closing the application.");
+                ui.showGoodbye();
+                break;
+            }
+
             String[] parsed = Parser.parse(input);
+            assert parsed.length == 2 : "Parser must return a command and its arguments";
             String command = parsed[0];
             String arguments = parsed[1];
 
             if (command.equals("exit")) {
+                LOGGER.info("Exit command received.");
                 ui.showGoodbye();
                 break;
             } else if (command.equals("help")) {
@@ -22,6 +39,7 @@ public class Duke {
             } else if (command.isEmpty()) {
                 continue;
             } else {
+                LOGGER.warning("Unknown command received: " + command);
                 ui.showMessage("Unknown command: " + command);
             }
         }

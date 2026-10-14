@@ -15,6 +15,11 @@ class ParserTest {
     }
 
     @Test
+    public void parseNullInputReturnsEmptyCommandAndArguments() {
+        assertArrayEquals(new String[]{"", ""}, Parser.parse(null));
+    }
+
+    @Test
     public void parseUppercaseCommandConvertsToLowercase() {
         assertArrayEquals(new String[]{"help", ""}, Parser.parse("HELP"));
     }
