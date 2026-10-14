@@ -54,6 +54,7 @@ public class Ui {
     public void showHelp() {
         System.out.println("Available commands:");
         System.out.println("  help  - Show this help message");
+        System.out.println("  play wordle  - Start a five-letter Wordle game");
         System.out.println("  exit  - Exit the application");
     }
 

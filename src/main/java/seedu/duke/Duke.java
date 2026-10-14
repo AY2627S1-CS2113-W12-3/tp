@@ -15,6 +15,7 @@ public class Duke {
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.showBanner();
+        Game activeGame = null;
         String input;
         while (true) {
             try {
@@ -23,6 +24,20 @@ public class Duke {
                 LOGGER.info("Input stream ended; closing the application.");
                 ui.showGoodbye();
                 break;
+            }
+
+            if (activeGame != null) {
+                if (input.equalsIgnoreCase("exitgame")) {
+                    LOGGER.info("Player left the active game.");
+                    ui.showMessage("Game ended. Returning to the launcher.");
+                    activeGame = null;
+                } else {
+                    ui.showMessage(activeGame.handleInput(input));
+                    if (activeGame.isFinished()) {
+                        activeGame = null;
+                    }
+                }
+                continue;
             }
 
             String[] parsed = Parser.parse(input);
@@ -36,6 +51,11 @@ public class Duke {
                 break;
             } else if (command.equals("help")) {
                 ui.showHelp();
+            } else if (command.equals("play") && arguments.equalsIgnoreCase("wordle")) {
+                activeGame = new WordleGame();
+                LOGGER.info("Started a Wordle game.");
+                ui.showMessage("Wordle started. Guess a five-letter word.");
+                ui.showMessage("You have 5 attempts. Type exitgame to return to the launcher.");
             } else if (command.isEmpty()) {
                 continue;
             } else {
