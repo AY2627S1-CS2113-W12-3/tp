@@ -20,6 +20,8 @@ public class Parser {
         String[] parts = input.trim().split("\\s+", 2);
         String command = parts[0].toLowerCase();
         String arguments = parts.length > 1 ? parts[1] : "";
-        return new String[]{command, arguments};
+        String[] parsedInput = new String[]{command, arguments};
+        assert parsedInput.length == 2 : "A parsed command must contain a command and arguments";
+        return parsedInput;
     }
 }

@@ -26,6 +26,9 @@ public class Ui {
      * @return The trimmed input string.
      */
     public String readLine() {
+        if (!scanner.hasNextLine()) {
+            throw new IllegalStateException("Input stream ended before an exit command was received");
+        }
         return scanner.nextLine().trim();
     }
 
