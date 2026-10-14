@@ -44,8 +44,11 @@ public class PlayStationMinusOne {
                 ui.showHelp();
             } else if (command.equals("play")) {
                 if (arguments.isBlank() || !GAME_LIST.contains(arguments)) {
+                    LOGGER.warning("No game selected or invalid game: " + arguments);
                     ui.showListOfGames(GAME_LIST);
                 } else {
+                    LOGGER.info("Starting game: " + arguments);
+                    assert(GAME_LIST.contains(arguments));
                     ui.showGameStarting(arguments);
                 }
             } else if (command.isEmpty()) {
