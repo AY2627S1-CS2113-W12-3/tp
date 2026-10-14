@@ -12,8 +12,8 @@ continuous input, timers, animations, or other real-time behaviour.
 
 ### Component responsibilities
 
-* `Duke` is the application entry point. It owns the main command loop and
-  coordinates the parser, user interface, and active game.
+* `PlayStationMinusOne` is the application entry point. It owns the main command
+  loop and coordinates the parser, user interface, and active game.
 * `Parser` converts a line of user input into a command and its arguments. For
   example, `play 1` is parsed as the command `play` with the argument `1`.
 * `Ui` handles console input and output, including the startup banner, prompts,
