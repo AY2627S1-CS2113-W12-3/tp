@@ -9,7 +9,7 @@
 {Give steps to get started quickly}
 
 1. Ensure that you have Java 25 or above installed.
-1. Down the latest version of `Duke` from [here](http://link.to/duke).
+1. Down the latest version of `PlayStationMinusOne` from [here](http://link.to/playstation-minus-one).
 
 ## Features 
 

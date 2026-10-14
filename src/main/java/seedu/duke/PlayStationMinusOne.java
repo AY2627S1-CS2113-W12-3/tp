@@ -5,12 +5,13 @@ import java.util.logging.Logger;
 /**
  * Starts the application and coordinates command handling.
  */
-public class Duke {
+public class PlayStationMinusOne {
     /** Records diagnostic events without changing the user-facing output. */
-    private static final Logger LOGGER = Logger.getLogger(Duke.class.getName());
+    private static final Logger LOGGER =
+            Logger.getLogger(PlayStationMinusOne.class.getName());
 
     /**
-     * Main entry-point for the java.duke.Duke application.
+     * Main entry point for the PlayStationMinusOne application.
      */
     public static void main(String[] args) {
         Ui ui = new Ui();

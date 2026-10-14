@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-class DukeTest {
+/** Basic tests for the application. */
+class PlayStationMinusOneTest {
     @Test
     public void sampleTest() {
         assertTrue(true);
