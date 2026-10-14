@@ -1,5 +1,8 @@
 package seedu.duke;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import java.util.logging.Logger;
 
 /**
@@ -9,6 +12,8 @@ public class PlayStationMinusOne {
     /** Records diagnostic events without changing the user-facing output. */
     private static final Logger LOGGER =
             Logger.getLogger(PlayStationMinusOne.class.getName());
+
+    private static final ArrayList<String> GAME_LIST = new ArrayList<String>(List.of("Wordle"));
 
     /**
      * Main entry point for the PlayStationMinusOne application.
@@ -37,6 +42,12 @@ public class PlayStationMinusOne {
                 break;
             } else if (command.equals("help")) {
                 ui.showHelp();
+            } else if (command.equals("play")) {
+                if (arguments.isBlank() || !GAME_LIST.contains(arguments)) {
+                    ui.showListOfGames(GAME_LIST);
+                } else {
+                    ui.showGameStarting(arguments);
+                }
             } else if (command.isEmpty()) {
                 continue;
             } else {
