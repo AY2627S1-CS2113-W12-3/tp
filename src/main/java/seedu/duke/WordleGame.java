@@ -7,15 +7,14 @@ public class WordleGame implements Game {
     /** Identifies this game in the application. */
     private final String gameId;
     private final String gameName = "Wordle";
-
+    private final String correctGuess = "Correct guess!";
+    private final String wrongGuess = "Wrong guess!";
     private boolean finished = false;
+    private String[] guesses = {"WORDS", "CRANE", "AUDIO", "CRYPT", "DREAM"};
 
     public WordleGame(String gameId) {
         this.gameId = gameId;
     }
-
-    private final String correctGuess = "Correct guess!";
-    private final String wrongGuess = "Wrong guess!";
 
     @Override
     public String getGameId() {
@@ -26,7 +25,6 @@ public class WordleGame implements Game {
         return gameName;
     }
 
-    private String[] guesses = {"WORDS", "CRANE", "AUDIO", "CRYPT", "DREAM"};
     /**
      * Returns a placeholder response until Wordle gameplay is implemented.
      *
