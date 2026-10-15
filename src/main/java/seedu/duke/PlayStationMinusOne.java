@@ -37,6 +37,17 @@ public class PlayStationMinusOne {
                 break;
             } else if (command.equals("help")) {
                 ui.showHelp();
+            } else if (command.equals("play")) {
+                GameList gameList = new GameList();
+                for (Game game : gameList.getGames()) {
+                    if (game.getGameId().equals(arguments)) {
+                        ui.showMessage("Starting game " + game.getGameId() + ".");
+                        while (!game.isFinished()) {
+                            ui.showMessage(game.handleInput(ui.readLine()));
+                        }
+                        break;
+                    }
+                }
             } else if (command.isEmpty()) {
                 continue;
             } else {
