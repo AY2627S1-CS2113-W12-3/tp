@@ -16,6 +16,7 @@ public class PlayStationMinusOne {
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.showBanner();
+        GameList gameList = new GameList();
         String input;
         while (true) {
             try {
@@ -38,14 +39,24 @@ public class PlayStationMinusOne {
             } else if (command.equals("help")) {
                 ui.showHelp();
             } else if (command.equals("play")) {
-                GameList gameList = new GameList();
+                Game selectedGame = null;
                 for (Game game : gameList.getGames()) {
                     if (game.getGameId().equals(arguments)) {
-                        ui.showMessage("Starting game " + game.getGameId() + ".");
-                        while (!game.isFinished()) {
-                            ui.showMessage(game.handleInput(ui.readLine()));
-                        }
+                        selectedGame = game;
                         break;
+                    }
+                }
+
+                if (selectedGame == null) {
+                    LOGGER.warning("No game selected or invalid game: " + arguments);
+                    ui.showListOfGames(gameList);
+                } else {
+                    assert selectedGame.getGameId().equals(arguments);
+                    LOGGER.info("Starting game: " + arguments);
+                    ui.showGameStarting(selectedGame.getGameName());
+                    // Play the game until it is finished.
+                    while (!selectedGame.isFinished()) {
+                        ui.showMessage(selectedGame.handleInput(ui.readLine()));
                     }
                 }
             } else if (command.isEmpty()) {
