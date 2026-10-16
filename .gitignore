@@ -16,5 +16,9 @@ bin/
 # Temp files
 _temp/
 
+# Local planning/reference docs (brainstorm notes, draft guides) and extracted text
+*.docx
+/.docx-extract/
+
 /text-ui-test/ACTUAL.TXT
 text-ui-test/EXPECTED-UNIX.TXT
