@@ -62,6 +62,12 @@ public class PlayStationMinusOne {
                     assert selectedGame.getGameId().equals(arguments);
                     LOGGER.info("Starting game: " + arguments);
                     ui.showGameStarting(selectedGame.getGameName());
+                    // Let the game speak before the first input is read, if it has
+                    // anything to say. Games with no opening text return "".
+                    String startMessage = selectedGame.getStartMessage();
+                    if (!startMessage.isEmpty()) {
+                        ui.showMessage(startMessage);
+                    }
                     // Play the game until it is finished.
                     while (!selectedGame.isFinished()) {
                         ui.showMessage(selectedGame.handleInput(ui.readLine()));
