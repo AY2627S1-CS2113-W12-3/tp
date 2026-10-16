@@ -63,13 +63,18 @@ public class WordleGame implements Game {
      */
     @Override
     public String handleInput(String input) {
-        if (input.equalsIgnoreCase(QUIT_COMMAND)) {
+        String guess = input == null ? "" : input.trim();
+        if (guess.equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player quit Wordle after " + attemptsUsed + " wrong guesses.");
             finished = true;
             return exitGameMessage;
         }
 
-        if (input.equalsIgnoreCase(SECRET_WORD)) {
+        if (!guess.matches("[a-zA-Z]{5}")) {
+            return "Please enter a five-letter word.";
+        }
+
+        if (guess.equalsIgnoreCase(SECRET_WORD)) {
             finished = true;
             // attemptsUsed only counts wrong guesses, so add this correct one.
             int triesTaken = attemptsUsed + 1;
