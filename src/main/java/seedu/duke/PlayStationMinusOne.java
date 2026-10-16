@@ -37,6 +37,7 @@ public class PlayStationMinusOne {
                 ui.showGoodbye();
                 break;
             } else if (command.equals("help")) {
+                LOGGER.info("Help command received.");
                 ui.showHelp();
             } else if (command.equals("play")) {
                 if (!arguments.matches("\\d+")) {
@@ -67,6 +68,7 @@ public class PlayStationMinusOne {
                     }
 
                     selectedGame.reset();
+                    assert(selectedGame.isFinished() == false);
                 }
             } else if (command.isEmpty()) {
                 continue;
