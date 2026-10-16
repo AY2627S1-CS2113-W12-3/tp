@@ -24,6 +24,12 @@ public class CalculatorGame implements Game {
     /** Indent for the round header, one level shallower than the problem it heads. */
     private static final String HEADER_INDENT = "  ";
 
+    /** The word a player types to leave the session. */
+    private static final String QUIT_COMMAND = "quit";
+
+    /** Shown in place of a percentage when there is nothing to average. */
+    private static final String NO_ACCURACY = "-";
+
     /** Identifies this game in the application. */
     private final String gameId;
 
@@ -123,6 +129,12 @@ public class CalculatorGame implements Game {
      */
     @Override
     public String handleInput(String input) {
+        if (input != null && input.trim().equalsIgnoreCase(QUIT_COMMAND)) {
+            LOGGER.info("Player left the calculator after " + attemptedCount + " rounds.");
+            finished = true;
+            return buildSessionSummary();
+        }
+
         Integer answer = parseWholeNumber(input);
         if (answer == null) {
             // A typo must not cost the player a point, so leave every counter alone,
@@ -151,6 +163,47 @@ public class CalculatorGame implements Game {
         return feedback + System.lineSeparator()
                 + System.lineSeparator()
                 + buildRoundPrompt();
+    }
+
+    /**
+     * Builds the end-of-session report, for example:
+     *
+     * <pre>
+     *   Session summary
+     *     Rounds attempted : 4
+     *     Correct          : 3
+     *     Accuracy         : 75%
+     *
+     *   Returning to the main menu.
+     * </pre>
+     *
+     * <p>The round in progress when the player quit is not counted, because
+     * {@code attemptedCount} only ever rises once an answer has been graded.
+     *
+     * @return the session summary followed by the return-to-menu line
+     */
+    private String buildSessionSummary() {
+        return HEADER_INDENT + "Session summary" + System.lineSeparator()
+                + DETAIL_INDENT + "Rounds attempted : " + attemptedCount + System.lineSeparator()
+                + DETAIL_INDENT + "Correct          : " + correctCount + System.lineSeparator()
+                + DETAIL_INDENT + "Accuracy         : " + formatAccuracy() + System.lineSeparator()
+                + System.lineSeparator()
+                + HEADER_INDENT + "Returning to the main menu.";
+    }
+
+    /**
+     * Formats accuracy as a whole-number percentage.
+     *
+     * @return the percentage with a {@code %} suffix, or {@code -} if no rounds were attempted
+     */
+    private String formatAccuracy() {
+        if (attemptedCount == 0) {
+            // Quitting before answering anything leaves nothing to average, and 0%
+            // would wrongly suggest the player got everything wrong.
+            return NO_ACCURACY;
+        }
+        long percentage = Math.round(correctCount * 100.0 / attemptedCount);
+        return percentage + "%";
     }
 
     /**
