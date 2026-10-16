@@ -39,6 +39,13 @@ public class PlayStationMinusOne {
             } else if (command.equals("help")) {
                 ui.showHelp();
             } else if (command.equals("play")) {
+                if (!arguments.matches("\\d+")) {
+                    LOGGER.warning("Invalid game ID format: " + arguments);
+                    ui.showMessage("Please enter a valid game ID.");
+                    ui.showListOfGames(gameList);
+                    continue;
+                }
+
                 Game selectedGame = null;
                 for (Game game : gameList.getGames()) {
                     if (game.getGameId().equals(arguments)) {
@@ -68,3 +75,4 @@ public class PlayStationMinusOne {
         }
     }
 }
+
