@@ -20,6 +20,20 @@ public interface Game {
     String getGameName();
 
     /**
+     * Returns the text to display when the game starts, before any input is read.
+     *
+     * <p>Some games need to show something before the player can sensibly type
+     * anything -- the calculator, for example, must show the first problem.
+     * Games that have nothing to say up front can ignore this method, because
+     * the default implementation returns an empty string.
+     *
+     * @return the opening text, or an empty string if the game has none
+     */
+    default String getStartMessage() {
+        return "";
+    }
+
+    /**
      * Processes one line of player input and returns a response for the application to display.
      *
      * @param input the input entered by the player
