@@ -1,9 +1,13 @@
 package seedu.duke;
 
+import java.util.logging.Logger;
+
 /**
  * Provides a Wordle-style game with up to five guesses per session.
  */
 public class WordleGame implements Game {
+    /** Records diagnostic events without changing the user-facing output. */
+    private static final Logger LOGGER = Logger.getLogger(WordleGame.class.getName());
     /** The number of incorrect guesses allowed before a session ends. */
     private static final int MAX_ATTEMPTS = 5;
     /** Command used to leave a Wordle session and return to the main menu. */
@@ -60,6 +64,7 @@ public class WordleGame implements Game {
     @Override
     public String handleInput(String input) {
         if (input.equalsIgnoreCase(QUIT_COMMAND)) {
+            LOGGER.info("Player quit Wordle after " + attemptsUsed + " wrong guesses.");
             finished = true;
             return exitGameMessage;
         }
@@ -70,6 +75,7 @@ public class WordleGame implements Game {
                 finished = true;
                 // attemptsUsed only counts wrong guesses, so add this correct one.
                 int triesTaken = attemptsUsed + 1;
+                LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
                 return correctGuess + " You got it in " + formatTries(triesTaken) + "."
                         + System.lineSeparator() + exitGameMessage;
             }
@@ -79,10 +85,13 @@ public class WordleGame implements Game {
         assert attemptsUsed <= MAX_ATTEMPTS : "Wrong guesses cannot exceed the limit";
         int triesLeft = MAX_ATTEMPTS - attemptsUsed;
         if (triesLeft == 0) {
+            LOGGER.info("Player ran out of tries in Wordle.");
             finished = true;
             return wrongGuess + " You are out of tries."
                     + System.lineSeparator() + exitGameMessage;
         }
+        // FINE is below the default INFO level, so per-guess detail stays off the console.
+        LOGGER.fine("Wrong guess: " + input + ", " + formatTries(triesLeft) + " left.");
         return wrongGuess + " You have " + formatTries(triesLeft) + " left.";
     }
 
