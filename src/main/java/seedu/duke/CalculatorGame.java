@@ -1,6 +1,7 @@
 package seedu.duke;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * A mental-arithmetic drill. Each round presents one randomly generated problem,
@@ -14,6 +15,9 @@ import java.util.Random;
  * terminal over to the game.
  */
 public class CalculatorGame implements Game {
+    /** Records diagnostic events without changing the user-facing output. */
+    private static final Logger LOGGER = Logger.getLogger(CalculatorGame.class.getName());
+
     /** Indent for the problem line and for feedback, matching the user guide. */
     private static final String DETAIL_INDENT = "    ";
 
@@ -121,9 +125,13 @@ public class CalculatorGame implements Game {
     public String handleInput(String input) {
         Integer answer = parseWholeNumber(input);
         if (answer == null) {
-            // Refined in the issue covering non-numeric input.
-            return DETAIL_INDENT + "That is not a whole number."
-                    + System.lineSeparator() + DETAIL_INDENT + currentProblem;
+            // A typo must not cost the player a point, so leave every counter alone,
+            // keep the same problem, and re-ask it.
+            LOGGER.fine("Non-numeric answer ignored: " + input);
+            return DETAIL_INDENT + "That is not a whole number. "
+                    + "Try again - this round does not count."
+                    + System.lineSeparator()
+                    + DETAIL_INDENT + currentProblem;
         }
 
         String feedback;
