@@ -1,5 +1,6 @@
 package seedu.duke;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,5 +37,15 @@ class WordleGameTest {
             game.handleInput("WRONG");
             assertFalse(game.isFinished());
         }
+    }
+
+    @Test
+    void exitGameCommandFinishesTheGameAndReturnsToMenu() {
+        WordleGame game = new WordleGame("1");
+
+        String response = game.handleInput("exitgame");
+
+        assertEquals("Returning to the main menu.", response);
+        assertTrue(game.isFinished());
     }
 }
