@@ -82,7 +82,7 @@ public class Ui {
         System.out.println("Available games:");
 
         for (Game game : gameList.getGames()) {
-            System.out.println("  " + game.getGameName());
+            System.out.println("  " + game.getGameName() + " | ID: " + game.getGameId());
         }
     }
 }
