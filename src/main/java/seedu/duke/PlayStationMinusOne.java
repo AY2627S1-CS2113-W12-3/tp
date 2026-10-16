@@ -58,6 +58,8 @@ public class PlayStationMinusOne {
                     while (!selectedGame.isFinished()) {
                         ui.showMessage(selectedGame.handleInput(ui.readLine()));
                     }
+
+                    selectedGame.reset();
                 }
             } else if (command.isEmpty()) {
                 continue;
