@@ -54,6 +54,7 @@ public class Ui {
     public void showHelp() {
         System.out.println("Available commands:");
         System.out.println("  help  - Show this help message");
+        System.out.println("  list  - Show all games and their IDs");
         System.out.println("  play <gameId>  - Start a game by its ID");
         System.out.println("  exit  - Exit the application");
     }

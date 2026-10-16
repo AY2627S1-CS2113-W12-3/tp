@@ -39,6 +39,9 @@ public class PlayStationMinusOne {
             } else if (command.equals("help")) {
                 LOGGER.info("Help command received.");
                 ui.showHelp();
+            } else if (command.equals("list")) {
+                LOGGER.info("List command received.");
+                ui.showListOfGames(gameList);
             } else if (command.equals("play")) {
                 if (!arguments.matches("\\d+")) {
                     LOGGER.warning("Invalid game ID format: " + arguments);
