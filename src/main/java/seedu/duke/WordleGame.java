@@ -4,7 +4,9 @@ package seedu.duke;
  * Provides the basic Wordle game type while gameplay is still to be implemented.
  */
 public class WordleGame implements Game {
-    /** Identifies this game in the application. */
+    /**
+     * Identifies this game in the application.
+     */
     private final String gameId;
     private final String gameName = "Wordle";
     private final String correctGuess = "Correct guess!";
@@ -52,5 +54,13 @@ public class WordleGame implements Game {
     @Override
     public boolean isFinished() {
         return finished;
+    }
+
+    /**
+     * Changes the status of completion back to uncompleted so that replay is possible
+     */
+    @Override
+    public void reset() {
+        finished = false;
     }
 }

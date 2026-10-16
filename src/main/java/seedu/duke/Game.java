@@ -33,4 +33,9 @@ public interface Game {
      * @return true if the game has finished, otherwise false
      */
     boolean isFinished();
+
+    /**
+     * Changes the status of completion back to uncompleted so that replay is possible
+     */
+    void reset();
 }
