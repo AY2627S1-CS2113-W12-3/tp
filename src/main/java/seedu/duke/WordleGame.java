@@ -75,6 +75,8 @@ public class WordleGame implements Game {
             }
         }
         attemptsUsed++;
+        // The game finishes on the last allowed guess, so it is never asked to grade another.
+        assert attemptsUsed <= MAX_ATTEMPTS : "Wrong guesses cannot exceed the limit";
         int triesLeft = MAX_ATTEMPTS - attemptsUsed;
         if (triesLeft == 0) {
             finished = true;
@@ -91,6 +93,7 @@ public class WordleGame implements Game {
      * @return for example "1 try" or "3 tries"
      */
     private static String formatTries(int count) {
+        assert count >= 0 : "Number of tries cannot be negative";
         return count + (count == 1 ? " try" : " tries");
     }
 

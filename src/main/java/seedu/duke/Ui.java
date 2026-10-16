@@ -81,6 +81,7 @@ public class Ui {
      * @param gameList the list of games
      */
     public void showListOfGames(GameList gameList) {
+        assert !gameList.getGames().isEmpty() : "There should always be at least one game";
         System.out.println("Available games:");
 
         for (Game game : gameList.getGames()) {

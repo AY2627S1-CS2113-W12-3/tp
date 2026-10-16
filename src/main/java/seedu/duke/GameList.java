@@ -16,6 +16,7 @@ public class GameList {
         games = new ArrayList<>();
         games.add(new WordleGame("1"));
         games.add(new CalculatorGame("2"));
+        assert !games.isEmpty() : "Game list must not be empty";
     }
 
     /**
