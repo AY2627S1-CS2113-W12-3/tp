@@ -24,6 +24,14 @@ class WordleGameTest {
     }
 
     @Test
+    void onlyTheSecretWordWins() {
+        WordleGame game = new WordleGame("1");
+
+        assertEquals("Wrong guess! You have 4 tries left.", game.handleInput("WORDS"));
+        assertFalse(game.isFinished());
+    }
+
+    @Test
     void resetRestoresAllFiveAttempts() {
         WordleGame game = new WordleGame("1");
         for (int attempt = 0; attempt < 5; attempt++) {
