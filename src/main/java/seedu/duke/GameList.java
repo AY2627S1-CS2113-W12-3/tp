@@ -10,11 +10,12 @@ public class GameList {
     private final ArrayList<Game> games;
 
     /**
-     * Creates the game list with Wordle registered as game 1.
+     * Creates the game list with Wordle as game 1 and the calculator as game 2.
      */
     public GameList() {
         games = new ArrayList<>();
         games.add(new WordleGame("1"));
+        games.add(new CalculatorGame("2"));
     }
 
     /**
