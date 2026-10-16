@@ -40,12 +40,21 @@ class WordleGameTest {
     }
 
     @Test
-    void exitGameCommandFinishesTheGameAndReturnsToMenu() {
+    void quitCommandFinishesTheGameAndReturnsToMenu() {
         WordleGame game = new WordleGame("1");
 
-        String response = game.handleInput("exitgame");
+        String response = game.handleInput("quit");
 
         assertEquals("Returning to the main menu.", response);
+        assertTrue(game.isFinished());
+    }
+
+    @Test
+    void quitCommandIsCaseInsensitive() {
+        WordleGame game = new WordleGame("1");
+
+        game.handleInput("QUIT");
+
         assertTrue(game.isFinished());
     }
 }

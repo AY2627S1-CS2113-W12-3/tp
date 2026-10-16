@@ -7,7 +7,7 @@ public class WordleGame implements Game {
     /** The number of incorrect guesses allowed before a session ends. */
     private static final int MAX_ATTEMPTS = 5;
     /** Command used to leave a Wordle session and return to the main menu. */
-    private static final String EXIT_GAME_COMMAND = "exitgame";
+    private static final String QUIT_COMMAND = "quit";
     /**
      * Identifies this game in the application.
      */
@@ -37,7 +37,7 @@ public class WordleGame implements Game {
     }
 
     /**
-     * Checks a submitted word or processes the {@code exitgame} command. A correct
+     * Checks a submitted word or processes the {@code quit} command. A correct
      * word ends the game immediately; otherwise, the game ends after five incorrect guesses.
      *
      * @param input the word entered by the player
@@ -45,7 +45,7 @@ public class WordleGame implements Game {
      */
     @Override
     public String handleInput(String input) {
-        if (input.equalsIgnoreCase(EXIT_GAME_COMMAND)) {
+        if (input.equalsIgnoreCase(QUIT_COMMAND)) {
             finished = true;
             return exitGameMessage;
         }
