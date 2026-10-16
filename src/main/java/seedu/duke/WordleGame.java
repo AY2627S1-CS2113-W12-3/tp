@@ -37,8 +37,22 @@ public class WordleGame implements Game {
     }
 
     /**
+     * Tells the player how many tries they have and how to leave, so they know
+     * the rules before typing their first guess.
+     *
+     * @return the opening instructions
+     */
+    @Override
+    public String getStartMessage() {
+        return "Guess the word. You have " + formatTries(MAX_ATTEMPTS)
+                + ". Type 'quit' to leave.";
+    }
+
+    /**
      * Checks a submitted word or processes the {@code quit} command. A correct
      * word ends the game immediately; otherwise, the game ends after five incorrect guesses.
+     * Whenever the game ends, the response says so, because the application
+     * returns to the main menu straight afterwards.
      *
      * @param input the word entered by the player
      * @return feedback about the submitted word or game exit
@@ -54,14 +68,30 @@ public class WordleGame implements Game {
             // compareToIgnoreCase returns 0 if the guesses are equal
             if (input.compareToIgnoreCase(guess) == 0) {
                 finished = true;
-                return correctGuess;
+                // attemptsUsed only counts wrong guesses, so add this correct one.
+                int triesTaken = attemptsUsed + 1;
+                return correctGuess + " You got it in " + formatTries(triesTaken) + "."
+                        + System.lineSeparator() + exitGameMessage;
             }
         }
         attemptsUsed++;
-        if (attemptsUsed == MAX_ATTEMPTS) {
+        int triesLeft = MAX_ATTEMPTS - attemptsUsed;
+        if (triesLeft == 0) {
             finished = true;
+            return wrongGuess + " You are out of tries."
+                    + System.lineSeparator() + exitGameMessage;
         }
-        return wrongGuess;
+        return wrongGuess + " You have " + formatTries(triesLeft) + " left.";
+    }
+
+    /**
+     * Formats a number of tries with the correct singular or plural noun.
+     *
+     * @param count the number of tries
+     * @return for example "1 try" or "3 tries"
+     */
+    private static String formatTries(int count) {
+        return count + (count == 1 ? " try" : " tries");
     }
 
     /**
