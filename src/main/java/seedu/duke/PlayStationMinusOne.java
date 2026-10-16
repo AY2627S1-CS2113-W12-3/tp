@@ -1,8 +1,5 @@
 package seedu.duke;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import java.util.logging.Logger;
 
 /**
@@ -13,14 +10,13 @@ public class PlayStationMinusOne {
     private static final Logger LOGGER =
             Logger.getLogger(PlayStationMinusOne.class.getName());
 
-    private static final ArrayList<String> GAME_LIST = new ArrayList<String>(List.of("Wordle"));
-
     /**
      * Main entry point for the PlayStationMinusOne application.
      */
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.showBanner();
+        GameList gameList = new GameList();
         String input;
         while (true) {
             try {
@@ -43,13 +39,25 @@ public class PlayStationMinusOne {
             } else if (command.equals("help")) {
                 ui.showHelp();
             } else if (command.equals("play")) {
-                if (arguments.isBlank() || !GAME_LIST.contains(arguments)) {
+                Game selectedGame = null;
+                for (Game game : gameList.getGames()) {
+                    if (game.getGameId().equals(arguments)) {
+                        selectedGame = game;
+                        break;
+                    }
+                }
+
+                if (selectedGame == null) {
                     LOGGER.warning("No game selected or invalid game: " + arguments);
-                    ui.showListOfGames(GAME_LIST);
+                    ui.showListOfGames(gameList);
                 } else {
+                    assert selectedGame.getGameId().equals(arguments);
                     LOGGER.info("Starting game: " + arguments);
-                    assert(GAME_LIST.contains(arguments));
-                    ui.showGameStarting(arguments);
+                    ui.showGameStarting(selectedGame.getGameName());
+                    // Play the game until it is finished.
+                    while (!selectedGame.isFinished()) {
+                        ui.showMessage(selectedGame.handleInput(ui.readLine()));
+                    }
                 }
             } else if (command.isEmpty()) {
                 continue;

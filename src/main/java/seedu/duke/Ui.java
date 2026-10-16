@@ -1,6 +1,5 @@
 package seedu.duke;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -79,11 +78,11 @@ public class Ui {
      *
      * @param gameList the list of games
      */
-    public void showListOfGames(ArrayList<String> gameList) {
+    public void showListOfGames(GameList gameList) {
         System.out.println("Available games:");
 
-        for (String game : gameList) {
-            System.out.println("  " + game);
+        for (Game game : gameList.getGames()) {
+            System.out.println("  " + game.getGameName());
         }
     }
 }

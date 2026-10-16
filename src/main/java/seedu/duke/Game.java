@@ -6,6 +6,20 @@ package seedu.duke;
 public interface Game {
 
     /**
+     * Returns the ID used to select this game.
+     *
+     * @return this game's ID
+     */
+    String getGameId();
+
+    /**
+     * Returns the name of the game
+     *
+     * @return this game's name
+     */
+    String getGameName();
+
+    /**
      * Processes one line of player input and returns a response for the application to display.
      *
      * @param input the input entered by the player
