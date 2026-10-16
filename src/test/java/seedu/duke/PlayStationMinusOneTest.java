@@ -10,5 +10,4 @@ class PlayStationMinusOneTest {
     public void sampleTest() {
         assertTrue(true);
     }
-
 }
