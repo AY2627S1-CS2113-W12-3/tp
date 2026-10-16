@@ -41,6 +41,13 @@ class UiTest {
     }
 
     @Test
+    void showHelpListsQuitCommand() {
+        new Ui().showHelp();
+
+        assertTrue(output.toString().contains("quit  - Leave the current game"));
+    }
+
+    @Test
     void showListOfGamesPrintsEveryGame() {
         new Ui().showListOfGames(new GameList());
 
