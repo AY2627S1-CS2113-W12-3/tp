@@ -68,6 +68,7 @@ public class PlayStationMinusOne {
                     }
 
                     selectedGame.reset();
+                    assert(selectedGame.isFinished() == false);
                 }
             } else if (command.isEmpty()) {
                 continue;
