@@ -24,6 +24,29 @@ class WordleGameTest {
     }
 
     @Test
+    void invalidGuessDoesNotConsumeAnAttempt() {
+        WordleGame game = new WordleGame("1");
+
+        assertEquals("Please enter a five-letter word.", game.handleInput("CAT"));
+        for (int attempt = 1; attempt < 5; attempt++) {
+            game.handleInput("WRONG");
+            assertFalse(game.isFinished());
+        }
+
+        game.handleInput("WRONG");
+
+        assertTrue(game.isFinished());
+    }
+
+    @Test
+    void onlyTheSecretWordWins() {
+        WordleGame game = new WordleGame("1");
+
+        assertEquals("Wrong guess! You have 4 tries left.", game.handleInput("WORDS"));
+        assertFalse(game.isFinished());
+    }
+
+    @Test
     void resetRestoresAllFiveAttempts() {
         WordleGame game = new WordleGame("1");
         for (int attempt = 0; attempt < 5; attempt++) {
