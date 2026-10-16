@@ -1,13 +1,17 @@
 package seedu.duke;
 
+import java.util.logging.Logger;
+
 /**
  * Provides a Wordle-style game with up to five guesses per session.
  */
 public class WordleGame implements Game {
+    /** Records diagnostic events without changing the user-facing output. */
+    private static final Logger LOGGER = Logger.getLogger(WordleGame.class.getName());
     /** The number of incorrect guesses allowed before a session ends. */
     private static final int MAX_ATTEMPTS = 5;
     /** Command used to leave a Wordle session and return to the main menu. */
-    private static final String EXIT_GAME_COMMAND = "exitgame";
+    private static final String QUIT_COMMAND = "quit";
     /**
      * Identifies this game in the application.
      */
@@ -37,15 +41,30 @@ public class WordleGame implements Game {
     }
 
     /**
-     * Checks a submitted word or processes the {@code exitgame} command. A correct
+     * Tells the player how many tries they have and how to leave, so they know
+     * the rules before typing their first guess.
+     *
+     * @return the opening instructions
+     */
+    @Override
+    public String getStartMessage() {
+        return "Guess the word. You have " + formatTries(MAX_ATTEMPTS)
+                + ". Type 'quit' to leave.";
+    }
+
+    /**
+     * Checks a submitted word or processes the {@code quit} command. A correct
      * word ends the game immediately; otherwise, the game ends after five incorrect guesses.
+     * Whenever the game ends, the response says so, because the application
+     * returns to the main menu straight afterwards.
      *
      * @param input the word entered by the player
      * @return feedback about the submitted word or game exit
      */
     @Override
     public String handleInput(String input) {
-        if (input.equalsIgnoreCase(EXIT_GAME_COMMAND)) {
+        if (input.equalsIgnoreCase(QUIT_COMMAND)) {
+            LOGGER.info("Player quit Wordle after " + attemptsUsed + " wrong guesses.");
             finished = true;
             return exitGameMessage;
         }
@@ -54,14 +73,37 @@ public class WordleGame implements Game {
             // compareToIgnoreCase returns 0 if the guesses are equal
             if (input.compareToIgnoreCase(guess) == 0) {
                 finished = true;
-                return correctGuess;
+                // attemptsUsed only counts wrong guesses, so add this correct one.
+                int triesTaken = attemptsUsed + 1;
+                LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
+                return correctGuess + " You got it in " + formatTries(triesTaken) + "."
+                        + System.lineSeparator() + exitGameMessage;
             }
         }
         attemptsUsed++;
-        if (attemptsUsed == MAX_ATTEMPTS) {
+        // The game finishes on the last allowed guess, so it is never asked to grade another.
+        assert attemptsUsed <= MAX_ATTEMPTS : "Wrong guesses cannot exceed the limit";
+        int triesLeft = MAX_ATTEMPTS - attemptsUsed;
+        if (triesLeft == 0) {
+            LOGGER.info("Player ran out of tries in Wordle.");
             finished = true;
+            return wrongGuess + " You are out of tries."
+                    + System.lineSeparator() + exitGameMessage;
         }
-        return wrongGuess;
+        // FINE is below the default INFO level, so per-guess detail stays off the console.
+        LOGGER.fine("Wrong guess: " + input + ", " + formatTries(triesLeft) + " left.");
+        return wrongGuess + " You have " + formatTries(triesLeft) + " left.";
+    }
+
+    /**
+     * Formats a number of tries with the correct singular or plural noun.
+     *
+     * @param count the number of tries
+     * @return for example "1 try" or "3 tries"
+     */
+    private static String formatTries(int count) {
+        assert count >= 0 : "Number of tries cannot be negative";
+        return count + (count == 1 ? " try" : " tries");
     }
 
     /**

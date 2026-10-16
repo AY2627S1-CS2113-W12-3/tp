@@ -40,13 +40,13 @@ Starting Wordle. Enter a five-letter guess.
 > guess apple
 Feedback: ...
 
-> exitgame
+> quit
 Returning to the main menu.
 ```
 
 The command `play <gameId>` starts a game, where game `1` is the Wordle-style
 game. Inside the game, `guess <word>` submits one guess and produces feedback.
-The command `exitgame` leaves the active game, while `exit` closes the
+The command `quit` leaves the active game, while `exit` closes the
 application. Invalid commands display an error message without crashing the
 application or consuming a guess.
 
@@ -80,7 +80,7 @@ The MVP includes:
 * submitting guesses with `guess <word>`;
 * feedback after every valid guess;
 * error messages for invalid input; and
-* returning to the launcher with `exitgame`.
+* returning to the launcher with `quit`.
 
 The MVP deliberately excludes continuous input, timers, animations, and
 background processing.
