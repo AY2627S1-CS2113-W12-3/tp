@@ -37,6 +37,7 @@ public class PlayStationMinusOne {
                 ui.showGoodbye();
                 break;
             } else if (command.equals("help")) {
+                LOGGER.info("Help command received.");
                 ui.showHelp();
             } else if (command.equals("play")) {
                 Game selectedGame = null;
