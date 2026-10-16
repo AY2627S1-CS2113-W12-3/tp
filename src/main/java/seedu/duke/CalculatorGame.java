@@ -17,6 +17,9 @@ public class CalculatorGame implements Game {
     /** Indent for the problem line and for feedback, matching the user guide. */
     private static final String DETAIL_INDENT = "    ";
 
+    /** Indent for the round header, one level shallower than the problem it heads. */
+    private static final String HEADER_INDENT = "  ";
+
     /** Identifies this game in the application. */
     private final String gameId;
 
@@ -27,6 +30,18 @@ public class CalculatorGame implements Game {
 
     /** The problem the player is currently answering. */
     private ArithmeticProblem currentProblem;
+
+    /** The round being played, counting from 1. */
+    private int roundNumber = 1;
+
+    /** How many rounds the player has answered correctly. */
+    private int correctCount = 0;
+
+    /**
+     * How many rounds the player has actually answered. Input that was not a whole
+     * number is not an attempt, so this can lag behind the number of lines typed.
+     */
+    private int attemptedCount = 0;
 
     /** Set once the player leaves the session, which ends the game. */
     private boolean finished = false;
@@ -74,7 +89,24 @@ public class CalculatorGame implements Game {
      */
     @Override
     public String getStartMessage() {
-        return "  calculator - type 'quit' to stop." + System.lineSeparator()
+        return HEADER_INDENT + "calculator - type 'quit' to stop." + System.lineSeparator()
+                + System.lineSeparator()
+                + buildRoundPrompt();
+    }
+
+    /**
+     * Builds the header and problem that open a round, for example:
+     *
+     * <pre>
+     *   Round 3  |  Score: 1/2
+     *     72 / 8 = ?
+     * </pre>
+     *
+     * @return the round header followed by the current problem
+     */
+    private String buildRoundPrompt() {
+        return HEADER_INDENT + "Round " + roundNumber
+                + "  |  Score: " + correctCount + "/" + attemptedCount
                 + System.lineSeparator()
                 + DETAIL_INDENT + currentProblem;
     }
@@ -95,18 +127,22 @@ public class CalculatorGame implements Game {
         }
 
         String feedback;
+        attemptedCount++;
         if (answer == currentProblem.getAnswer()) {
+            correctCount++;
             feedback = DETAIL_INDENT + "Correct!";
         } else {
             // Always reveal the answer, so a wrong round still teaches something.
             feedback = DETAIL_INDENT + "Not quite - the answer was "
                     + currentProblem.getAnswer() + ".";
         }
+        assert correctCount <= attemptedCount : "Correct answers cannot exceed attempts";
 
+        roundNumber++;
         currentProblem = ArithmeticProblem.generate(random);
         return feedback + System.lineSeparator()
                 + System.lineSeparator()
-                + DETAIL_INDENT + currentProblem;
+                + buildRoundPrompt();
     }
 
     /**
@@ -139,6 +175,27 @@ public class CalculatorGame implements Game {
     @Override
     public void reset() {
         finished = false;
+        roundNumber = 1;
+        correctCount = 0;
+        attemptedCount = 0;
         currentProblem = ArithmeticProblem.generate(random);
+    }
+
+    /**
+     * Returns how many rounds the player has answered.
+     *
+     * @return the number of attempted rounds
+     */
+    public int getAttemptedCount() {
+        return attemptedCount;
+    }
+
+    /**
+     * Returns how many rounds the player has answered correctly.
+     *
+     * @return the number of correct answers
+     */
+    public int getCorrectCount() {
+        return correctCount;
     }
 }
