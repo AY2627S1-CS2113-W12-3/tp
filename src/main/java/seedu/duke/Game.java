@@ -34,6 +34,20 @@ public interface Game {
     }
 
     /**
+     * Returns the text to display when the player leaves this game.
+     *
+     * <p>The counterpart to {@link #getStartMessage()}. It lets the launcher report
+     * a closing message -- the calculator's session summary, for example -- when the
+     * player is taken out of a game by a launcher command rather than by the game
+     * itself. Games with nothing to report can ignore it.
+     *
+     * @return the closing text, or an empty string if the game has none
+     */
+    default String getExitMessage() {
+        return "";
+    }
+
+    /**
      * Processes one line of player input and returns a response for the application to display.
      *
      * @param input the input entered by the player

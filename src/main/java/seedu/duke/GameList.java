@@ -26,4 +26,25 @@ public class GameList {
     public ArrayList<Game> getGames() {
         return games;
     }
+
+    /**
+     * Finds the game with the given ID.
+     *
+     * <p>Keeping the lookup here rather than in the command loop means the loop does
+     * not need to know how games are stored.
+     *
+     * @param gameId the ID to look for, as typed by the player
+     * @return the matching game, or {@code null} if no game has that ID
+     */
+    public Game findGameById(String gameId) {
+        if (gameId == null) {
+            return null;
+        }
+        for (Game game : games) {
+            if (game.getGameId().equals(gameId.trim())) {
+                return game;
+            }
+        }
+        return null;
+    }
 }
