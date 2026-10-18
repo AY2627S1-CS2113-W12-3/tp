@@ -166,6 +166,19 @@ public class CalculatorGame implements Game {
     }
 
     /**
+     * Returns the session summary when the launcher takes the player out of the game.
+     *
+     * <p>Shares its text with the {@code quit} path, so leaving via {@code quit} and
+     * leaving by starting another game report identically.
+     *
+     * @return the session summary
+     */
+    @Override
+    public String getExitMessage() {
+        return buildSessionSummary();
+    }
+
+    /**
      * Builds the end-of-session report, for example:
      *
      * <pre>
