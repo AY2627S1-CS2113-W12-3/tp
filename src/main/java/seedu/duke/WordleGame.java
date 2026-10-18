@@ -10,6 +10,8 @@ public class WordleGame implements Game {
     private static final Logger LOGGER = Logger.getLogger(WordleGame.class.getName());
     /** The number of incorrect guesses allowed before a session ends. */
     private static final int MAX_ATTEMPTS = 5;
+    /** The answer used for this simple first version of the game. */
+    private static final String SECRET_WORD = "CRANE";
     /** Command used to leave a Wordle session and return to the main menu. */
     private static final String QUIT_COMMAND = "quit";
     /**
@@ -24,8 +26,6 @@ public class WordleGame implements Game {
     private boolean finished = false;
     /** Counts incorrect guesses in the current game session. */
     private int attemptsUsed = 0;
-    /** Lists words that count as a correct guess in this starter implementation. */
-    private final String[] guesses = {"WORDS", "CRANE", "AUDIO", "CRYPT", "DREAM"};
 
     public WordleGame(String gameId) {
         this.gameId = gameId;
@@ -63,23 +63,26 @@ public class WordleGame implements Game {
      */
     @Override
     public String handleInput(String input) {
-        if (input.equalsIgnoreCase(QUIT_COMMAND)) {
+        String guess = input == null ? "" : input.trim();
+        if (guess.equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player quit Wordle after " + attemptsUsed + " wrong guesses.");
             finished = true;
             return exitGameMessage;
         }
 
-        for (String guess : guesses) {
-            // compareToIgnoreCase returns 0 if the guesses are equal
-            if (input.compareToIgnoreCase(guess) == 0) {
-                finished = true;
-                // attemptsUsed only counts wrong guesses, so add this correct one.
-                int triesTaken = attemptsUsed + 1;
-                LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
-                return correctGuess + " You got it in " + formatTries(triesTaken) + "."
-                        + System.lineSeparator() + exitGameMessage;
-            }
+        if (!guess.matches("[a-zA-Z]{5}")) {
+            return "Please enter a five-letter word.";
         }
+
+        if (guess.equalsIgnoreCase(SECRET_WORD)) {
+            finished = true;
+            // attemptsUsed only counts wrong guesses, so add this correct one.
+            int triesTaken = attemptsUsed + 1;
+            LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
+            return correctGuess + " You got it in " + formatTries(triesTaken) + "."
+                    + System.lineSeparator() + exitGameMessage;
+        }
+
         attemptsUsed++;
         // The game finishes on the last allowed guess, so it is never asked to grade another.
         assert attemptsUsed <= MAX_ATTEMPTS : "Wrong guesses cannot exceed the limit";
