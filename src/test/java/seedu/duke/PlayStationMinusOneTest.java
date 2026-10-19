@@ -80,6 +80,13 @@ class PlayStationMinusOneTest {
     }
 
     @Test
+    void quitOutsideGameShowsError() {
+        String output = run("quit", "exit");
+
+        assertTrue(output.contains("The 'quit' command only works while playing a game."));
+    }
+
+    @Test
     void playWordleThenQuitReturnsToMenu() {
         String output = run("play 1", "quit", "exit");
 
