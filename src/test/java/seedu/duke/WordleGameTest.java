@@ -155,4 +155,11 @@ class WordleGameTest {
         assertTrue(response.startsWith("\u001B[32mC\u001B[0m\u001B[32mR\u001B[0m"
                 + "\u001B[33mE\u001B[0m\u001B[33mA\u001B[0m\u001B[31mM\u001B[0m"));
     }
+
+    @Test
+    void listLettersBeforeAnyGuessShowsError() {
+        WordleGame game = new WordleGame("1");
+
+        assertEquals("Make a valid Wordle guess before listing letters.", game.handleInput("list letters"));
+    }
 }

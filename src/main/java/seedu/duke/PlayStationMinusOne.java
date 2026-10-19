@@ -2,6 +2,9 @@ package seedu.duke;
 
 import java.util.logging.Logger;
 
+import seedu.duke.wordle.WordleException;
+import seedu.duke.wordle.WordleGame;
+
 /**
  * Starts the application and coordinates command handling.
  *
@@ -19,6 +22,7 @@ public class PlayStationMinusOne {
     private static final String COMMAND_EXIT = "exit";
     private static final String COMMAND_HELP = "help";
     private static final String COMMAND_LIST = "list";
+    private static final String LIST_ARGUMENT_LETTERS = "letters";
     private static final String COMMAND_PLAY = "play";
     private static final String COMMAND_QUIT = "quit";
     private static final String QUIT_OUTSIDE_GAME_MESSAGE = "The 'quit' command only works while playing a game.";
@@ -73,6 +77,14 @@ public class PlayStationMinusOne {
             }
 
             if (command.equals(COMMAND_LIST)) {
+                if (arguments.equalsIgnoreCase(LIST_ARGUMENT_LETTERS)) {
+                    if (activeGame instanceof WordleGame) {
+                        ui.showMessage(activeGame.handleInput(input));
+                    } else {
+                        ui.showMessage(WordleException.listLettersOnlyInWordle());
+                    }
+                    continue;
+                }
                 LOGGER.info("List command received.");
                 ui.showListOfGames(gameList);
                 continue;

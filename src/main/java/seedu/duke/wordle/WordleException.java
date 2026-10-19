@@ -30,5 +30,23 @@ public final class WordleException {
         return "You have already guessed that word. Try a different five-letter word.";
     }
 
+    /**
+     * Returns the message when {@code list letters} is used outside Wordle.
+     *
+     * @return the command-scope message
+     */
+    public static String listLettersOnlyInWordle() {
+        return "The 'list letters' command only works while playing Wordle.";
+    }
+
+    /**
+     * Returns the message when no valid Wordle guess has supplied letter hints yet.
+     *
+     * @return the missing-hints message
+     */
+    public static String noLettersListed() {
+        return "Make a valid Wordle guess before listing letters.";
+    }
+
     // TODO: Add public static String wordNotInDictionary() when dictionary validation is implemented.
 }
