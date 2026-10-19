@@ -19,6 +19,7 @@ Version 1.0 has two games:
   * [Leaving a game: `quit`](#leaving-a-game-quit)
   * [Exiting the app: `exit`](#exiting-the-app-exit)
   * [Game: Wordle](#game-wordle)
+    * [Viewing Wordle letter hints: `list letters`](#viewing-wordle-letter-hints-list-letters)
   * [Game: Calculator](#game-calculator)
 * [FAQ](#faq)
 * [Command Summary](#command-summary)
@@ -51,7 +52,8 @@ Version 1.0 has two games:
 
 ### Viewing help: `help`
 
-Shows every main-menu command.
+Shows the available commands. While you are playing Wordle, it also shows the Wordle-only
+`list letters` command.
 
 Format: `help`
 
@@ -140,7 +142,12 @@ Bye!
 
 Guess a word from the game's secret word list. You have **5 tries**.
 
-* Type a word and press Enter. Capital letters don't matter.
+* Type a new five-letter word and press Enter. Capital letters don't matter.
+  * Invalid guesses and repeated words do not use up a try.
+* After each valid guess, each letter is coloured:
+  * **Green**: the letter is in the correct position.
+  * **Yellow**: the letter is in the secret word, but in a different position.
+  * **Red**: the letter is not in the secret word.
 * After a wrong guess, the game tells you how many tries you have left.
 * A correct guess wins. The game tells you how many tries you took and returns you to the main menu.
 * If all 5 guesses are wrong, the game ends and returns you to the main menu.
@@ -151,12 +158,16 @@ Example of a win:
 > play 1
 Starting Wordle...
 Guess the word. You have 5 tries. Type 'quit' to leave.
-> hello
+> cream
+CREAM
 Wrong guess! You have 4 tries left.
 > crane
+CRANE
 Correct guess! You got it in 2 tries.
 Returning to the main menu.
 ```
+
+The letters in the example are coloured in the terminal according to the rules above.
 
 Example of a loss:
 ```
@@ -166,8 +177,32 @@ Wrong guess! You are out of tries.
 Returning to the main menu.
 ```
 
-Version 1.0 tells you only whether your whole guess is right. Letter-by-letter hints are planned
-for a later version.
+#### Viewing Wordle letter hints: `list letters`
+
+Shows the letter information discovered from your valid Wordle guesses so far.
+
+Format: `list letters`
+
+* This command works only while you are playing Wordle.
+* Make at least one valid guess before using it.
+* The display uses the same green, yellow, and red colours as the guess feedback.
+  * Green letters include their one-based positions.
+  * Yellow letters are known to be in the word, but their displayed positions are incorrect.
+  * Red letters are not in the secret word.
+
+Example, after guessing `cream`:
+```
+> list letters
+Letters with correct positions:
+C (position 1)
+R (position 2)
+
+Letters in incorrect positions:
+E, A
+
+Letters not in the word:
+M
+```
 
 ### Game: Calculator
 
@@ -239,4 +274,5 @@ again before starting the app.
 | List games      | `list`         | Main menu      |
 | Start a game    | `play GAME_ID` | Main menu      |
 | Leave a game    | `quit`         | Inside a game  |
+| Show Wordle hints | `list letters` | Inside Wordle |
 | Exit the app    | `exit`         | Main menu      |

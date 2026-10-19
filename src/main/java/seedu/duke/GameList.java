@@ -3,6 +3,8 @@ package seedu.duke;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import seedu.duke.wordle.WordleGame;
+
 /**
  * Stores the games available in the application.
  */

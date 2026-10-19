@@ -1,5 +1,6 @@
 package seedu.duke;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +46,20 @@ class UiTest {
         new Ui().showHelp();
 
         assertTrue(output.toString().contains("quit  - Leave the current game"));
+    }
+
+    @Test
+    void showHelpOutsideWordleDoesNotListWordleCommands() {
+        new Ui().showHelp();
+
+        assertFalse(output.toString().contains("list letters"));
+    }
+
+    @Test
+    void showHelpInWordleListsWordleCommands() {
+        new Ui().showHelp(true);
+
+        assertTrue(output.toString().contains("list letters  - Show discovered Wordle letter hints"));
     }
 
     @Test

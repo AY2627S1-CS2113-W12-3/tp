@@ -1,5 +1,6 @@
 package seedu.duke;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -66,6 +67,34 @@ class PlayStationMinusOneTest {
     }
 
     @Test
+    void listLettersOutsideWordleShowsError() {
+        String output = run("list letters", "exit");
+
+        assertTrue(output.contains("The 'list letters' command only works while playing Wordle."));
+    }
+
+    @Test
+    void listLettersInWordleShowsDiscoveredHints() {
+        String output = run("play 1", "CREAM", "list letters", "exit");
+
+        assertTrue(output.contains("Letters with correct positions:"));
+        assertTrue(output.contains("\u001B[32mC\u001B[0m (position 1)"));
+        assertTrue(output.contains("Letters in incorrect positions:"));
+        assertTrue(output.contains("\u001B[33mE\u001B[0m"));
+        assertTrue(output.contains("Letters not in the word:"));
+        assertTrue(output.contains("\u001B[31mM\u001B[0m"));
+    }
+
+    @Test
+    void helpListsWordleCommandOnlyDuringWordle() {
+        String outsideWordle = run("help", "exit");
+        String inWordle = run("play 1", "help", "exit");
+
+        assertFalse(outsideWordle.contains("list letters"));
+        assertTrue(inWordle.contains("list letters  - Show discovered Wordle letter hints"));
+    }
+
+    @Test
     void unknownCommandShowsError() {
         String output = run("dance", "exit");
 
@@ -77,6 +106,13 @@ class PlayStationMinusOneTest {
         String output = run("play 9", "exit");
 
         assertTrue(output.contains("Available games:"));
+    }
+
+    @Test
+    void quitOutsideGameShowsError() {
+        String output = run("quit", "exit");
+
+        assertTrue(output.contains("The 'quit' command only works while playing a game."));
     }
 
     @Test
