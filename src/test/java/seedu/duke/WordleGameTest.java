@@ -61,7 +61,7 @@ class WordleGameTest {
     void onlyTheSecretWordWins() {
         WordleGame game = new WordleGame("1");
 
-        assertEquals("Wrong guess! You have 4 tries left.", game.handleInput("WORDS"));
+        assertTrue(game.handleInput("WORDS").contains("Wrong guess! You have 4 tries left."));
         assertFalse(game.isFinished());
     }
 
@@ -95,10 +95,10 @@ class WordleGameTest {
     void wrongGuessShowsTriesLeft() {
         WordleGame game = new WordleGame("1");
 
-        assertEquals("Wrong guess! You have 4 tries left.", game.handleInput("WRONG"));
+        assertTrue(game.handleInput("WRONG").contains("Wrong guess! You have 4 tries left."));
         game.handleInput("WRONG");
         game.handleInput("WRONG");
-        assertEquals("Wrong guess! You have 1 try left.", game.handleInput("WRONG"));
+        assertTrue(game.handleInput("WRONG").contains("Wrong guess! You have 1 try left."));
     }
 
     @Test
@@ -110,8 +110,8 @@ class WordleGameTest {
 
         String response = game.handleInput("WRONG");
 
-        assertEquals("Wrong guess! You are out of tries." + System.lineSeparator()
-                + "Returning to the main menu.", response);
+        assertTrue(response.contains("Wrong guess! You are out of tries."));
+        assertTrue(response.contains("Returning to the main menu."));
     }
 
     @Test
@@ -122,8 +122,8 @@ class WordleGameTest {
 
         String response = game.handleInput("crane");
 
-        assertEquals("Correct guess! You got it in 3 tries." + System.lineSeparator()
-                + "Returning to the main menu.", response);
+        assertTrue(response.contains("Correct guess! You got it in 3 tries."));
+        assertTrue(response.contains("Returning to the main menu."));
         assertTrue(game.isFinished());
     }
 
@@ -133,8 +133,8 @@ class WordleGameTest {
 
         String response = game.handleInput("CRANE");
 
-        assertEquals("Correct guess! You got it in 1 try." + System.lineSeparator()
-                + "Returning to the main menu.", response);
+        assertTrue(response.contains("Correct guess! You got it in 1 try."));
+        assertTrue(response.contains("Returning to the main menu."));
     }
 
     @Test
@@ -144,5 +144,15 @@ class WordleGameTest {
         game.handleInput("QUIT");
 
         assertTrue(game.isFinished());
+    }
+
+    @Test
+    void feedbackMarksExactMisplacedAndAbsentLetters() {
+        WordleGame game = new WordleGame("1");
+
+        String response = game.handleInput("CREAM");
+
+        assertTrue(response.startsWith("\u001B[32mC\u001B[0m\u001B[32mR\u001B[0m"
+                + "\u001B[33mE\u001B[0m\u001B[33mA\u001B[0m\u001B[31mM\u001B[0m"));
     }
 }
