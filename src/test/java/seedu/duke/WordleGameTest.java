@@ -10,17 +10,19 @@ import seedu.duke.wordle.WordleGame;
 
 /** Tests the number of attempts permitted by a Wordle game session. */
 class WordleGameTest {
+    /** Five distinct guesses that are not the current secret word, CRANE. */
+    private static final String[] INCORRECT_GUESSES = {"WRONG", "ALPHA", "BRAVO", "DELTA", "EAGLE"};
 
     @Test
     void fiveIncorrectGuessesFinishTheGame() {
         WordleGame game = new WordleGame("1");
 
-        for (int attempt = 1; attempt < 5; attempt++) {
-            game.handleInput("WRONG");
+        for (int attempt = 0; attempt < INCORRECT_GUESSES.length - 1; attempt++) {
+            game.handleInput(INCORRECT_GUESSES[attempt]);
             assertFalse(game.isFinished());
         }
 
-        game.handleInput("WRONG");
+        game.handleInput(INCORRECT_GUESSES[INCORRECT_GUESSES.length - 1]);
 
         assertTrue(game.isFinished());
     }
@@ -30,12 +32,12 @@ class WordleGameTest {
         WordleGame game = new WordleGame("1");
 
         assertEquals("Please enter a five-letter word.", game.handleInput("CAT"));
-        for (int attempt = 1; attempt < 5; attempt++) {
-            game.handleInput("WRONG");
+        for (int attempt = 0; attempt < INCORRECT_GUESSES.length - 1; attempt++) {
+            game.handleInput(INCORRECT_GUESSES[attempt]);
             assertFalse(game.isFinished());
         }
 
-        game.handleInput("WRONG");
+        game.handleInput(INCORRECT_GUESSES[INCORRECT_GUESSES.length - 1]);
 
         assertTrue(game.isFinished());
     }
@@ -68,17 +70,19 @@ class WordleGameTest {
     @Test
     void resetRestoresAllFiveAttempts() {
         WordleGame game = new WordleGame("1");
-        for (int attempt = 0; attempt < 5; attempt++) {
-            game.handleInput("WRONG");
+        for (String guess : INCORRECT_GUESSES) {
+            game.handleInput(guess);
         }
 
         game.reset();
 
         assertFalse(game.isFinished());
-        for (int attempt = 1; attempt < 5; attempt++) {
-            game.handleInput("WRONG");
+        for (int attempt = 0; attempt < INCORRECT_GUESSES.length - 1; attempt++) {
+            game.handleInput(INCORRECT_GUESSES[attempt]);
             assertFalse(game.isFinished());
         }
+        game.handleInput(INCORRECT_GUESSES[INCORRECT_GUESSES.length - 1]);
+        assertTrue(game.isFinished());
     }
 
     @Test
@@ -96,19 +100,19 @@ class WordleGameTest {
         WordleGame game = new WordleGame("1");
 
         assertTrue(game.handleInput("WRONG").contains("Wrong guess! You have 4 tries left."));
-        game.handleInput("WRONG");
-        game.handleInput("WRONG");
-        assertTrue(game.handleInput("WRONG").contains("Wrong guess! You have 1 try left."));
+        game.handleInput("ALPHA");
+        game.handleInput("BRAVO");
+        assertTrue(game.handleInput("DELTA").contains("Wrong guess! You have 1 try left."));
     }
 
     @Test
     void lastWrongGuessSaysOutOfTriesAndReturnsToMenu() {
         WordleGame game = new WordleGame("1");
-        for (int attempt = 1; attempt < 5; attempt++) {
-            game.handleInput("WRONG");
+        for (int attempt = 0; attempt < INCORRECT_GUESSES.length - 1; attempt++) {
+            game.handleInput(INCORRECT_GUESSES[attempt]);
         }
 
-        String response = game.handleInput("WRONG");
+        String response = game.handleInput(INCORRECT_GUESSES[INCORRECT_GUESSES.length - 1]);
 
         assertTrue(response.contains("Wrong guess! You are out of tries."));
         assertTrue(response.contains("Returning to the main menu."));
@@ -118,7 +122,7 @@ class WordleGameTest {
     void correctGuessShowsTriesTakenAndReturnsToMenu() {
         WordleGame game = new WordleGame("1");
         game.handleInput("WRONG");
-        game.handleInput("WRONG");
+        game.handleInput("ALPHA");
 
         String response = game.handleInput("crane");
 
