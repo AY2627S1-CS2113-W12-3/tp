@@ -1,16 +1,13 @@
-package seedu.duke;
+package seedu.duke.wordle;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
+
+import seedu.duke.Game;
 
 /**
  * Provides a Wordle-style game with up to five guesses per session.
@@ -20,15 +17,11 @@ public class WordleGame implements Game {
     private static final Logger LOGGER = Logger.getLogger(WordleGame.class.getName());
     /** The number of incorrect guesses allowed before a session ends. */
     private static final int MAX_ATTEMPTS = 5;
-    /** The text file, bundled with the app, that contains one Wordle answer per line. */
-    private static final String WORD_LIST_RESOURCE = "/wordle-words.txt";
-    /** The allowed answers loaded from {@value #WORD_LIST_RESOURCE}. */
-    private static final List<String> SECRET_WORDS = loadSecretWords();
+    /** The allowed answers loaded from the Wordle word-list text file. */
+    private static final List<String> SECRET_WORDS = WordListReader.loadWords();
     /** Command used to leave a Wordle session and return to the main menu. */
     private static final String QUIT_COMMAND = "quit";
-    /**
-     * Identifies this game in the application.
-     */
+    /** Identifies this game in the application. */
     private final String gameId;
     private final String gameName = "Wordle";
     private final String correctGuess = "Correct guess!";
@@ -53,6 +46,7 @@ public class WordleGame implements Game {
         return gameId;
     }
 
+    @Override
     public String getGameName() {
         return gameName;
     }
@@ -70,10 +64,7 @@ public class WordleGame implements Game {
     }
 
     /**
-     * Checks a submitted word or processes the {@code quit} command. A correct
-     * word ends the game immediately; otherwise, the game ends after five incorrect guesses.
-     * Whenever the game ends, the response says so, because the application
-     * returns to the main menu straight afterwards.
+     * Checks a submitted word or processes the {@code quit} command.
      *
      * @param input the word entered by the player
      * @return feedback about the submitted word or game exit
@@ -98,7 +89,6 @@ public class WordleGame implements Game {
 
         if (guess.equalsIgnoreCase(secretWord)) {
             finished = true;
-            // attemptsUsed only counts wrong guesses, so add this correct one.
             int triesTaken = attemptsUsed + 1;
             LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
             return correctGuess + " You got it in " + formatTries(triesTaken) + "."
@@ -106,7 +96,6 @@ public class WordleGame implements Game {
         }
 
         attemptsUsed++;
-        // The game finishes on the last allowed guess, so it is never asked to grade another.
         assert attemptsUsed <= MAX_ATTEMPTS : "Wrong guesses cannot exceed the limit";
         int triesLeft = MAX_ATTEMPTS - attemptsUsed;
         if (triesLeft == 0) {
@@ -115,7 +104,6 @@ public class WordleGame implements Game {
             return wrongGuess + " You are out of tries."
                     + System.lineSeparator() + exitGameMessage;
         }
-        // FINE is below the default INFO level, so per-guess detail stays off the console.
         LOGGER.fine("Wrong guess: " + input + ", " + formatTries(triesLeft) + " left.");
         return wrongGuess + " You have " + formatTries(triesLeft) + " left.";
     }
@@ -141,33 +129,6 @@ public class WordleGame implements Game {
     }
 
     /**
-     * Loads the Wordle answers stored one per line in the bundled text file.
-     *
-     * @return the non-empty words in the text file, normalized to uppercase
-     * @throws IllegalStateException if the text file cannot be read or has no words
-     */
-    private static List<String> loadSecretWords() {
-        InputStream input = WordleGame.class.getResourceAsStream(WORD_LIST_RESOURCE);
-        if (input == null) {
-            throw new IllegalStateException("Wordle word list could not be found.");
-        }
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
-            List<String> words = reader.lines()
-                    .map(String::trim)
-                    .filter(word -> !word.isEmpty())
-                    .map(word -> word.toUpperCase(Locale.ROOT))
-                    .toList();
-            if (words.isEmpty()) {
-                throw new IllegalStateException("Wordle word list must contain at least one word.");
-            }
-            return words;
-        } catch (IOException e) {
-            throw new IllegalStateException("Wordle word list could not be read.", e);
-        }
-    }
-
-    /**
      * Reports whether the current game has finished.
      *
      * @return true if game is finished, false otherwise
@@ -178,7 +139,7 @@ public class WordleGame implements Game {
     }
 
     /**
-     * Changes the status of completion back to uncompleted so that replay is possible
+     * Changes the status of completion back to uncompleted so that replay is possible.
      */
     @Override
     public void reset() {
