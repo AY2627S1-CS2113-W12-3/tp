@@ -39,6 +39,23 @@ class WordleGameTest {
     }
 
     @Test
+    void repeatedGuessDoesNotConsumeAnAttempt() {
+        WordleGame game = new WordleGame("1");
+
+        game.handleInput("WRONG");
+        assertEquals("You have already guessed that word. Try a different five-letter word.",
+                game.handleInput("wrong"));
+
+        game.handleInput("ALPHA");
+        game.handleInput("BRAVO");
+        game.handleInput("DELTA");
+        assertFalse(game.isFinished());
+
+        game.handleInput("EAGLE");
+        assertTrue(game.isFinished());
+    }
+
+    @Test
     void onlyTheSecretWordWins() {
         WordleGame game = new WordleGame("1");
 

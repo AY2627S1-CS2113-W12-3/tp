@@ -1,5 +1,8 @@
 package seedu.duke;
 
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +29,8 @@ public class WordleGame implements Game {
     private boolean finished = false;
     /** Counts incorrect guesses in the current game session. */
     private int attemptsUsed = 0;
+    /** Stores accepted guesses so the player cannot use the same word twice. */
+    private final Set<String> guessedWords = new HashSet<>();
 
     public WordleGame(String gameId) {
         this.gameId = gameId;
@@ -71,7 +76,12 @@ public class WordleGame implements Game {
         }
 
         if (!guess.matches("[a-zA-Z]{5}")) {
-            return "Please enter a five-letter word.";
+            return WordleException.invalidWord();
+        }
+
+        String normalizedGuess = guess.toUpperCase(Locale.ROOT);
+        if (!guessedWords.add(normalizedGuess)) {
+            return WordleException.repeatedWord();
         }
 
         if (guess.equalsIgnoreCase(SECRET_WORD)) {
@@ -126,5 +136,6 @@ public class WordleGame implements Game {
     public void reset() {
         finished = false;
         attemptsUsed = 0;
+        guessedWords.clear();
     }
 }
