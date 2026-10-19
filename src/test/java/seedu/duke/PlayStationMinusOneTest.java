@@ -1,5 +1,6 @@
 package seedu.duke;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -82,6 +83,15 @@ class PlayStationMinusOneTest {
         assertTrue(output.contains("\u001B[33mE\u001B[0m"));
         assertTrue(output.contains("Letters not in the word:"));
         assertTrue(output.contains("\u001B[31mM\u001B[0m"));
+    }
+
+    @Test
+    void helpListsWordleCommandOnlyDuringWordle() {
+        String outsideWordle = run("help", "exit");
+        String inWordle = run("play 1", "help", "exit");
+
+        assertFalse(outsideWordle.contains("list letters"));
+        assertTrue(inWordle.contains("list letters  - Show discovered Wordle letter hints"));
     }
 
     @Test

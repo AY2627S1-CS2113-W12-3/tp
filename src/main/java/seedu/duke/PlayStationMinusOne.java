@@ -72,7 +72,7 @@ public class PlayStationMinusOne {
 
             if (command.equals(COMMAND_HELP)) {
                 LOGGER.info("Help command received.");
-                ui.showHelp();
+                ui.showHelp(activeGame instanceof WordleGame);
                 continue;
             }
 
