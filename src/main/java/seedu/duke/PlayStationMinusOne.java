@@ -18,6 +18,7 @@ public class PlayStationMinusOne {
 
     private static final String COMMAND_EXIT = "exit";
     private static final String COMMAND_HELP = "help";
+    private static final String COMMAND_LIST = "list";
     private static final String COMMAND_PLAY = "play";
 
     /**
@@ -66,6 +67,12 @@ public class PlayStationMinusOne {
             if (command.equals(COMMAND_HELP)) {
                 LOGGER.info("Help command received.");
                 ui.showHelp();
+                continue;
+            }
+
+            if (command.equals(COMMAND_LIST)) {
+                LOGGER.info("List command received.");
+                ui.showListOfGames(gameList);
                 continue;
             }
 
