@@ -1,8 +1,15 @@
 package seedu.duke;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 /**
@@ -13,8 +20,10 @@ public class WordleGame implements Game {
     private static final Logger LOGGER = Logger.getLogger(WordleGame.class.getName());
     /** The number of incorrect guesses allowed before a session ends. */
     private static final int MAX_ATTEMPTS = 5;
-    /** The answer used for this simple first version of the game. */
-    private static final String SECRET_WORD = "CRANE";
+    /** The text file, bundled with the app, that contains one Wordle answer per line. */
+    private static final String WORD_LIST_RESOURCE = "/wordle-words.txt";
+    /** The allowed answers loaded from {@value #WORD_LIST_RESOURCE}. */
+    private static final List<String> SECRET_WORDS = loadSecretWords();
     /** Command used to leave a Wordle session and return to the main menu. */
     private static final String QUIT_COMMAND = "quit";
     /**
@@ -31,9 +40,12 @@ public class WordleGame implements Game {
     private int attemptsUsed = 0;
     /** Stores accepted guesses so the player cannot use the same word twice. */
     private final Set<String> guessedWords = new HashSet<>();
+    /** The word the player must guess in the current game. */
+    private String secretWord;
 
     public WordleGame(String gameId) {
         this.gameId = gameId;
+        secretWord = chooseSecretWord();
     }
 
     @Override
@@ -84,7 +96,7 @@ public class WordleGame implements Game {
             return WordleException.repeatedWord();
         }
 
-        if (guess.equalsIgnoreCase(SECRET_WORD)) {
+        if (guess.equalsIgnoreCase(secretWord)) {
             finished = true;
             // attemptsUsed only counts wrong guesses, so add this correct one.
             int triesTaken = attemptsUsed + 1;
@@ -120,6 +132,42 @@ public class WordleGame implements Game {
     }
 
     /**
+     * Chooses one secret word from the available Wordle answers.
+     *
+     * @return the randomly selected secret word
+     */
+    private static String chooseSecretWord() {
+        return SECRET_WORDS.get(ThreadLocalRandom.current().nextInt(SECRET_WORDS.size()));
+    }
+
+    /**
+     * Loads the Wordle answers stored one per line in the bundled text file.
+     *
+     * @return the non-empty words in the text file, normalized to uppercase
+     * @throws IllegalStateException if the text file cannot be read or has no words
+     */
+    private static List<String> loadSecretWords() {
+        InputStream input = WordleGame.class.getResourceAsStream(WORD_LIST_RESOURCE);
+        if (input == null) {
+            throw new IllegalStateException("Wordle word list could not be found.");
+        }
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
+            List<String> words = reader.lines()
+                    .map(String::trim)
+                    .filter(word -> !word.isEmpty())
+                    .map(word -> word.toUpperCase(Locale.ROOT))
+                    .toList();
+            if (words.isEmpty()) {
+                throw new IllegalStateException("Wordle word list must contain at least one word.");
+            }
+            return words;
+        } catch (IOException e) {
+            throw new IllegalStateException("Wordle word list could not be read.", e);
+        }
+    }
+
+    /**
      * Reports whether the current game has finished.
      *
      * @return true if game is finished, false otherwise
@@ -137,5 +185,6 @@ public class WordleGame implements Game {
         finished = false;
         attemptsUsed = 0;
         guessedWords.clear();
+        secretWord = chooseSecretWord();
     }
 }
