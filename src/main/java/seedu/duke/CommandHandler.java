@@ -97,6 +97,23 @@ public class CommandHandler {
         return requested;
     }
 
+    /**
+     * Sends a full input line to the current game and clears it when it finishes.
+     *
+     * @param activeGame the game receiving input
+     * @param input the full line entered by the player
+     * @return the game if it is still active, or {@code null} if it finished
+     */
+    Game handleGameInput(Game activeGame, String input) {
+        ui.showMessage(activeGame.handleInput(input));
+        if (activeGame.isFinished()) {
+            LOGGER.info("Game finished: " + activeGame.getGameName());
+            activeGame.reset();
+            return null;
+        }
+        return activeGame;
+    }
+
     /** Displays a game's closing message, if it has one. */
     private void showExitMessage(Game game) {
         String exitMessage = game.getExitMessage();

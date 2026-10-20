@@ -90,12 +90,7 @@ public class PlayStationMinusOne {
                 // Not a launcher command, so it belongs to the game. The raw line is
                 // passed rather than the parsed command, because a game's input is not
                 // necessarily a command at all -- the calculator receives a number.
-                ui.showMessage(activeGame.handleInput(input));
-                if (activeGame.isFinished()) {
-                    LOGGER.info("Game finished: " + activeGame.getGameName());
-                    activeGame.reset();
-                    activeGame = null;
-                }
+                activeGame = commandHandler.handleGameInput(activeGame, input);
                 continue;
             }
 
