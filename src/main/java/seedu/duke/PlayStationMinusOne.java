@@ -3,22 +3,16 @@ package seedu.duke;
 import java.util.logging.Logger;
 
 /**
- * Starts the application and coordinates command handling.
+ * Starts the application and runs its single input loop.
  *
- * <p>There is exactly one input loop in the application, and it lives here. A game
- * never reads input for itself; the loop reads every line, decides whether it is a
- * launcher command, and only passes it to the active game if it is not. That is what
- * keeps every command reachable at every prompt -- the player is never shut inside a
- * game and made to leave it before doing anything else.
+ * <p>A game never reads input for itself. The loop reads each line and passes it to a
+ * {@link CommandHandler}, which routes launcher commands or forwards the line to the
+ * active game. This keeps launcher commands reachable at every prompt.
  */
 public class PlayStationMinusOne {
     /** Records diagnostic events without changing the user-facing output. */
     private static final Logger LOGGER =
             Logger.getLogger(PlayStationMinusOne.class.getName());
-
-    private static final String COMMAND_EXIT = "exit";
-    private static final String COMMAND_PLAY = "play";
-    private static final String COMMAND_QUIT = "quit";
 
     /**
      * Main entry point for the PlayStationMinusOne application.
@@ -28,14 +22,6 @@ public class PlayStationMinusOne {
         ui.showBanner();
         GameList gameList = new GameList();
         CommandHandler commandHandler = new CommandHandler(ui, gameList);
-
-        /*
-         * The game being played, or null at the main menu. Holding the active game as
-         * a variable is the whole point of this design: the alternative, looping
-         * inside the game until it finishes, makes the launcher's own commands
-         * unreachable for as long as the game runs.
-         */
-        Game activeGame = null;
 
         while (true) {
             String input;
@@ -47,49 +33,9 @@ public class PlayStationMinusOne {
                 break;
             }
 
-            String[] parsed = Parser.parse(input);
-            assert parsed.length == 2 : "Parser must return a command and its arguments";
-            String command = parsed[0];
-            String arguments = parsed[1];
-
-            // Launcher commands are checked first, so they work whether or not a game
-            // is in progress.
-            if (command.equals(COMMAND_EXIT)) {
-                commandHandler.handleExit(activeGame);
+            if (!commandHandler.processInput(input)) {
                 break;
             }
-
-            if (commandHandler.handleMenuCommand(command, arguments, input, activeGame)) {
-                continue;
-            }
-
-            if (command.equals(COMMAND_QUIT) && activeGame == null) {
-                commandHandler.handleQuitOutsideGame();
-                continue;
-            }
-
-            if (command.equals(COMMAND_PLAY)) {
-                activeGame = commandHandler.startGame(activeGame, arguments);
-                continue;
-            }
-
-            // Blank input is ignored rather than forwarded, so pressing Enter during a
-            // game does not count as an answer.
-            if (command.isEmpty()) {
-                continue;
-            }
-
-            if (activeGame != null) {
-                // Not a launcher command, so it belongs to the game. The raw line is
-                // passed rather than the parsed command, because a game's input is not
-                // necessarily a command at all -- the calculator receives a number.
-                activeGame = commandHandler.handleGameInput(activeGame, input);
-                continue;
-            }
-
-            LOGGER.warning("Unknown command received: " + command);
-            ui.showMessage("Unknown command: " + command);
         }
     }
-
 }
