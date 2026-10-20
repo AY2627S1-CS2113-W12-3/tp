@@ -76,7 +76,7 @@ public class PlayStationMinusOne {
             }
 
             if (command.equals(COMMAND_PLAY)) {
-                activeGame = startGame(ui, gameList, activeGame, arguments);
+                activeGame = commandHandler.startGame(activeGame, arguments);
                 continue;
             }
 
@@ -104,50 +104,4 @@ public class PlayStationMinusOne {
         }
     }
 
-    /**
-     * Starts the requested game, leaving any game already in progress.
-     *
-     * @param ui         the user interface used for output
-     * @param gameList   the available games
-     * @param activeGame the game currently in progress, or {@code null} if none
-     * @param gameId     the game ID the player asked for
-     * @return the newly started game, or {@code activeGame} unchanged if the ID was invalid
-     */
-    private static Game startGame(Ui ui, GameList gameList, Game activeGame, String gameId) {
-        Game requested = gameList.findGameById(gameId);
-        if (requested == null) {
-            LOGGER.warning("Invalid game ID: " + gameId);
-            ui.showMessage("Please enter a valid game ID.");
-            ui.showListOfGames(gameList);
-            return activeGame;
-        }
-
-        // Switching games reports the outgoing session before the new one starts, so
-        // the player does not silently lose their score.
-        if (activeGame != null) {
-            showExitMessage(ui, activeGame);
-            activeGame.reset();
-        }
-
-        LOGGER.info("Starting game: " + gameId);
-        ui.showGameStarting(requested.getGameName());
-        String startMessage = requested.getStartMessage();
-        if (!startMessage.isEmpty()) {
-            ui.showMessage(startMessage);
-        }
-        return requested;
-    }
-
-    /**
-     * Displays a game's closing message, if it has one.
-     *
-     * @param ui   the user interface used for output
-     * @param game the game being left
-     */
-    private static void showExitMessage(Ui ui, Game game) {
-        String exitMessage = game.getExitMessage();
-        if (!exitMessage.isEmpty()) {
-            ui.showMessage(exitMessage);
-        }
-    }
 }

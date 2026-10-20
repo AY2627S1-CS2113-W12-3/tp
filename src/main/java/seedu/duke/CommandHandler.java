@@ -65,4 +65,43 @@ public class CommandHandler {
         ui.showListOfGames(gameList);
         return true;
     }
+
+    /**
+     * Starts a selected game, leaving the current one first when switching.
+     *
+     * @param activeGame the current game, or {@code null} at the menu
+     * @param gameId the game ID entered by the player
+     * @return the selected game, or the current game if the ID is invalid
+     */
+    Game startGame(Game activeGame, String gameId) {
+        Game requested = gameList.findGameById(gameId);
+        if (requested == null) {
+            LOGGER.warning("Invalid game ID: " + gameId);
+            ui.showMessage("Please enter a valid game ID.");
+            ui.showListOfGames(gameList);
+            return activeGame;
+        }
+
+        if (activeGame != null) {
+            // Show the outgoing game's summary before resetting it.
+            showExitMessage(activeGame);
+            activeGame.reset();
+        }
+
+        LOGGER.info("Starting game: " + gameId);
+        ui.showGameStarting(requested.getGameName());
+        String startMessage = requested.getStartMessage();
+        if (!startMessage.isEmpty()) {
+            ui.showMessage(startMessage);
+        }
+        return requested;
+    }
+
+    /** Displays a game's closing message, if it has one. */
+    private void showExitMessage(Game game) {
+        String exitMessage = game.getExitMessage();
+        if (!exitMessage.isEmpty()) {
+            ui.showMessage(exitMessage);
+        }
+    }
 }
