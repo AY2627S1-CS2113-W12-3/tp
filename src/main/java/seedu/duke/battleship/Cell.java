@@ -1,10 +1,9 @@
 package seedu.duke.battleship;
 
 class Cell {
+    Ship occupyingShip;
     boolean containsShip;
     boolean isHit;
-
-    Ship occupyingShip;
 
     Cell() {
         containsShip = false;

@@ -3,12 +3,12 @@ package seedu.duke.battleship;
 import java.util.Random;
 
 class BattleshipBoard {
-    private final int SIDE_LENGTH = 10;
-    private final int[] SHIP_SIZES = {5, 4, 3, 2, 1};
+    static final int SIDE_LENGTH = 10;
+    static final int[] SHIP_SIZES = {5, 4, 3, 2, 1};
 
     private int shipsRemaining;
-
     private final Cell[][] BOARD = new Cell[SIDE_LENGTH][SIDE_LENGTH];
+
 
     BattleshipBoard(Random random) {
         for (int row = 0; row < SIDE_LENGTH; row++) {
@@ -90,6 +90,7 @@ class BattleshipBoard {
 
         return board.toString();
     }
+
 
     ShotResult hitAt(int row, int col) {
         Cell cell = BOARD[row][col];
