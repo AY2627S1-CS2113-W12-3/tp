@@ -1,4 +1,18 @@
 package seedu.duke.battleship;
 
-public class Cell {
+class Cell {
+    boolean containsShip;
+    boolean isHit;
+
+    Ship occupyingShip;
+
+    Cell() {
+        containsShip = false;
+        isHit = true;
+    }
+
+    void plantShip(Ship ship) {
+        this.occupyingShip = ship;
+        containsShip = true;
+    }
 }
