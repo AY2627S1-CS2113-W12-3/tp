@@ -1,6 +1,8 @@
 package seedu.duke.battleship;
 
 import seedu.duke.Game;
+import seedu.duke.battleship.battleshipboard.BattleshipBoard;
+import seedu.duke.battleship.battleshipboard.ShotResult;
 
 import java.util.ArrayList;
 import java.util.Collections;

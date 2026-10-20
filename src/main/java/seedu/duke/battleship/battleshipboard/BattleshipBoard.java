@@ -1,16 +1,16 @@
-package seedu.duke.battleship;
+package seedu.duke.battleship.battleshipboard;
 
 import java.util.Random;
 
-class BattleshipBoard {
-    static final int SIDE_LENGTH = 7;
-    static final int[] SHIP_SIZES = {4, 3, 2, 1};
+public class BattleshipBoard {
+    public static final int SIDE_LENGTH = 7;
+    public static final int[] SHIP_SIZES = {4, 3, 2, 1};
 
     private int shipsRemaining;
     private Cell[][] board = new Cell[SIDE_LENGTH][SIDE_LENGTH];
 
 
-    BattleshipBoard(Random random) {
+    public BattleshipBoard(Random random) {
         for (int row = 0; row < SIDE_LENGTH; row++) {
             for (int col = 0; col < SIDE_LENGTH; col++) {
                 board[row][col] = new Cell();
@@ -63,7 +63,7 @@ class BattleshipBoard {
         return true;
     }
 
-    String stringFormattedBoard(boolean isHidden) {
+    public String stringFormattedBoard(boolean isHidden) {
         StringBuilder board = new StringBuilder("   1 2 3 4 5 6 7"
                 + System.lineSeparator());
 
@@ -93,7 +93,7 @@ class BattleshipBoard {
     }
 
 
-    ShotResult hitAt(int row, int col) {
+    public ShotResult hitAt(int row, int col) {
         Cell cell = board[row][col];
         assert(!cell.isHit);
 
@@ -113,11 +113,11 @@ class BattleshipBoard {
         return ShotResult.MISS;
     }
 
-    boolean isCellHit(int row, int col) {
+    public boolean isCellHit(int row, int col) {
         return board[row][col].isHit;
     }
 
-    boolean allShipsSunk() {
+    public boolean allShipsSunk() {
         return shipsRemaining == 0;
     }
 }

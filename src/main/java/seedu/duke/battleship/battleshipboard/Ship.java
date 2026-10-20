@@ -1,4 +1,4 @@
-package seedu.duke.battleship;
+package seedu.duke.battleship.battleshipboard;
 
 class Ship {
     private final int size;
