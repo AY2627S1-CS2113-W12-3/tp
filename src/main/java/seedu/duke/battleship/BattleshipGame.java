@@ -47,8 +47,8 @@ public class BattleshipGame implements Game {
     @Override
     public String getStartMessage() {
         return "Sink all 3 enemy ships before the computer sinks yours!" + System.lineSeparator()
-                + "Ships: lengths 4, 3, and 2. Ships are placed automatically." + System.lineSeparator()
-                + "Fire by typing a coordinate from A1 to H8 (for example, B4)." + System.lineSeparator()
+                + "Ships: lengths 4, 3, 2 and 1. Ships are placed automatically." + System.lineSeparator()
+                + "Fire by typing a coordinate from A1 to G7 (for example, B4)." + System.lineSeparator()
                 + "Type 'board' to see both boards." + System.lineSeparator()
                 + "Type 'quit' to leave." + System.lineSeparator()
                 + "Legend: S = your ship, X = hit, O = miss, ~ = unknown";
@@ -63,6 +63,7 @@ public class BattleshipGame implements Game {
     @Override
     public String handleInput(String input) {
         String argument = input == null ? "" : input.trim();
+
         if (argument.equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player quit Battleship after " + roundsPlayed + " rounds.");
             isGameOver = true;
@@ -73,18 +74,25 @@ public class BattleshipGame implements Game {
             return getBoardDisplays();
         }
 
-        if (!argument.matches("[A-Ja-j]\\s*[0-9]")) {
-//            return BattleshipException.invalidCoordinate();
-            return null;
+        if (!argument.matches("[A-Ga-g]\\s*[1-7]")) {
+            return BattleshipException.invalidCoordinate();
         }
 
-        // Add error handling here
-        int row = argument.charAt(0) - 'A';
-        int col = argument.charAt(1) - '0';
+        String coordinate = argument.replaceAll("\\s+", "").toUpperCase();
+        int row = coordinate.charAt(0) - 'A';
+        int col = coordinate.charAt(1) - '1';
+
+        assert((row >= 0 && row < 7));
+        assert((col >= 0 && col < 7));
+
+        if (enemyBoard.isCellHit(row, col)) {
+            return BattleshipException.repeatedCoordinate();
+        }
+
+        assert(!enemyBoard.isCellHit(row, col));
 
         String roundResult = executePlayerTurn(row, col);
-
-        if (!isFinished()) {
+        if (!isGameOver) {
             roundResult += executeEnemyTurn();
         }
 
@@ -115,6 +123,7 @@ public class BattleshipGame implements Game {
 
         if (enemyBoard.allShipsSunk()) {
             isGameOver = true;
+            LOGGER.info("Player won after " + roundsPlayed + ".");
             message.append("You win! All enemy ships have been sunk in ")
                     .append(roundsPlayed).append(" rounds.")
                     .append(System.lineSeparator())
@@ -141,6 +150,7 @@ public class BattleshipGame implements Game {
 
         if (playerBoard.allShipsSunk()) {
             isGameOver = true;
+            LOGGER.info("Player lost after " + roundsPlayed + ".");
             message.append("The computer wins. All your ships have been sunk in")
                     .append(roundsPlayed).append(" rounds.")
                     .append(System.lineSeparator())

@@ -3,8 +3,8 @@ package seedu.duke.battleship;
 import java.util.Random;
 
 class BattleshipBoard {
-    static final int SIDE_LENGTH = 10;
-    static final int[] SHIP_SIZES = {5, 4, 3, 2, 1};
+    static final int SIDE_LENGTH = 7;
+    static final int[] SHIP_SIZES = {4, 3, 2, 1};
 
     private int shipsRemaining;
     private final Cell[][] BOARD = new Cell[SIDE_LENGTH][SIDE_LENGTH];
@@ -64,7 +64,7 @@ class BattleshipBoard {
     }
 
     String stringFormattedBoard(boolean isHidden) {
-        StringBuilder board = new StringBuilder("   1 2 3 4 5 6 7 8"
+        StringBuilder board = new StringBuilder("   1 2 3 4 5 6 7"
                 + System.lineSeparator());
 
         for (int row = 0; row < SIDE_LENGTH; row++) {
@@ -94,11 +94,6 @@ class BattleshipBoard {
 
     ShotResult hitAt(int row, int col) {
         Cell cell = BOARD[row][col];
-
-        if (cell.isHit) {
-            throw new IllegalArgumentException("Coordinate already fired upon");
-        }
-
         cell.isHit = true;
 
         if (cell.containsShip) {
@@ -116,8 +111,8 @@ class BattleshipBoard {
         return ShotResult.MISS;
     }
 
-    int getShipsRemaining() {
-        return shipsRemaining;
+    boolean isCellHit(int row, int col) {
+        return BOARD[row][col].isHit;
     }
 
     boolean allShipsSunk() {
