@@ -20,6 +20,10 @@ public class BattleshipGame implements Game {
     /** Records diagnostic events during gameplay. */
     private static final Logger LOGGER = Logger.getLogger(BattleshipGame.class.getName());
 
+    private static final String QUIT_COMMAND = "quit";
+    private static final String BOARD_COMMAND = "board";
+    private static final String EXIT_GAME_MESSAGE = "Returning to the main menu.";
+
     /** Random number generator used for ship placement and computer attacks. */
     private final Random random;
 
@@ -34,11 +38,6 @@ public class BattleshipGame implements Game {
     /** Shuffled list of coordinates available for computer attacks. */
     private ArrayList<Integer> computerTargets;
     private int nextComputerTarget;
-
-
-    private static final String QUIT_COMMAND = "quit";
-    private static final String BOARD_COMMAND = "board";
-    private final String EXIT_GAME_MESSAGE = "Returning to the main menu.";
 
 
     /**
@@ -105,6 +104,7 @@ public class BattleshipGame implements Game {
         }
 
         if (!argument.matches("[A-Ga-g]\\s*[1-7]")) {
+            LOGGER.warning("Invalid coordinate: " + argument);
             return BattleshipException.invalidCoordinate();
         }
 
@@ -116,6 +116,7 @@ public class BattleshipGame implements Game {
         assert((col >= 0 && col < 7));
 
         if (enemyBoard.isCellHit(row, col)) {
+            LOGGER.warning("Repeated coordinate: " + (char)('A' + row) + (col + 1));
             return BattleshipException.repeatedCoordinate();
         }
 
@@ -239,14 +240,15 @@ public class BattleshipGame implements Game {
 
     private static String formatShotResult(ShotResult result) {
         switch (result) {
-            case MISS:
-                return "Miss.";
-            case HIT:
-                return "Hit!";
-            case SUNK:
-                return "Hit and sunk a ship!";
-            default:
-                throw new IllegalStateException("Unhandled shot result: " + result);
+        case MISS:
+            return "Miss.";
+        case HIT:
+            return "Hit!";
+        case SUNK:
+            return "Hit and sunk a ship!";
+        default:
+            LOGGER.warning("Unhandled shot result: " + result);
+            throw new IllegalStateException("Unhandled shot result: " + result);
         }
     }
 
