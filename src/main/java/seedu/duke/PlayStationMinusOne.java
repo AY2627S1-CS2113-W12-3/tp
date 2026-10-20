@@ -2,9 +2,6 @@ package seedu.duke;
 
 import java.util.logging.Logger;
 
-import seedu.duke.wordle.WordleException;
-import seedu.duke.wordle.WordleGame;
-
 /**
  * Starts the application and coordinates command handling.
  *
@@ -20,9 +17,6 @@ public class PlayStationMinusOne {
             Logger.getLogger(PlayStationMinusOne.class.getName());
 
     private static final String COMMAND_EXIT = "exit";
-    private static final String COMMAND_HELP = "help";
-    private static final String COMMAND_LIST = "list";
-    private static final String LIST_ARGUMENT_LETTERS = "letters";
     private static final String COMMAND_PLAY = "play";
     private static final String COMMAND_QUIT = "quit";
     private static final String QUIT_OUTSIDE_GAME_MESSAGE = "The 'quit' command only works while playing a game.";
@@ -34,6 +28,7 @@ public class PlayStationMinusOne {
         Ui ui = new Ui();
         ui.showBanner();
         GameList gameList = new GameList();
+        CommandHandler commandHandler = new CommandHandler(ui, gameList);
 
         /*
          * The game being played, or null at the main menu. Holding the active game as
@@ -70,23 +65,7 @@ public class PlayStationMinusOne {
                 break;
             }
 
-            if (command.equals(COMMAND_HELP)) {
-                LOGGER.info("Help command received.");
-                ui.showHelp(activeGame instanceof WordleGame);
-                continue;
-            }
-
-            if (command.equals(COMMAND_LIST)) {
-                if (arguments.equalsIgnoreCase(LIST_ARGUMENT_LETTERS)) {
-                    if (activeGame instanceof WordleGame) {
-                        ui.showMessage(activeGame.handleInput(input));
-                    } else {
-                        ui.showMessage(WordleException.listLettersOnlyInWordle());
-                    }
-                    continue;
-                }
-                LOGGER.info("List command received.");
-                ui.showListOfGames(gameList);
+            if (commandHandler.handleMenuCommand(command, arguments, input, activeGame)) {
                 continue;
             }
 
