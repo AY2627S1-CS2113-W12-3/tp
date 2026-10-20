@@ -7,13 +7,13 @@ class BattleshipBoard {
     static final int[] SHIP_SIZES = {4, 3, 2, 1};
 
     private int shipsRemaining;
-    private final Cell[][] BOARD = new Cell[SIDE_LENGTH][SIDE_LENGTH];
+    private Cell[][] board = new Cell[SIDE_LENGTH][SIDE_LENGTH];
 
 
     BattleshipBoard(Random random) {
         for (int row = 0; row < SIDE_LENGTH; row++) {
             for (int col = 0; col < SIDE_LENGTH; col++) {
-                BOARD[row][col] = new Cell();
+                board[row][col] = new Cell();
             }
         }
 
@@ -33,10 +33,10 @@ class BattleshipBoard {
                     int r = row + (isHorizontal ? 0 : i);
                     int c = col + (isHorizontal ? i : 0);
 
-                    BOARD[r][c].plantShip(ship);
-                    shipsRemaining++;
+                    board[r][c].plantShip(ship);
                 }
 
+                shipsRemaining++;
                 return;
             }
         }
@@ -55,7 +55,7 @@ class BattleshipBoard {
             int r = row + (isHorizontal ? 0 : i);
             int c = col + (isHorizontal ? i : 0);
 
-            if (BOARD[r][c].containsShip) {
+            if (board[r][c].containsShip) {
                 return false;
             }
         }
@@ -72,7 +72,7 @@ class BattleshipBoard {
 
             for (int col = 0; col < SIDE_LENGTH; col++) {
                 char icon;
-                Cell cell = BOARD[row][col];
+                Cell cell = this.board[row][col];
 
                 if (cell.isHit) {
                     icon = cell.containsShip ? 'O' : 'X';
@@ -83,6 +83,7 @@ class BattleshipBoard {
                 }
 
                 board.append(icon);
+                board.append(' ');
             }
 
             board.append(System.lineSeparator());
@@ -93,9 +94,10 @@ class BattleshipBoard {
 
 
     ShotResult hitAt(int row, int col) {
-        Cell cell = BOARD[row][col];
-        cell.isHit = true;
+        Cell cell = board[row][col];
+        assert(!cell.isHit);
 
+        cell.isHit = true;
         if (cell.containsShip) {
             Ship ship = cell.occupyingShip;
             ship.receiveDamage();
@@ -112,7 +114,7 @@ class BattleshipBoard {
     }
 
     boolean isCellHit(int row, int col) {
-        return BOARD[row][col].isHit;
+        return board[row][col].isHit;
     }
 
     boolean allShipsSunk() {

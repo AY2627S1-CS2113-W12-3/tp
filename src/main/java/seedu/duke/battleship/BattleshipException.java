@@ -1,7 +1,7 @@
 package seedu.duke.battleship;
 
 /**
- * Provides Wordle validation messages for invalid player input.
+ * Provides Battleship validation messages for invalid player input.
  *
  * <p>The methods live here rather than in {@link BattleshipGame} so that validation
  * messages remain consistent if other Wordle features need them later.

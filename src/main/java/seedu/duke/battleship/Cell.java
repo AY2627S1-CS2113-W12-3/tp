@@ -7,7 +7,7 @@ class Cell {
 
     Cell() {
         containsShip = false;
-        isHit = true;
+        isHit = false;
     }
 
     void plantShip(Ship ship) {

@@ -46,12 +46,12 @@ public class BattleshipGame implements Game {
 
     @Override
     public String getStartMessage() {
-        return "Sink all 3 enemy ships before the computer sinks yours!" + System.lineSeparator()
+        return "Sink all 4 enemy ships before the computer sinks yours!" + System.lineSeparator()
                 + "Ships: lengths 4, 3, 2 and 1. Ships are placed automatically." + System.lineSeparator()
                 + "Fire by typing a coordinate from A1 to G7 (for example, B4)." + System.lineSeparator()
                 + "Type 'board' to see both boards." + System.lineSeparator()
                 + "Type 'quit' to leave." + System.lineSeparator()
-                + "Legend: S = your ship, X = hit, O = miss, ~ = unknown";
+                + "Legend: S = your ship, X = miss, O = hit, ~ = unknown";
     }
 
 
@@ -151,7 +151,7 @@ public class BattleshipGame implements Game {
         if (playerBoard.allShipsSunk()) {
             isGameOver = true;
             LOGGER.info("Player lost after " + roundsPlayed + ".");
-            message.append("The computer wins. All your ships have been sunk in")
+            message.append("The computer wins. All your ships have been sunk in ")
                     .append(roundsPlayed).append(" rounds.")
                     .append(System.lineSeparator())
                     .append(EXIT_GAME_MESSAGE);
@@ -161,7 +161,7 @@ public class BattleshipGame implements Game {
     }
 
     private static String formatCoordinate(int row, int col) {
-        return "{" + (char) ('A' + row) + col + "}";
+        return "" + (char) ('A' + row) + (col + 1);
     }
 
     private static String formatShotResult(ShotResult result) {
@@ -186,6 +186,7 @@ public class BattleshipGame implements Game {
     @Override
     public void reset() {
         isGameOver = false;
+        roundsPlayed = 0;
         playerBoard = new BattleshipBoard(random);
         enemyBoard = new BattleshipBoard(random);
         initialiseComputerTargets();
