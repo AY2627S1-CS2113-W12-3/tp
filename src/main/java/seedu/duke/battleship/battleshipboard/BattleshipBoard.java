@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class BattleshipBoard {
     public static final int SIDE_LENGTH = 7;
-    public static final int[] SHIP_SIZES = {4, 3, 2, 1};
+    static final int[] SHIP_SIZES = {4, 3, 2, 1};
 
     private int shipsRemaining;
     private final Cell[][] board = new Cell[SIDE_LENGTH][SIDE_LENGTH];
