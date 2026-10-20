@@ -12,6 +12,9 @@ public class CommandHandler {
     /** Records command events without changing the user-facing output. */
     private static final Logger LOGGER = Logger.getLogger(CommandHandler.class.getName());
 
+    private static final String QUIT_OUTSIDE_GAME_MESSAGE =
+            "The 'quit' command only works while playing a game.";
+
     private static final String COMMAND_HELP = "help";
     private static final String COMMAND_LIST = "list";
     private static final String LIST_ARGUMENT_LETTERS = "letters";
@@ -112,6 +115,22 @@ public class CommandHandler {
             return null;
         }
         return activeGame;
+    }
+
+    /** Shows the final game message and goodbye output before the application exits. */
+    void handleExit(Game activeGame) {
+        LOGGER.info("Exit command received.");
+        if (activeGame != null) {
+            showExitMessage(activeGame);
+            activeGame.reset();
+        }
+        ui.showGoodbye();
+    }
+
+    /** Displays the response for {@code quit} when no game is active. */
+    void handleQuitOutsideGame() {
+        LOGGER.warning("Quit command received outside a game.");
+        ui.showMessage(QUIT_OUTSIDE_GAME_MESSAGE);
     }
 
     /** Displays a game's closing message, if it has one. */

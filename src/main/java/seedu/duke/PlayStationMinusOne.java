@@ -19,7 +19,6 @@ public class PlayStationMinusOne {
     private static final String COMMAND_EXIT = "exit";
     private static final String COMMAND_PLAY = "play";
     private static final String COMMAND_QUIT = "quit";
-    private static final String QUIT_OUTSIDE_GAME_MESSAGE = "The 'quit' command only works while playing a game.";
 
     /**
      * Main entry point for the PlayStationMinusOne application.
@@ -56,12 +55,7 @@ public class PlayStationMinusOne {
             // Launcher commands are checked first, so they work whether or not a game
             // is in progress.
             if (command.equals(COMMAND_EXIT)) {
-                LOGGER.info("Exit command received.");
-                if (activeGame != null) {
-                    showExitMessage(ui, activeGame);
-                    activeGame.reset();
-                }
-                ui.showGoodbye();
+                commandHandler.handleExit(activeGame);
                 break;
             }
 
@@ -70,8 +64,7 @@ public class PlayStationMinusOne {
             }
 
             if (command.equals(COMMAND_QUIT) && activeGame == null) {
-                LOGGER.warning("Quit command received outside a game.");
-                ui.showMessage(QUIT_OUTSIDE_GAME_MESSAGE);
+                commandHandler.handleQuitOutsideGame();
                 continue;
             }
 
