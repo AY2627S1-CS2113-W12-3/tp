@@ -7,22 +7,54 @@ import java.util.Random;
 
 import seedu.duke.Game;
 
-/** Runs Tic Tac Toe between the player and a random-move computer opponent. */
+/**
+ * Runs a simple Tic Tac Toe game between the player and a computer opponent.
+ *
+ * <p>The player always uses X and moves first. After each valid player move,
+ * the computer uses O in a randomly chosen empty square.
+ */
 public class TicTacToeGame implements Game {
+    /** The mark used by the player. */
     private static final char PLAYER_MARK = 'X';
+
+    /** The mark used by the computer. */
     private static final char COMPUTER_MARK = 'O';
+
+    /** The command for leaving the current game. */
     private static final String QUIT_COMMAND = "quit";
+
+    /** The message shown when the player leaves the game. */
     private static final String EXIT_MESSAGE = "Returning to the main menu.";
 
+    /** The ID used to select this game from the main menu. */
     private final String gameId;
+
+    /** Random source used to choose among empty computer move options. */
     private final Random random;
+
+    /** Stores the current board state. */
     private final TicTacToeBoard board;
+
+    /** Whether the current game has ended. */
     private boolean finished;
 
+    /**
+     * Creates a game with the given ID and a default random source.
+     *
+     * @param gameId the ID used to select this game
+     */
     public TicTacToeGame(String gameId) {
         this(gameId, new Random());
     }
 
+    /**
+     * Creates a game with a caller-supplied random source.
+     *
+     * <p>Tests can supply a repeatable random source to check computer moves.
+     *
+     * @param gameId the ID used to select this game
+     * @param random the random source used for computer moves
+     */
     public TicTacToeGame(String gameId, Random random) {
         this.gameId = gameId;
         this.random = random;
@@ -39,12 +71,18 @@ public class TicTacToeGame implements Game {
         return "Tic Tac Toe";
     }
 
+    /**
+     * Returns the instructions and empty board shown at the start of a game.
+     *
+     * @return the game instructions and current board
+     */
     @Override
     public String getStartMessage() {
         return "You are X; the computer is O." + System.lineSeparator()
                 + "Enter a square from A1 to C3 (for example, B2)." + System.lineSeparator()
                 + "The computer picks a random empty square after your move." + System.lineSeparator()
                 + "Type 'quit' to leave the game." + System.lineSeparator()
+                + System.lineSeparator()
                 + board.toDisplayString();
     }
 
@@ -53,6 +91,12 @@ public class TicTacToeGame implements Game {
         return EXIT_MESSAGE;
     }
 
+    /**
+     * Processes a coordinate or the quit command.
+     *
+     * @param input the line entered by the player
+     * @return the move result, updated board, or an input message
+     */
     @Override
     public String handleInput(String input) {
         if (finished) {
@@ -103,6 +147,14 @@ public class TicTacToeGame implements Game {
         return formatRound(moves, "");
     }
 
+    /**
+     * Chooses a uniformly random empty cell using a list of available indexes.
+     *
+     * <p>Cells are numbered left to right and then top to bottom. By choosing
+     * from only empty cells, the computer cannot overwrite an existing mark.
+     *
+     * @return the zero-based flattened index of the chosen cell
+     */
     private int chooseRandomEmptyCell() {
         List<Integer> emptyCells = new ArrayList<>();
         for (int row = 0; row < TicTacToeBoard.SIZE; row++) {
@@ -112,20 +164,37 @@ public class TicTacToeGame implements Game {
                 }
             }
         }
+
+        assert !emptyCells.isEmpty() : "The computer should move only when an empty cell remains";
         return emptyCells.get(random.nextInt(emptyCells.size()));
     }
 
+    /**
+     * Formats a row and column using the same coordinates players enter.
+     *
+     * @param row zero-based row index
+     * @param column zero-based column index
+     * @return the coordinate, such as {@code B2}
+     */
     private static String formatCoordinate(int row, int column) {
         return String.valueOf((char) ('A' + row)) + (column + 1);
     }
 
+    /**
+     * Formats the moves and current board, adding a result when the game ends.
+     *
+     * @param moves the player and computer moves for this round
+     * @param result the win or draw message, or an empty string if play continues
+     * @return the round details and current board
+     */
     private String formatRound(String moves, String result) {
         String response = moves + System.lineSeparator()
                 + "Board:" + System.lineSeparator()
                 + board.toDisplayString();
-        return result.isEmpty()
-                ? response
-                : response + System.lineSeparator() + result + System.lineSeparator() + EXIT_MESSAGE;
+        if (result.isEmpty()) {
+            return response;
+        }
+        return response + System.lineSeparator() + result + System.lineSeparator() + EXIT_MESSAGE;
     }
 
     @Override
