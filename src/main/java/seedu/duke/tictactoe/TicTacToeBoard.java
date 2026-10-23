@@ -27,6 +27,41 @@ public class TicTacToeBoard {
         return isInBounds(row, column) && cells[row][column] == EMPTY;
     }
 
+    /** Checks rows, columns, and diagonals for three matching marks. */
+    public boolean hasWinner(char mark) {
+        for (int index = 0; index < SIZE; index++) {
+            boolean rowMatches = cells[index][0] == mark
+                    && cells[index][1] == mark
+                    && cells[index][2] == mark;
+            boolean columnMatches = cells[0][index] == mark
+                    && cells[1][index] == mark
+                    && cells[2][index] == mark;
+            if (rowMatches || columnMatches) {
+                return true;
+            }
+        }
+
+        boolean diagonalMatches = cells[0][0] == mark
+                && cells[1][1] == mark
+                && cells[2][2] == mark;
+        boolean otherDiagonalMatches = cells[0][2] == mark
+                && cells[1][1] == mark
+                && cells[2][0] == mark;
+        return diagonalMatches || otherDiagonalMatches;
+    }
+
+    /** Checks whether all nine squares contain a mark. */
+    public boolean isFull() {
+        for (char[] row : cells) {
+            for (char cell : row) {
+                if (cell == EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /** Clears all marks from the board. */
     public void reset() {
         for (char[] row : cells) {
