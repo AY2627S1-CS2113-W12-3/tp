@@ -27,6 +27,14 @@ class GameListTest {
     }
 
     @Test
+    void containsTicTacToeAsGameThree() {
+        Game game = new GameList().getGames().get(2);
+
+        assertEquals("3", game.getGameId());
+        assertEquals("Tic Tac Toe", game.getGameName());
+    }
+
+    @Test
     void gameIdsAreUnique() {
         GameList gameList = new GameList();
 
