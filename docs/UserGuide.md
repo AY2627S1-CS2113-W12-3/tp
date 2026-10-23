@@ -174,6 +174,7 @@ Example of a loss:
 Wrong guess! You have 1 try left.
 > stone
 Wrong guess! You are out of tries.
+The word was CRANE.
 Returning to the main menu.
 ```
 
