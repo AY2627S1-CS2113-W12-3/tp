@@ -2,6 +2,7 @@ package seedu.duke.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import seedu.duke.Game;
@@ -10,6 +11,8 @@ import seedu.duke.Game;
 public class TicTacToeGame implements Game {
     private static final char PLAYER_MARK = 'X';
     private static final char COMPUTER_MARK = 'O';
+    private static final String QUIT_COMMAND = "quit";
+    private static final String EXIT_MESSAGE = "Returning to the main menu.";
 
     private final String gameId;
     private final Random random;
@@ -20,7 +23,7 @@ public class TicTacToeGame implements Game {
         this(gameId, new Random());
     }
 
-    TicTacToeGame(String gameId, Random random) {
+    public TicTacToeGame(String gameId, Random random) {
         this.gameId = gameId;
         this.random = random;
         this.board = new TicTacToeBoard();
@@ -39,8 +42,15 @@ public class TicTacToeGame implements Game {
     @Override
     public String getStartMessage() {
         return "You are X; the computer is O." + System.lineSeparator()
-                + "Enter a square from A1 to C3." + System.lineSeparator()
+                + "Enter a square from A1 to C3 (for example, B2)." + System.lineSeparator()
+                + "The computer picks a random empty square after your move." + System.lineSeparator()
+                + "Type 'quit' to leave the game." + System.lineSeparator()
                 + board.toDisplayString();
+    }
+
+    @Override
+    public String getExitMessage() {
+        return EXIT_MESSAGE;
     }
 
     @Override
@@ -49,15 +59,19 @@ public class TicTacToeGame implements Game {
             return "The game has ended. Start a new game to play again.";
         }
 
-        String coordinate = input == null ? "" : input.trim().toUpperCase();
+        String coordinate = input == null ? "" : input.trim().toUpperCase(Locale.ROOT);
+        if (coordinate.equalsIgnoreCase(QUIT_COMMAND)) {
+            finished = true;
+            return EXIT_MESSAGE;
+        }
         if (!coordinate.matches("[A-C][1-3]")) {
-            return "Invalid move.";
+            return "Please enter a valid square from A1 to C3.";
         }
 
         int row = coordinate.charAt(0) - 'A';
         int column = coordinate.charAt(1) - '1';
         if (!board.placeMark(row, column, PLAYER_MARK)) {
-            return "Invalid move.";
+            return "That square is already occupied. Choose an empty square.";
         }
 
         String playerMove = "You played " + coordinate + " (X).";
@@ -109,7 +123,9 @@ public class TicTacToeGame implements Game {
         String response = moves + System.lineSeparator()
                 + "Board:" + System.lineSeparator()
                 + board.toDisplayString();
-        return result.isEmpty() ? response : response + System.lineSeparator() + result;
+        return result.isEmpty()
+                ? response
+                : response + System.lineSeparator() + result + System.lineSeparator() + EXIT_MESSAGE;
     }
 
     @Override
