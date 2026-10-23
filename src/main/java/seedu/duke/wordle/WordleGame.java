@@ -113,6 +113,7 @@ public class WordleGame implements Game {
             finished = true;
             return feedback + System.lineSeparator()
                     + wrongGuess + " You are out of tries."
+                    + System.lineSeparator() + "The word was " + secretWord + "."
                     + System.lineSeparator() + exitGameMessage;
         }
         LOGGER.fine("Wrong guess: " + input + ", " + formatTries(triesLeft) + " left.");
