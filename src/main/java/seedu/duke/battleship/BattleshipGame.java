@@ -77,7 +77,7 @@ public class BattleshipGame implements Game {
 
     @Override
     public String getExitMessage() {
-        return Game.super.getExitMessage();
+        return formatGameStats() + EXIT_GAME_MESSAGE;
     }
 
     /**
@@ -98,7 +98,7 @@ public class BattleshipGame implements Game {
         if (argument.equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player quit Battleship after " + roundsPlayed + " rounds.");
             isGameOver = true;
-            return EXIT_GAME_MESSAGE;
+            return getExitMessage();
         }
 
         if (argument.equalsIgnoreCase(BOARD_COMMAND)) {
@@ -177,10 +177,9 @@ public class BattleshipGame implements Game {
         if (enemyBoard.allShipsSunk()) {
             isGameOver = true;
             LOGGER.info("Player won after " + roundsPlayed + ".");
-            message.append("You win! All enemy ships have been sunk in ")
-                    .append(roundsPlayed).append(" rounds.")
+            message.append("You win! All enemy ships have been sunk!")
                     .append(System.lineSeparator())
-                    .append(EXIT_GAME_MESSAGE);
+                    .append(getExitMessage());
 
         }
 
@@ -226,10 +225,9 @@ public class BattleshipGame implements Game {
         if (playerBoard.allShipsSunk()) {
             isGameOver = true;
             LOGGER.info("Player lost after " + roundsPlayed + ".");
-            message.append("The computer wins. All your ships have been sunk in ")
-                    .append(roundsPlayed).append(" rounds.")
+            message.append("The computer wins. All your ships have been sunk.")
                     .append(System.lineSeparator())
-                    .append(EXIT_GAME_MESSAGE);
+                    .append(getExitMessage());
         }
         
         return message.toString();
@@ -323,21 +321,21 @@ public class BattleshipGame implements Game {
         int totalShots = hits + misses;
         double accuracy = totalShots == 0 ? 0.0 : (double) hits / totalShots * 100;
 
-        String chart = "For this game," +
-                System.lineSeparator() +
-                "-------------------------" +
-                System.lineSeparator() +
-                "Rounds played: " + roundsPlayed +
-                System.lineSeparator() +
-                "Successful hits: " + hits +
-                System.lineSeparator() +
-                "Missed shots: " + misses +
-                System.lineSeparator() +
-                "Total shots: " + totalShots +
-                System.lineSeparator() +
-                String.format("Accuracy: %.2f%%", accuracy) +
-                System.lineSeparator() +
-                "-------------------------";
+        String chart = "-------------------------"
+                + System.lineSeparator()
+                + "Rounds played: " + roundsPlayed
+                + System.lineSeparator()
+                + "Successful hits: " + hits
+                + System.lineSeparator()
+                + "Missed shots: " + misses
+                + System.lineSeparator()
+                + "Total shots: " + totalShots
+                + System.lineSeparator()
+                + String.format("Accuracy: %.2f%%", accuracy)
+                + System.lineSeparator()
+                + "-------------------------"
+                + System.lineSeparator();
+
 
         return chart;
     }
