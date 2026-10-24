@@ -33,7 +33,9 @@ public class BattleshipGame implements Game {
 
     private BattleshipBoard playerBoard;
     private BattleshipBoard enemyBoard;
-    private int roundsPlayed = 0;
+    private int roundsPlayed;
+    private int hits;
+    private int misses;
 
     /** Shuffled list of coordinates available for computer attacks. */
     private ArrayList<Integer> computerTargets;
@@ -163,6 +165,7 @@ public class BattleshipGame implements Game {
         roundsPlayed++;
 
         ShotResult playerResult = enemyBoard.hitAt(row, col);
+        updateStats(playerResult);
 
         StringBuilder message = new StringBuilder();
         message.append("Your shot at ")
@@ -182,6 +185,19 @@ public class BattleshipGame implements Game {
         }
 
         return message.toString();
+    }
+
+    /**
+     * Updates the player's hit-and-miss count this game
+     *
+     * @param playerResult the outcome of the player's shot
+     */
+    private void updateStats(ShotResult playerResult) {
+        if (playerResult == ShotResult.MISS) {
+            misses++;
+        } else {
+            hits++;
+        }
     }
 
     /**
@@ -237,7 +253,6 @@ public class BattleshipGame implements Game {
      * @return the message describing a miss, hit or sunk ship
      * @throws IllegalStateException if the result is not recognised
      */
-
     private static String formatShotResult(ShotResult result) {
         switch (result) {
         case MISS:
@@ -291,9 +306,39 @@ public class BattleshipGame implements Game {
     @Override
     public void reset() {
         isGameOver = false;
-        roundsPlayed = 0;
         playerBoard = new BattleshipBoard(random);
         enemyBoard = new BattleshipBoard(random);
+        roundsPlayed = 0;
+        hits = 0;
+        misses = 0;
         initialiseComputerTargets();
+    }
+
+    /**
+     * Formats the player's statistics in the current game.
+     *
+     * @return the formatted statistic chart
+     */
+    private String formatGameStats() {
+        int totalShots = hits + misses;
+        double accuracy = totalShots == 0 ? 0.0 : (double) hits / totalShots * 100;
+
+        String chart = "For this game," +
+                System.lineSeparator() +
+                "-------------------------" +
+                System.lineSeparator() +
+                "Rounds played: " + roundsPlayed +
+                System.lineSeparator() +
+                "Successful hits: " + hits +
+                System.lineSeparator() +
+                "Missed shots: " + misses +
+                System.lineSeparator() +
+                "Total shots: " + totalShots +
+                System.lineSeparator() +
+                String.format("Accuracy: %.2f%%", accuracy) +
+                System.lineSeparator() +
+                "-------------------------";
+
+        return chart;
     }
 }
