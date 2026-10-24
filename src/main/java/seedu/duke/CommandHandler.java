@@ -18,9 +18,9 @@ public class CommandHandler {
     private static final String COMMAND_EXIT = "exit";
     private static final String COMMAND_HELP = "help";
     private static final String COMMAND_LIST = "list";
-    private static final String LIST_ARGUMENT_LETTERS = "letters";
     private static final String COMMAND_PLAY = "play";
     private static final String COMMAND_QUIT = "quit";
+    private static final String LIST_ARGUMENT_LETTERS = "letters";
     private static final String QUIT_OUTSIDE_GAME_MESSAGE =
             "The 'quit' command only works while playing a game.";
 
