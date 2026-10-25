@@ -57,7 +57,8 @@ class PlayStationMinusOneTest {
 
         assertTrue(output.contains("Wordle | ID: 1"));
         assertTrue(output.contains("Calculator | ID: 2"));
-        assertTrue(output.contains("Tic Tac Toe | ID: 3"));
+        assertTrue(output.contains("Battleship | ID: 3"));
+        assertTrue(output.contains("Tic Tac Toe | ID: 4"));
     }
 
     @Test
@@ -127,7 +128,7 @@ class PlayStationMinusOneTest {
 
     @Test
     void startingTicTacToeShowsInstructionsAndSwitchingShowsExitMessage() {
-        String output = run("play 3", "play 1", "exit");
+        String output = run("play 4", "play 1", "exit");
 
         assertTrue(output.contains("Starting Tic Tac Toe..."));
         assertTrue(output.contains("You are X; the computer is O."));

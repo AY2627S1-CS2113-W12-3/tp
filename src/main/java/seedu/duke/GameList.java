@@ -3,6 +3,7 @@ package seedu.duke;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import seedu.duke.battleship.BattleshipGame;
 import seedu.duke.tictactoe.TicTacToeGame;
 import seedu.duke.wordle.WordleGame;
 
@@ -17,13 +18,14 @@ public class GameList {
 
     /**
      * Creates the game list with Wordle as game 1, the calculator as game 2,
-     * and Tic Tac Toe as game 3.
+     * Battleship as game 3, and Tic Tac Toe as game 4.
      */
     public GameList() {
         games = new ArrayList<>();
         games.add(new WordleGame("1"));
         games.add(new CalculatorGame("2"));
-        games.add(new TicTacToeGame("3"));
+        games.add(new BattleshipGame("3"));
+        games.add(new TicTacToeGame("4"));
         assert !games.isEmpty() : "Game list must not be empty";
         LOGGER.fine("Registered " + games.size() + " games.");
     }

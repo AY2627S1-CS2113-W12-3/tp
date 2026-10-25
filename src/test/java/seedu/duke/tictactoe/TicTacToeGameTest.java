@@ -13,9 +13,9 @@ class TicTacToeGameTest {
 
     @Test
     void exposesGameDetailsAndOpeningInstructions() {
-        TicTacToeGame game = new TicTacToeGame("3");
+        TicTacToeGame game = new TicTacToeGame("4");
 
-        assertEquals("3", game.getGameId());
+        assertEquals("4", game.getGameId());
         assertEquals("Tic Tac Toe", game.getGameName());
         assertTrue(game.getStartMessage().contains("You are X; the computer is O."));
         assertTrue(game.getStartMessage().contains("Enter a square from A1 to C3"));
@@ -24,7 +24,7 @@ class TicTacToeGameTest {
     @Test
     void computerChoosesAnEmptySquareAfterAValidPlayerMove() {
         SequenceRandom random = new SequenceRandom(0);
-        TicTacToeGame game = new TicTacToeGame("3", random);
+        TicTacToeGame game = new TicTacToeGame("4", random);
 
         String response = game.handleInput("a1");
 
@@ -38,7 +38,7 @@ class TicTacToeGameTest {
     @Test
     void invalidAndOccupiedSquaresDoNotTriggerComputerMoves() {
         SequenceRandom random = new SequenceRandom(0);
-        TicTacToeGame game = new TicTacToeGame("3", random);
+        TicTacToeGame game = new TicTacToeGame("4", random);
 
         assertTrue(game.handleInput("Z9").contains("Please enter a valid square"));
         assertEquals(0, random.getCalls());
@@ -51,7 +51,7 @@ class TicTacToeGameTest {
 
     @Test
     void playerWinEndsTheGameBeforeTheComputerMoves() {
-        TicTacToeGame game = new TicTacToeGame("3", new SequenceRandom(0, 0));
+        TicTacToeGame game = new TicTacToeGame("4", new SequenceRandom(0, 0));
         game.handleInput("A3");
         game.handleInput("B3");
 
@@ -64,7 +64,7 @@ class TicTacToeGameTest {
 
     @Test
     void computerWinEndsTheGame() {
-        TicTacToeGame game = new TicTacToeGame("3", new SequenceRandom(0, 0, 0));
+        TicTacToeGame game = new TicTacToeGame("4", new SequenceRandom(0, 0, 0));
         game.handleInput("C1");
         game.handleInput("C2");
 
@@ -76,7 +76,7 @@ class TicTacToeGameTest {
 
     @Test
     void fullBoardWithoutAWinIsDraw() {
-        TicTacToeGame game = new TicTacToeGame("3", new SequenceRandom(0, 1, 0, 0));
+        TicTacToeGame game = new TicTacToeGame("4", new SequenceRandom(0, 1, 0, 0));
         game.handleInput("A1");
         game.handleInput("A3");
         game.handleInput("B1");
@@ -90,7 +90,7 @@ class TicTacToeGameTest {
 
     @Test
     void quitShowsExitMessageAndResetStartsFreshGame() {
-        TicTacToeGame game = new TicTacToeGame("3", new SequenceRandom(0));
+        TicTacToeGame game = new TicTacToeGame("4", new SequenceRandom(0));
 
         assertEquals("Returning to the main menu.", game.handleInput("quit"));
         assertTrue(game.isFinished());

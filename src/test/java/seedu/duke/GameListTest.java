@@ -27,10 +27,18 @@ class GameListTest {
     }
 
     @Test
-    void containsTicTacToeAsGameThree() {
+    void containsBattleshipAsGameThree() {
         Game game = new GameList().getGames().get(2);
 
         assertEquals("3", game.getGameId());
+        assertEquals("Battleship", game.getGameName());
+    }
+
+    @Test
+    void containsTicTacToeAsGameFour() {
+        Game game = new GameList().getGames().get(3);
+
+        assertEquals("4", game.getGameId());
         assertEquals("Tic Tac Toe", game.getGameName());
     }
 
