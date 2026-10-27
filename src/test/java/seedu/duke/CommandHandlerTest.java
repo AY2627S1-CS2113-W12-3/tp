@@ -112,9 +112,24 @@ class CommandHandlerTest {
         assertEquals(2, output.toString().split("Total points: 7", -1).length - 1);
     }
 
+    @Test
+    void gameActionPointsAreSavedOnceWithoutReadingTheResponse() throws IOException {
+        TestGame testGame = new TestGame();
+        commandHandler = createHandler(gameListWith(testGame));
+
+        commandHandler.processInput("play test");
+        commandHandler.processInput("award");
+        commandHandler.processInput("score");
+        commandHandler.processInput("score");
+
+        assertEquals(3, pointsStore.getTotalPoints());
+        assertTrue(output.toString().contains("You earned 3 points. Total points: 3."));
+    }
+
     /** A small game that makes it easy to check whether input was forwarded. */
     private static class TestGame implements Game {
         private boolean finished;
+        private int pointsEarnedForLastAction;
 
         @Override
         public String getGameId() {
@@ -128,10 +143,18 @@ class CommandHandlerTest {
 
         @Override
         public String handleInput(String input) {
+            pointsEarnedForLastAction = 0;
             if (input.equals("finish")) {
                 finished = true;
+            } else if (input.equals("award")) {
+                pointsEarnedForLastAction = 3;
             }
             return "Received: " + input;
+        }
+
+        @Override
+        public int getPointsEarnedForLastAction() {
+            return pointsEarnedForLastAction;
         }
 
         @Override
@@ -142,6 +165,7 @@ class CommandHandlerTest {
         @Override
         public void reset() {
             finished = false;
+            pointsEarnedForLastAction = 0;
         }
 
         @Override

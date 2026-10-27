@@ -56,6 +56,18 @@ public interface Game {
     String handleInput(String input);
 
     /**
+     * Returns points earned by the most recent call to {@link #handleInput(String)}.
+     *
+     * <p>Implementations should return zero for actions that did not earn points.
+     * The default keeps existing games compatible without awarding points.
+     *
+     * @return points earned by the most recent game action
+     */
+    default int getPointsEarnedForLastAction() {
+        return 0;
+    }
+
+    /**
      * Checks whether the game has finished.
      *
      * @return true if the game has finished, otherwise false

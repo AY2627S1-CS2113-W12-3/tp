@@ -104,7 +104,7 @@ public class CommandHandler {
         if (command.equals(COMMAND_LIST)) {
             if (arguments.equalsIgnoreCase(LIST_ARGUMENT_LETTERS)) {
                 if (activeGame instanceof WordleGame) {
-                    ui.showMessage(activeGame.handleInput(input));
+                    handleGameInput(input);
                 } else {
                     ui.showMessage(WordleException.listLettersOnlyInWordle());
                 }
@@ -133,18 +133,45 @@ public class CommandHandler {
 
         if (activeGame != null) {
             // Game input can be a guess or a number, so pass the full line unchanged.
-            ui.showMessage(activeGame.handleInput(input));
-            if (activeGame.isFinished()) {
-                LOGGER.info("Game finished: " + activeGame.getGameName());
-                activeGame.reset();
-                activeGame = null;
-            }
+            handleGameInput(input);
             return true;
         }
 
         LOGGER.warning("Unknown command received: " + command);
         ui.showMessage("Unknown command: " + command);
         return true;
+    }
+
+    /** Handles one game action, saves any award, and returns to the menu if it ended. */
+    private void handleGameInput(String input) {
+        ui.showMessage(activeGame.handleInput(input));
+        savePointsEarnedBy(activeGame);
+        if (activeGame.isFinished()) {
+            LOGGER.info("Game finished: " + activeGame.getGameName());
+            activeGame.reset();
+            activeGame = null;
+        }
+    }
+
+    /** Adds a game's latest award to the profile and reports the updated total. */
+    private void savePointsEarnedBy(Game game) {
+        int points = game.getPointsEarnedForLastAction();
+        if (points <= 0) {
+            if (points < 0) {
+                LOGGER.warning("Ignoring a negative points award from " + game.getGameName());
+            }
+            return;
+        }
+
+        try {
+            long totalPoints = pointsStore.addPoints(points);
+            String pointLabel = points == 1 ? "point" : "points";
+            ui.showMessage("You earned " + points + " " + pointLabel
+                    + ". Total points: " + totalPoints + ".");
+        } catch (IOException | ArithmeticException e) {
+            LOGGER.warning("Unable to save points: " + e.getMessage());
+            ui.showMessage(SAVE_POINTS_ERROR_MESSAGE);
+        }
     }
 
     /** Displays the saved total without changing it. */
