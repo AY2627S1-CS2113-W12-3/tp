@@ -1,5 +1,6 @@
 package seedu.duke;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import seedu.duke.wordle.WordleException;
@@ -20,14 +21,19 @@ public class CommandHandler {
     private static final String COMMAND_LIST = "list";
     private static final String COMMAND_PLAY = "play";
     private static final String COMMAND_QUIT = "quit";
+    private static final String COMMAND_SCORE = "score";
     private static final String LIST_ARGUMENT_LETTERS = "letters";
     private static final String QUIT_OUTSIDE_GAME_MESSAGE =
             "The 'quit' command only works while playing a game.";
+    private static final String LOAD_POINTS_ERROR_MESSAGE = "Unable to load your saved points.";
+    private static final String SAVE_POINTS_ERROR_MESSAGE = "Unable to save your points.";
 
     /** Handles console output for command responses. */
     private final Ui ui;
     /** Provides the games that can be started. */
     private final GameList gameList;
+    /** Reads and updates the player's persistent total. */
+    private final PointsStore pointsStore;
     /** The game currently receiving player input, or {@code null} at the menu. */
     private Game activeGame;
 
@@ -38,8 +44,22 @@ public class CommandHandler {
      * @param gameList the games that can be started
      */
     public CommandHandler(Ui ui, GameList gameList) {
+        this(ui, gameList, new PointsStore());
+    }
+
+    /**
+     * Creates a command handler with an injected points store.
+     *
+     * <p>Tests can pass a temporary store to avoid changing the real player profile.
+     *
+     * @param ui the UI used to display responses
+     * @param gameList the games that can be started
+     * @param pointsStore the store used for persistent points
+     */
+    public CommandHandler(Ui ui, GameList gameList, PointsStore pointsStore) {
         this.ui = ui;
         this.gameList = gameList;
+        this.pointsStore = pointsStore;
     }
 
     /**
@@ -73,6 +93,11 @@ public class CommandHandler {
                 ui.showHelp(activeGame.getCommands());
             }
 
+            return true;
+        }
+
+        if (command.equals(COMMAND_SCORE)) {
+            showPoints();
             return true;
         }
 
@@ -120,6 +145,16 @@ public class CommandHandler {
         LOGGER.warning("Unknown command received: " + command);
         ui.showMessage("Unknown command: " + command);
         return true;
+    }
+
+    /** Displays the saved total without changing it. */
+    private void showPoints() {
+        try {
+            ui.showMessage("Total points: " + pointsStore.getTotalPoints());
+        } catch (IOException e) {
+            LOGGER.warning("Unable to load points: " + e.getMessage());
+            ui.showMessage(LOAD_POINTS_ERROR_MESSAGE);
+        }
     }
 
     /**

@@ -49,6 +49,13 @@ class UiTest {
     }
 
     @Test
+    void showHelpListsScoreCommand() {
+        new Ui().showHelp();
+
+        assertTrue(output.toString().contains("score  - Show your saved points"));
+    }
+
+    @Test
     void showHelpOutsideWordleDoesNotListWordleCommands() {
         new Ui().showHelp();
 
