@@ -28,6 +28,18 @@ Source: [wordle-classes.puml](diagrams/wordle-classes.puml).
 
 Source: [wordle-guess-sequence.puml](diagrams/wordle-guess-sequence.puml).
 
+### Battleship game
+
+`BattleshipGame` implements `Game` as game ID `3`. It manages a turn-based game against the computer. Each participant has a 7 × 7 board containing four randomly placed ships of lengths 4, 3, 2 and 1. `BattleshipBoard` handles ship placement and attacks, while `Cell` and `Ship` track occupied positions and damage. `ShotResult` reports a miss, hit, or sunk ship. Invalid or repeated coordinates do not consume a turn. The computer draws its attacks from a shuffled list to avoid repeated shots.
+
+![Battleship class diagram](diagrams/battleship-classes.png)
+
+Source: [battleship-classes.puml](diagrams/battleship-classes.puml).
+
+![Sequence diagram of a Battleship attack](diagrams/battleship-attack-sequence.png)
+
+Source: [battleship-attack-sequence.puml](diagrams/battleship-attack-sequence.puml).
+
 ### Tic Tac Toe enhancement (Lim Zi Jing)
 
 Tic Tac Toe is game ID `4`. The player uses `X`; the computer uses `O`. `TicTacToeGame` manages turns and session messages, while `TicTacToeBoard` stores the 3-by-3 grid and checks moves and outcomes. This separation keeps board rules in one class and turn flow in another.

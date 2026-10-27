@@ -1,0 +1,25 @@
+@startuml
+actor Player
+participant "BattleshipGame" as Game
+participant "enemyBoard:BattleshipBoard" as Enemy
+participant "playerBoard:BattleshipBoard" as Own
+
+Player -> Game : handleInput("B4")
+Game -> Game : validate coordinate; check not repeated
+Game -> Enemy : isCellHit(1, 3)
+Enemy --> Game : false
+Game -> Enemy : hitAt(1, 3)
+Enemy --> Game : ShotResult
+Game -> Enemy : allShipsSunk()
+Enemy --> Game : boolean
+alt Enemy fleet sunk
+  Game --> Player : win message and statistics
+else Game continues
+  Game -> Game : select next shuffled target
+  Game -> Own : hitAt(row, col)
+  Own --> Game : ShotResult
+  Game -> Own : allShipsSunk()
+  Own --> Game : boolean
+  Game --> Player : player and computer shot results
+end
+@enduml
