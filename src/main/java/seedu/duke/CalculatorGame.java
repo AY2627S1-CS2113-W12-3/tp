@@ -30,10 +30,14 @@ public class CalculatorGame implements Game {
     /** Shown in place of a percentage when there is nothing to average. */
     private static final String NO_ACCURACY = "-";
 
+    /** Points awarded for each correct answer. */
+    private static final int POINTS_PER_CORRECT_ANSWER = 1;
+
     /** Identifies this game in the application. */
     private final String gameId;
 
     private final String gameName = "Calculator";
+    private final String description = "Solve randomly generated math equations";
 
     /** Source of randomness for problem generation, injectable so tests can seed it. */
     private final Random random;
@@ -55,6 +59,9 @@ public class CalculatorGame implements Game {
 
     /** Set once the player leaves the session, which ends the game. */
     private boolean finished = false;
+
+    /** Points earned by the most recent input, if it was correct. */
+    private int pointsEarnedForLastAction;
 
     /**
      * Creates a calculator game with the given ID and an unseeded random source.
@@ -129,6 +136,7 @@ public class CalculatorGame implements Game {
      */
     @Override
     public String handleInput(String input) {
+        pointsEarnedForLastAction = 0;
         if (input != null && input.trim().equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player left the calculator after " + attemptedCount + " rounds.");
             finished = true;
@@ -150,6 +158,7 @@ public class CalculatorGame implements Game {
         attemptedCount++;
         if (answer == currentProblem.getAnswer()) {
             correctCount++;
+            pointsEarnedForLastAction = POINTS_PER_CORRECT_ANSWER;
             feedback = DETAIL_INDENT + "Correct!";
         } else {
             // Always reveal the answer, so a wrong round still teaches something.
@@ -163,6 +172,19 @@ public class CalculatorGame implements Game {
         return feedback + System.lineSeparator()
                 + System.lineSeparator()
                 + buildRoundPrompt();
+    }
+
+    /**
+     * Returns the session summary when the launcher takes the player out of the game.
+     *
+     * <p>Shares its text with the {@code quit} path, so leaving via {@code quit} and
+     * leaving by starting another game report identically.
+     *
+     * @return the session summary
+     */
+    @Override
+    public String getExitMessage() {
+        return buildSessionSummary();
     }
 
     /**
@@ -236,6 +258,7 @@ public class CalculatorGame implements Game {
     @Override
     public void reset() {
         finished = false;
+        pointsEarnedForLastAction = 0;
         roundNumber = 1;
         correctCount = 0;
         attemptedCount = 0;
@@ -258,5 +281,20 @@ public class CalculatorGame implements Game {
      */
     public int getCorrectCount() {
         return correctCount;
+    }
+
+    /**
+     * Returns a short description of the Calculator game
+     *
+     * @return description the description
+     */
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public int getPointsEarnedForLastAction() {
+        return pointsEarnedForLastAction;
     }
 }

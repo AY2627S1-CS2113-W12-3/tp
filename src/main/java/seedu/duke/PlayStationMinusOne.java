@@ -3,7 +3,11 @@ package seedu.duke;
 import java.util.logging.Logger;
 
 /**
- * Starts the application and coordinates command handling.
+ * Starts the application and runs its single input loop.
+ *
+ * <p>A game never reads input for itself. The loop reads each line and passes it to a
+ * {@link CommandHandler}, which routes launcher commands or forwards the line to the
+ * active game. This keeps launcher commands reachable at every prompt.
  */
 public class PlayStationMinusOne {
     /** Records diagnostic events without changing the user-facing output. */
@@ -17,8 +21,10 @@ public class PlayStationMinusOne {
         Ui ui = new Ui();
         ui.showBanner();
         GameList gameList = new GameList();
-        String input;
+        CommandHandler commandHandler = new CommandHandler(ui, gameList);
+
         while (true) {
+            String input;
             try {
                 input = ui.readLine();
             } catch (IllegalStateException e) {
@@ -27,60 +33,8 @@ public class PlayStationMinusOne {
                 break;
             }
 
-            String[] parsed = Parser.parse(input);
-            assert parsed.length == 2 : "Parser must return a command and its arguments";
-            String command = parsed[0];
-            String arguments = parsed[1];
-
-            if (command.equals("exit")) {
-                LOGGER.info("Exit command received.");
-                ui.showGoodbye();
+            if (!commandHandler.processInput(input)) {
                 break;
-            } else if (command.equals("help")) {
-                LOGGER.info("Help command received.");
-                ui.showHelp();
-            } else if (command.equals("play")) {
-                if (!arguments.matches("\\d+")) {
-                    LOGGER.warning("Invalid game ID format: " + arguments);
-                    ui.showMessage("Please enter a valid game ID.");
-                    ui.showListOfGames(gameList);
-                    continue;
-                }
-
-                Game selectedGame = null;
-                for (Game game : gameList.getGames()) {
-                    if (game.getGameId().equals(arguments)) {
-                        selectedGame = game;
-                        break;
-                    }
-                }
-
-                if (selectedGame == null) {
-                    LOGGER.warning("No game selected or invalid game: " + arguments);
-                    ui.showListOfGames(gameList);
-                } else {
-                    assert selectedGame.getGameId().equals(arguments);
-                    LOGGER.info("Starting game: " + arguments);
-                    ui.showGameStarting(selectedGame.getGameName());
-                    // Let the game speak before the first input is read, if it has
-                    // anything to say. Games with no opening text return "".
-                    String startMessage = selectedGame.getStartMessage();
-                    if (!startMessage.isEmpty()) {
-                        ui.showMessage(startMessage);
-                    }
-                    // Play the game until it is finished.
-                    while (!selectedGame.isFinished()) {
-                        ui.showMessage(selectedGame.handleInput(ui.readLine()));
-                    }
-
-                    selectedGame.reset();
-                    assert(selectedGame.isFinished() == false);
-                }
-            } else if (command.isEmpty()) {
-                continue;
-            } else {
-                LOGGER.warning("Unknown command received: " + command);
-                ui.showMessage("Unknown command: " + command);
             }
         }
     }

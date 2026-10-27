@@ -1,0 +1,17 @@
+@startuml
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+
+class TicTacToeGame {
+  + handleInput(...): String
+  + reset(): void
+}
+class TicTacToeBoard {
+  + placeMark(...): boolean
+  + hasWinner(...): boolean
+  + isFull(): boolean
+  + reset(): void
+  + toDisplayString(): String
+}
+TicTacToeGame *-- TicTacToeBoard : owns board
+@enduml
