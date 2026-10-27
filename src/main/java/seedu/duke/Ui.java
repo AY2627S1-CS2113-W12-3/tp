@@ -6,7 +6,9 @@ import java.util.Scanner;
  * Handles reading user input and displaying messages to the console.
  */
 public class Ui {
-    /** ASCII art banner displayed on startup. */
+    /**
+     * ASCII art banner displayed on startup.
+     */
     private static final String BANNER = "    ____  __                __        __  _                   ___ \n"
             + "   / __ \\/ /___ ___  ______/ /_____ _/ /_(_)___  ____   _   <  / \n"
             + "  / /_/ / / __ `/ / / / __/ __/ __ `/ __/ / __ \\/ __ \\ |_|  / /  \n"
@@ -52,10 +54,28 @@ public class Ui {
      * Prints the list of available commands.
      */
     public void showHelp() {
+        showHelp("");
+    }
+
+    /**
+     * Prints the available commands, including commands
+     * belonging only to the active game, if applicable.
+     *
+     * @param gameCommands the commands belonging only to the active game
+     */
+    public void showHelp(String gameCommands) {
         System.out.println("Available commands:");
         System.out.println("  help  - Show this help message");
+        System.out.println("  list  - Show all games and their IDs");
         System.out.println("  play <gameId>  - Start a game by its ID");
+        System.out.println("  score  - Show your saved points");
+        System.out.println("  quit  - Leave the current game and return to this menu");
         System.out.println("  exit  - Exit the application");
+
+        if (!gameCommands.isEmpty()) {
+            System.out.println(System.lineSeparator() + "For current game: ");
+            System.out.println(gameCommands);
+        }
     }
 
     /**
@@ -80,10 +100,13 @@ public class Ui {
      * @param gameList the list of games
      */
     public void showListOfGames(GameList gameList) {
+        assert !gameList.getGames().isEmpty() : "There should always be at least one game";
         System.out.println("Available games:");
 
         for (Game game : gameList.getGames()) {
-            System.out.println("  " + game.getGameName() + " | ID: " + game.getGameId());
+            System.out.println();
+            System.out.println("  [ID: " + game.getGameId() + "] " + game.getGameName());
+            System.out.println("      " + game.getDescription());
         }
     }
 }

@@ -2,122 +2,76 @@
 
 ## Acknowledgements
 
-{list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+Add links for any reused or adapted code, ideas, documentation, and third-party libraries.
 
 ## Design & implementation
 
-The v1.0 MVP uses a small command-line interface so that each user action is
-handled as one input followed by one output. The application does not use
-continuous input, timers, animations, or other real-time behaviour.
+The app reads one line at a time. `PlayStationMinusOne` owns the input loop; `CommandHandler` routes launcher commands and active-game input; `GameList` looks up games by ID; and `Ui` prints responses. Each game implements the shared `Game` interface.
 
-### Component responsibilities
+### Command routing (Lim Zi Jing)
 
-* `PlayStationMinusOne` is the application entry point. It owns the main command
-  loop and coordinates the parser, user interface, and active game.
-* `Parser` converts a line of user input into a command and its arguments. For
-  example, `play 1` is parsed as the command `play` with the argument `1`.
-* `Ui` handles console input and output, including the startup banner, prompts,
-  game feedback, and error messages.
-* `Game` is the common abstraction for a playable game. It defines the
-  operations needed to start a game, process a command, and leave the game.
-  The v1.0 will provide one Wordle-style game through this abstraction.
+The `CommandHandler` refactor moved command routing and active-game state out of the application entry point. It parses launcher commands, selects a game for `play <gameId>`, forwards other input unchanged, and resets a game after it finishes.
 
-### v1.0 interaction model
+![Sequence diagram showing how a game is selected](diagrams/command-routing.png)
 
-The application processes one complete command at a time:
+Source: [command-routing.puml](diagrams/command-routing.puml).
 
-1. The user enters a command.
-2. `Parser` identifies the command and its arguments.
-3. The active component performs the requested action.
-4. `Ui` displays the result and waits for the next command.
+### Wordle game
 
-The planned v1.0 flow is:
+`WordleGame` implements `Game` as game ID `1`. It selects one answer from the bundled word list for each session. Guesses must contain five letters; malformed or repeated guesses do not use a try. `WordleHelp` provides coloured feedback and tracks hints for `list letters`.
 
-```text
-> play 1
-Starting Wordle. Enter a five-letter guess.
+![Wordle class diagram](diagrams/wordle-classes.png)
 
-> guess apple
-Feedback: ...
+Source: [wordle-classes.puml](diagrams/wordle-classes.puml).
 
-> exitgame
-Returning to the main menu.
-```
+![Sequence diagram of a Wordle guess](diagrams/wordle-guess-sequence.png)
 
-The command `play <gameId>` starts a game, where game `1` is the Wordle-style
-game. Inside the game, `guess <word>` submits one guess and produces feedback.
-The command `exitgame` leaves the active game, while `exit` closes the
-application. Invalid commands display an error message without crashing the
-application or consuming a guess.
+Source: [wordle-guess-sequence.puml](diagrams/wordle-guess-sequence.puml).
 
+### Tic Tac Toe enhancement (Lim Zi Jing)
 
-## Product scope
-### Target user profile
+Tic Tac Toe is game ID `4`. The player uses `X`; the computer uses `O`. `TicTacToeGame` manages turns and session messages, while `TicTacToeBoard` stores the 3-by-3 grid and checks moves and outcomes. This separation keeps board rules in one class and turn flow in another.
 
-Playstation -1 is for busy individuals who work or study in a command-line
-environment and want a short, clearly bounded break. It also targets retro
-gaming enthusiasts and minimalists who prefer lightweight text-based games
-over resource-intensive graphical games.
+![Tic Tac Toe class diagram](diagrams/tictactoe-classes.png)
 
-### Value proposition
+Source: [tictactoe-classes.puml](diagrams/tictactoe-classes.puml).
 
-Playstation -1 provides low-commitment CLI games that can be played in short
-sessions with clear completion. Users can choose a game, interact with it using
-simple commands, and receive immediate feedback without needing graphics,
-animations, or a long uninterrupted session.
+A move is entered as a coordinate from `A1` to `C3`. Invalid or occupied squares leave the board unchanged and do not trigger a computer move. After a valid `X` move, the game checks for a win or draw. If the game continues, it chooses randomly from the remaining empty squares, places `O`, and checks the result again. The game shows the updated board and returns to the menu when the session ends.
 
-### v1.0 scope
+![Sequence diagram of a normal Tic Tac Toe turn](diagrams/tictactoe-turn-sequence.png)
 
-The v1.0 MVP is a CLI launcher with one playable Wordle-style game. A game session
-uses a fixed number of guesses, with a maximum of six valid five-letter
-guesses. The session ends when the user guesses the word or uses all available
-guesses.
+Source: [tictactoe-turn-sequence.puml](diagrams/tictactoe-turn-sequence.puml).
 
-The MVP includes:
+The computer chooses from a list of empty squares, so it cannot overwrite a mark. `TicTacToeGame` accepts an injected `Random` source, which lets tests make its moves repeatable.
 
-* the existing CLI startup flow and help command;
-* launching the game with `play <gameId>`;
-* submitting guesses with `guess <word>`;
-* feedback after every valid guess;
-* error messages for invalid input; and
-* returning to the launcher with `exitgame`.
+## Appendix A: Product Scope
 
-The MVP deliberately excludes continuous input, timers, animations, and
-background processing.
+PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, and Tic Tac Toe.
 
-### Future features outside the MVP
+## Appendix B: User Stories
 
-The following features are deferred until after the MVP:
+| As a ... | I want to ... | So that I can ... |
+|---|---|---|
+| new user | see the available games | choose one to play |
+| player | start a game by ID | play without leaving the terminal |
+| player | play Tic Tac Toe against the computer | enjoy a short turn-based game |
+| player | quit a game | return to the launcher |
 
-* additional games such as 2048, Tic-Tac-Toe, modified Tetris, and a slot
-  machine;
-* selectable difficulty levels;
-* persistent points, scores, leaderboards, and gameplay statistics;
-* tracking time spent in gameplay sessions; and
-* saved settings and favourite games.
+## Appendix C: Non-Functional Requirements
 
-## User Stories
+- The app works through keyboard input in a terminal.
+- It displays a response before reading the next command.
+- Invalid input produces an error instead of stopping the app.
 
-|Version| As a ... | I want to ... | So that I can ...|
-|--------|----------|---------------|------------------|
-|MVP|new user|see the available CLI commands|learn how to use the application|
-|MVP|user|launch the Wordle-style game|play a short game from the command line|
-|MVP|user|submit a guess and receive feedback|understand my progress after each turn|
-|MVP|user|exit an active game|return to the launcher without closing the application|
+## Appendix D: Glossary
 
-## Non-Functional Requirements
+- **CLI:** command-line interface, where the player enters commands in a terminal.
+- **Game session:** one play of a game, from start until it ends or the player quits.
 
-* The MVP must be usable entirely through keyboard input in a terminal.
-* Each user command must produce a clear output before the next command is
-  read.
-* Invalid commands and arguments must be handled with an error message rather
-  than terminating the application unexpectedly.
-* The MVP must not depend on continuous screen updates, timers, or animations.
+## Appendix E: Instructions for Manual Testing
 
-## Glossary
-
-* *glossary item* - Definition
-
-## Instructions for manual testing
-
-{Give instructions on how to do a manual product testing e.g., how to load sample data to be used for testing}
+1. Start the app and enter `list`; confirm Tic Tac Toe appears as game ID `4`.
+2. Enter `play 4`; confirm the instructions and empty board appear.
+3. Enter an invalid coordinate such as `Z9`, then an occupied square; confirm neither causes a computer move.
+4. Enter valid coordinates until the game ends; confirm the result and updated board appear.
+5. Enter `play 4` again; confirm the board is empty for the new session.
