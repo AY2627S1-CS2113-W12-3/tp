@@ -6,12 +6,13 @@ PlayStation -1 is a collection of small games that you play by typing in a termi
 spend their day at a command line and want a short break that has a clear end, without opening a
 graphical game. Each game finishes in a few minutes, and you can leave any game at any time.
 
-PlayStation -1 includes four games:
+PlayStation -1 includes five games:
 
 * **Wordle**: guess the secret word in 5 tries.
 * **Calculator**: answer quick mental-arithmetic problems and track your score.
 * **Battleship**: sink the computer's ships before it sinks yours.
 * **Tic Tac Toe**: get three X marks in a row against the computer.
+* **GTA -6**: navigate a branching story about a stolen car by picking choices.
 
 * [Quick Start](#quick-start)
 * [Features](#features)
@@ -24,6 +25,7 @@ PlayStation -1 includes four games:
   * [Game: Wordle](#game-wordle)
     * [Viewing Wordle letter hints: `list letters`](#viewing-wordle-letter-hints-list-letters)
   * [Game: Calculator](#game-calculator)
+  * [Game: GTA -6](#game-gta--6)
 * [FAQ](#faq)
 * [Command Summary](#command-summary)
 
@@ -86,6 +88,7 @@ Available games:
   Calculator | ID: 2
   Battleship | ID: 3
   Tic Tac Toe | ID: 4
+  GTA -6 | ID: 5
 ```
 
 ### Starting a game: `play`
@@ -105,6 +108,7 @@ Examples:
 * `play 2` starts Calculator.
 * `play 3` starts Battleship.
 * `play 4` starts Tic Tac Toe.
+* `play 5` starts GTA -6.
 
 Example:
 ```
@@ -281,6 +285,41 @@ Starting Calculator...
 ```
 
 If you quit before answering any problem, accuracy shows `-` instead of a percentage.
+
+### Game: GTA -6
+
+**ID:** 5. Start it with `play 5`.
+
+A choose-your-own-adventure game. Your car has been stolen, and you must decide what to do. Each
+scene describes what is happening and gives you numbered choices.
+
+* Type the number of your choice (e.g. `1` or `2`) and press Enter.
+* Each choice leads to a new scene with new choices, or to one of several endings.
+* Invalid input (not a number, or out of range) re-displays the current scene.
+* Type `quit` at any time to return to the main menu.
+* The story has multiple paths and endings — try different choices to see them all.
+
+Example:
+```
+> play 5
+Starting GTA -6...
+You wake up, stretch, and look out the window... YOUR CAR IS GONE!
+What do you do?
+
+  1. Call the police
+  2. Go outside to investigate
+> 1
+You call 911. The operator asks if you saw anything suspicious last night.
+
+  1. Mention the suspicious ice-cream truck
+  2. Say you saw nothing
+> 1
+The police track down the ice-cream truck.
+It was your neighbor Bob! He 'borrowed' your car to set up
+a surprise birthday party for you.
+
+ENDING: You get cake AND your car back. Happy birthday!
+```
 
 ## FAQ
 
