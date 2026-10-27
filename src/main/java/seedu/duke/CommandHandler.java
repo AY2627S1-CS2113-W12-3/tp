@@ -67,7 +67,12 @@ public class CommandHandler {
 
         if (command.equals(COMMAND_HELP)) {
             LOGGER.info("Help command received.");
-            ui.showHelp(activeGame instanceof WordleGame);
+            if (activeGame == null) {
+                ui.showHelp();
+            } else {
+                ui.showHelp(activeGame.getCommands());
+            }
+
             return true;
         }
 
