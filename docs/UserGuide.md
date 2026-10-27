@@ -70,7 +70,7 @@ Available commands:
 
 ### Listing the games: `list`
 
-Shows every game and the ID you use to start it.
+Shows every game, its description and the ID you use to start it.
 
 Format: `list`
 
@@ -78,8 +78,12 @@ Example:
 ```
 > list
 Available games:
-  Wordle | ID: 1
-  Calculator | ID: 2
+
+  [ID: 1] Wordle
+      Guess the hidden five-letter word in six attempts
+
+  [ID: 2] Calculator
+      Solve randomly generated math equations
 ```
 
 ### Starting a game: `play`
@@ -249,6 +253,77 @@ Starting Calculator...
 ```
 
 If you quit before answering any problem, accuracy shows `-` instead of a percentage.
+
+
+### Game: Battleship
+
+**ID:** 3. Start it with `play 3`.
+
+Play Battleship against the computer in a turn-based strategy game. 
+Your objective is to sink all four enemy ships before the computer sinks yours.
+
+* Both players have a 7 × 7 board (A–G, 1–7).
+* Each board has four randomly placed ships of lengths 4, 3, 2 and 1.
+* You and the computer take turns attacking.
+* The first to sink all enemy ships wins.
+
+#### Attacking ships
+
+Enter a coordinate from `A1` to `G7`.
+
+Format: `COORDINATE`
+
+Example:
+```text
+> B4
+Your shot at B4: Hit!
+Computer shot at F2: Miss.
+```
+
+Possible results:
+
+* `Miss.` — No ship was hit.
+* `Hit!` — An enemy ship was hit.
+* `Hit and sunk a ship!` — An enemy ship was sunk.
+
+Invalid or repeated coordinates do not consume a turn.
+
+#### Viewing boards: `board`
+
+Displays your board and the enemy board.
+
+Format: `board`
+
+| Symbol | Meaning |
+|--------|---------|
+| `S` | Your unhit ship |
+| `O` | Ship hit |
+| `X` | Missed attack |
+| `~` | Unknown or empty cell |
+
+Your ships are visible, but unhit enemy ships are hidden.
+
+#### Ending the game
+
+The game ends when either player sinks all four opposing ships.
+
+* **Win:** `You win! All enemy ships have been sunk!`
+* **Lose:** `The computer wins. All your ships have been sunk.`
+
+You can also type `quit` to return to the main menu.
+
+When the game ends, your statistics are displayed:
+
+```text
+Rounds played: 5
+Successful hits: 3
+Missed shots: 2
+Total shots: 5
+Accuracy: 60.00%
+```
+
+Statistics and boards reset when you start a new game.
+
 
 ## FAQ
 
