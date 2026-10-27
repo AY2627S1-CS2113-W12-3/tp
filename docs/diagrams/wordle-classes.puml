@@ -1,0 +1,23 @@
+@startuml
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+
+interface Game {
+  + handleInput(...): String
+  + reset(): void
+}
+class WordleGame {
+  + handleInput(...): String
+}
+class WordleHelp {
+  + evaluateGuess(...): String
+  + listLetters(): String
+}
+class WordListReader {
+  + loadWords(): List<String>
+}
+
+WordleGame ..|> Game
+WordleGame *-- WordleHelp
+WordleGame ..> WordListReader : loads answers
+@enduml
