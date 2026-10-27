@@ -29,7 +29,7 @@ public class TicTacToeGame implements Game {
     /** The ID used to select this game from the main menu. */
     private final String gameId;
 
-    private final String description = "Get three marks in a row to win.";
+    private final String description = "Get three marks in a row to win";
 
     /** Random source used to choose among empty computer move options. */
     private final Random random;

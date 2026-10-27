@@ -67,7 +67,7 @@ class UiTest {
         new Ui().showListOfGames(new GameList());
 
         String printed = output.toString();
-        assertTrue(printed.contains("Wordle | ID: 1"));
-        assertTrue(printed.contains("Calculator | ID: 2"));
+        assertTrue(printed.contains("[ID: 1] Wordle"));
+        assertTrue(printed.contains("[ID: 2] Calculator"));
     }
 }

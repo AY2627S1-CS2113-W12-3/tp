@@ -36,8 +36,10 @@ class CommandHandlerTest {
     void listShowsAvailableGames() {
         commandHandler.processInput("list");
 
-        assertTrue(output.toString().contains("Wordle | ID: 1"));
-        assertTrue(output.toString().contains("Calculator | ID: 2"));
+        assertTrue(output.toString().contains("[ID: 1] Wordle"));
+        assertTrue(output.toString().contains("[ID: 2] Calculator"));
+        assertTrue(output.toString().contains("Guess the hidden five-letter word in six attempts"));
+        assertTrue(output.toString().contains("Solve randomly generated math equations"));
     }
 
     @Test
@@ -117,6 +119,11 @@ class CommandHandlerTest {
         @Override
         public void reset() {
             finished = false;
+        }
+
+        @Override
+        public String getDescription() {
+            return "description";
         }
     }
 }

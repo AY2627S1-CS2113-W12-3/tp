@@ -92,7 +92,7 @@ class BattleshipGameTest {
 
         String response = game.handleInput("quit");
 
-        assertEquals("Returning to the main menu.", response);
+        assertTrue(response.contains("Returning to the main menu."));
         assertTrue(game.isFinished());
     }
 
@@ -128,5 +128,18 @@ class BattleshipGameTest {
         assertEquals("Battleship", game.getGameName());
         assertTrue(game.getStartMessage().contains("A1 to G7"));
         assertTrue(game.getStartMessage().contains("4 enemy ships"));
+    }
+
+    @Test
+    void quitCommandDisplaysGameStatistics() {
+        BattleshipGame game = new BattleshipGame("3");
+
+        String response = game.handleInput("quit");
+
+        assertTrue(response.contains("Rounds played: 0"));
+        assertTrue(response.contains("Successful hits: 0"));
+        assertTrue(response.contains("Missed shots: 0"));
+        assertTrue(response.contains("Accuracy: 0.00%"));
+        assertTrue(game.isFinished());
     }
 }

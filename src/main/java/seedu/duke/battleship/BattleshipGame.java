@@ -29,7 +29,7 @@ public class BattleshipGame implements Game {
 
     private final String gameId;
     private final String gameName = "Battleship";
-    private final String description = "Locate and sink all enemy ships to win.";
+    private final String description = "Locate and sink all enemy ships to win";
     private boolean isGameOver = false;
 
     private BattleshipBoard playerBoard;
