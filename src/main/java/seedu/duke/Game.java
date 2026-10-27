@@ -70,7 +70,7 @@ public interface Game {
     /**
      * Returns the commands specifically belonging to the game
      */
-     default String getCommands() {
+    default String getCommands() {
         return "";
     }
 
