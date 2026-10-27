@@ -52,27 +52,24 @@ public class Ui {
      * Prints the list of available commands.
      */
     public void showHelp() {
-        showHelp("");
+        showHelp(false);
     }
 
     /**
-     * Prints the available commands, including commands
-     * belonging only to the active game, if applicable.
+     * Prints the available commands, including Wordle-only commands when applicable.
      *
-     * @param gameCommands the commands belonging only to the active game
+     * @param isPlayingWordle whether Wordle is the currently active game
      */
-    public void showHelp(String gameCommands) {
+    public void showHelp(boolean isPlayingWordle) {
         System.out.println("Available commands:");
         System.out.println("  help  - Show this help message");
         System.out.println("  list  - Show all games and their IDs");
         System.out.println("  play <gameId>  - Start a game by its ID");
+        if (isPlayingWordle) {
+            System.out.println("  list letters  - Show discovered Wordle letter hints");
+        }
         System.out.println("  quit  - Leave the current game and return to this menu");
         System.out.println("  exit  - Exit the application");
-
-        if (!gameCommands.isEmpty()) {
-            System.out.println(System.lineSeparator() + "For current game: ");
-            System.out.println(gameCommands);
-        }
     }
 
     /**

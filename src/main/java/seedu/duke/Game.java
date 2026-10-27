@@ -66,11 +66,4 @@ public interface Game {
      * Changes the status of completion back to uncompleted so that replay is possible
      */
     void reset();
-
-    /**
-     * Returns the commands specifically belonging to the game
-     */
-     default String getCommands() {
-        return "";
-    }
 }
