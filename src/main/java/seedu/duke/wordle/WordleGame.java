@@ -26,6 +26,7 @@ public class WordleGame implements Game {
     /** Identifies this game in the application. */
     private final String gameId;
     private final String gameName = "Wordle";
+    private final String description = "Guess the hidden five-letter word in six attempts";
     private final String correctGuess = "Correct guess!";
     private final String wrongGuess = "Wrong guess!";
     private final String exitGameMessage = "Returning to the main menu.";
@@ -172,5 +173,15 @@ public class WordleGame implements Game {
     @Override
     public String getCommands() {
         return "  list letters  - Show discovered Wordle letter hints" + System.lineSeparator();
+    }
+
+    /**
+     * Returns a short description of the Wordle game
+     *
+     * @return description the description
+     */
+    @Override
+    public String getDescription() {
+        return description;
     }
 }

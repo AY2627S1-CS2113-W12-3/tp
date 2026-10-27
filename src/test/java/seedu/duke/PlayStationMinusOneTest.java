@@ -55,17 +55,22 @@ class PlayStationMinusOneTest {
     void listShowsAllGames() {
         String output = run("list", "exit");
 
-        assertTrue(output.contains("Wordle | ID: 1"));
-        assertTrue(output.contains("Calculator | ID: 2"));
-        assertTrue(output.contains("Battleship | ID: 3"));
-        assertTrue(output.contains("Tic Tac Toe | ID: 4"));
+        assertTrue(output.contains("[ID: 1] Wordle"));
+        assertTrue(output.contains("[ID: 2] Calculator"));
+        assertTrue(output.contains("[ID: 3] Battleship"));
+        assertTrue(output.contains("[ID: 4] Tic Tac Toe"));
+
+        assertTrue(output.contains("Guess the hidden five-letter word in six attempts"));
+        assertTrue(output.contains("Solve randomly generated math equations"));
+        assertTrue(output.contains("Locate and sink all enemy ships to win"));
+        assertTrue(output.contains("Get three marks in a row to win"));
     }
 
     @Test
     void listIsCaseInsensitive() {
         String output = run("LIST", "exit");
 
-        assertTrue(output.contains("Wordle | ID: 1"));
+        assertTrue(output.contains("[ID: 1] Wordle"));
     }
 
     @Test

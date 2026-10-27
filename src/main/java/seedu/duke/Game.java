@@ -73,4 +73,9 @@ public interface Game {
      default String getCommands() {
         return "";
     }
+
+    /**
+     * Returns a short description of the game
+     */
+    String getDescription();
 }

@@ -29,6 +29,7 @@ public class BattleshipGame implements Game {
 
     private final String gameId;
     private final String gameName = "Battleship";
+    private final String description = "Locate and sink all enemy ships to win";
     private boolean isGameOver = false;
 
     private BattleshipBoard playerBoard;
@@ -349,5 +350,15 @@ public class BattleshipGame implements Game {
     @Override
     public String getCommands() {
         return "  board  - View player's and opponent's boards" + System.lineSeparator();
+    }
+
+    /**
+     * Returns a short description of the Battleship game
+     *
+     * @return description the description
+     */
+    @Override
+    public String getDescription() {
+        return description;
     }
 }
