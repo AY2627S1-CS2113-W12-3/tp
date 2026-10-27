@@ -162,15 +162,4 @@ public class WordleGame implements Game {
         wordleHelp.reset();
         secretWord = chooseSecretWord();
     }
-
-    /**
-     * Returns the commands belonging specifically to Wordle
-     * and their functions
-     *
-     * @return formatted string containing the commands and function
-     */
-    @Override
-    public String getCommands() {
-        return "  list letters  - Show discovered Wordle letter hints" + System.lineSeparator();
-    }
 }
