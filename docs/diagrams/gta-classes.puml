@@ -1,0 +1,27 @@
+@startuml
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+
+interface Game {
+  + handleInput(...): String
+  + reset(): void
+}
+class GtaGame {
+  - storyMap: Map<String, StoryNode>
+  - currentNodeKey: String
+  + handleInput(...): String
+  + getStartMessage(): String
+  + reset(): void
+}
+class StoryNode {
+  - text: String
+  - choiceLabels: String[]
+  - choiceKeys: String[]
+  - ending: boolean
+  + formatForDisplay(): String
+  + isEnding(): boolean
+}
+
+GtaGame ..|> Game
+GtaGame *-- "*" StoryNode : storyMap
+@enduml
