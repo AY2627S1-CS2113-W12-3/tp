@@ -1,0 +1,24 @@
+@startuml
+skinparam defaultFontSize 16
+actor Player
+participant CommandHandler as Handler
+participant TicTacToeGame as Game
+participant TicTacToeBoard as Board
+participant Random
+
+Player -> Handler: enters a square
+Handler -> Game: handleInput(...)
+Game -> Board: place X
+Board --> Game: move accepted
+Game -> Board: check player result
+Board --> Game: no win or draw
+Game -> Game: collect empty squares
+Game -> Random: choose an empty-square index
+Random --> Game: selected index
+Game -> Board: place O
+Board --> Game: move accepted
+Game -> Board: check computer result
+Board --> Game: no win or draw
+Game --> Handler: moves and updated board
+Handler --> Player: display result
+@enduml
