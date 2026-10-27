@@ -17,6 +17,8 @@ public class WordleGame implements Game {
     private static final Logger LOGGER = Logger.getLogger(WordleGame.class.getName());
     /** The number of incorrect guesses allowed before a session ends. */
     private static final int MAX_ATTEMPTS = 5;
+    /** Points awarded for winning a Wordle session. */
+    private static final int POINTS_FOR_WIN = 5;
     /** The allowed answers loaded from the Wordle word-list text file. */
     private static final List<String> SECRET_WORDS = WordListReader.loadWords();
     /** Command used to leave a Wordle session and return to the main menu. */
@@ -32,6 +34,8 @@ public class WordleGame implements Game {
     private final String exitGameMessage = "Returning to the main menu.";
     /** Tracks whether the current game session has ended. */
     private boolean finished = false;
+    /** Points earned by the most recent input, if it won the game. */
+    private int pointsEarnedForLastAction;
     /** Counts incorrect guesses in the current game session. */
     private int attemptsUsed = 0;
     /** Stores accepted guesses so the player cannot use the same word twice. */
@@ -76,6 +80,7 @@ public class WordleGame implements Game {
      */
     @Override
     public String handleInput(String input) {
+        pointsEarnedForLastAction = 0;
         String guess = input == null ? "" : input.trim();
         if (guess.equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player quit Wordle after " + attemptsUsed + " wrong guesses.");
@@ -99,6 +104,7 @@ public class WordleGame implements Game {
         String feedback = wordleHelp.evaluateGuess(normalizedGuess, secretWord);
         if (guess.equalsIgnoreCase(secretWord)) {
             finished = true;
+            pointsEarnedForLastAction = POINTS_FOR_WIN;
             int triesTaken = attemptsUsed + 1;
             LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
             return feedback + System.lineSeparator()
@@ -158,10 +164,16 @@ public class WordleGame implements Game {
     @Override
     public void reset() {
         finished = false;
+        pointsEarnedForLastAction = 0;
         attemptsUsed = 0;
         guessedWords.clear();
         wordleHelp.reset();
         secretWord = chooseSecretWord();
+    }
+
+    @Override
+    public int getPointsEarnedForLastAction() {
+        return pointsEarnedForLastAction;
     }
 
     /**
