@@ -44,6 +44,20 @@ Source: [tictactoe-turn-sequence.puml](diagrams/tictactoe-turn-sequence.puml).
 
 The computer chooses from a list of empty squares, so it cannot overwrite a mark. `TicTacToeGame` accepts an injected `Random` source, which lets tests make its moves repeatable.
 
+### GTA -6 game (Seow Cheng Si)
+
+GTA -6 is game ID `5`, a choose-your-own-adventure game. The player navigates a branching story by picking numbered choices. The story is modelled as a graph of `StoryNode` objects stored in a `Map<String, StoryNode>`. Each `StoryNode` holds scenario text, choice labels, and keys pointing to the next nodes. Ending nodes have no choices and finish the session.
+
+![GTA -6 class diagram](diagrams/gta-classes.png)
+
+Source: [gta-classes.puml](diagrams/gta-classes.puml).
+
+When the player enters a choice number, `GtaGame.handleInput()` looks up the current node's choice keys, advances to the next node, and returns its formatted text. If the next node is an ending, the game sets itself as finished. Invalid input re-displays the current scenario without advancing.
+
+![Sequence diagram of a GTA -6 choice](diagrams/gta-choice-sequence.png)
+
+Source: [gta-choice-sequence.puml](diagrams/gta-choice-sequence.puml).
+
 ## Appendix A: Product Scope
 
 PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, and Tic Tac Toe.
