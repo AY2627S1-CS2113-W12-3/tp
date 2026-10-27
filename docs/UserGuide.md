@@ -6,16 +6,19 @@ PlayStation -1 is a collection of small games that you play by typing in a termi
 spend their day at a command line and want a short break that has a clear end, without opening a
 graphical game. Each game finishes in a few minutes, and you can leave any game at any time.
 
-Version 1.0 has two games:
+PlayStation -1 includes four games:
 
 * **Wordle**: guess the secret word in 5 tries.
 * **Calculator**: answer quick mental-arithmetic problems and track your score.
+* **Battleship**: sink the computer's ships before it sinks yours.
+* **Tic Tac Toe**: get three X marks in a row against the computer.
 
 * [Quick Start](#quick-start)
 * [Features](#features)
   * [Viewing help: `help`](#viewing-help-help)
   * [Listing the games: `list`](#listing-the-games-list)
   * [Starting a game: `play`](#starting-a-game-play)
+  * [Checking points: `score`](#checking-points-score)
   * [Leaving a game: `quit`](#leaving-a-game-quit)
   * [Exiting the app: `exit`](#exiting-the-app-exit)
   * [Game: Wordle](#game-wordle)
@@ -45,9 +48,9 @@ Version 1.0 has two games:
   number, as in `play 1`.
 * Commands are not case-sensitive: `help`, `HELP` and `Help` all work.
 * There are two places to type:
-  * **The main menu**, where you use `help`, `list`, `play` and `exit`.
+  * **The main menu**, where you use `help`, `list`, `play`, `score` and `exit`.
   * **Inside a game**, where everything you type is sent to the game, until you `quit` or the
-    game ends.
+    game ends. The launcher commands `help`, `list`, `play`, `score` and `exit` remain available.
 * In the examples below, lines starting with `>` are what you type. The app does not print the `>`.
 
 ### Viewing help: `help`
@@ -64,6 +67,7 @@ Available commands:
   help  - Show this help message
   list  - Show all games and their IDs
   play <gameId>  - Start a game by its ID
+  score  - Show your saved points
   quit  - Leave the current game and return to this menu
   exit  - Exit the application
 ```
@@ -80,6 +84,8 @@ Example:
 Available games:
   Wordle | ID: 1
   Calculator | ID: 2
+  Battleship | ID: 3
+  Tic Tac Toe | ID: 4
 ```
 
 ### Starting a game: `play`
@@ -97,7 +103,10 @@ Format: `play GAME_ID`
 Examples:
 * `play 1` starts Wordle.
 * `play 2` starts Calculator.
+* `play 3` starts Battleship.
+* `play 4` starts Tic Tac Toe.
 
+Example:
 ```
 > play abc
 Please enter a valid game ID.
@@ -105,6 +114,29 @@ Available games:
   Wordle | ID: 1
   Calculator | ID: 2
 ```
+
+### Checking points: `score`
+
+Shows your total points. This command works from the main menu and while a game is active.
+Points are saved in a file in your home folder and remain available the next time you run the app.
+
+Format: `score`
+
+Example:
+```
+> score
+Total points: 5
+```
+
+The app reports points after an action that earns them. The scoring rules are:
+
+| Action | Points |
+|--------|--------|
+| Correct Calculator answer | 1 |
+| Win Wordle | 5 |
+| Win Battleship | 5 |
+| Win Tic Tac Toe | 5 |
+| Wrong answer, invalid input, loss, draw, or quit | 0 |
 
 ### Leaving a game: `quit`
 
@@ -252,10 +284,10 @@ If you quit before answering any problem, accuracy shows `-` instead of a percen
 
 ## FAQ
 
-**Q**: Are my scores saved when I close the app?
+**Q**: Are my points saved when I close the app?
 
-**A**: No. Version 1.0 does not save anything. Every game starts fresh, including the next time you
-play the same game in one session.
+**A**: Yes. Your total points are saved in `.playstation-minus-one/points.properties` in your home
+folder. Each game session starts fresh when you play again.
 
 **Q**: Sometimes I see lines like `INFO: Player won Wordle in 1 try.` What are they?
 
@@ -274,6 +306,7 @@ again before starting the app.
 | Show help       | `help`         | Main menu      |
 | List games      | `list`         | Main menu      |
 | Start a game    | `play GAME_ID` | Main menu      |
+| Show points     | `score`        | Main menu or inside a game |
 | Leave a game    | `quit`         | Inside a game  |
 | Show Wordle hints | `list letters` | Inside Wordle |
 | Exit the app    | `exit`         | Main menu      |

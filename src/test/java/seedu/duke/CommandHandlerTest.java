@@ -1,30 +1,40 @@
 package seedu.duke;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /** Tests command routing and game-session handling. */
 class CommandHandlerTest {
+    @TempDir
+    private Path temporaryDirectory;
+
     /** The real console, saved so it can be restored after each test. */
     private PrintStream originalOut;
     /** Captures output printed by the UI. */
     private ByteArrayOutputStream output;
     /** Handler used by tests that don't need a custom game list. */
     private CommandHandler commandHandler;
+    /** Profile store isolated to this test class's temporary directory. */
+    private PointsStore pointsStore;
 
     @BeforeEach
     void captureOutput() {
         originalOut = System.out;
         output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
-        commandHandler = new CommandHandler(new Ui(), new GameList());
+        pointsStore = new PointsStore(temporaryDirectory.resolve("points.properties"));
+        commandHandler = createHandler(new GameList());
     }
 
     @AfterEach
@@ -48,7 +58,7 @@ class CommandHandlerTest {
         GameList gameList = new GameList();
         gameList.getGames().clear();
         gameList.getGames().add(testGame);
-        commandHandler = new CommandHandler(new Ui(), gameList);
+        commandHandler = createHandler(gameList);
 
         commandHandler.processInput("play test");
         commandHandler.processInput("hello");
@@ -62,7 +72,7 @@ class CommandHandlerTest {
         GameList gameList = new GameList();
         gameList.getGames().clear();
         gameList.getGames().add(testGame);
-        commandHandler = new CommandHandler(new Ui(), gameList);
+        commandHandler = createHandler(gameList);
 
         commandHandler.processInput("play test");
         commandHandler.processInput("finish");
@@ -89,9 +99,37 @@ class CommandHandlerTest {
         assertTrue(output.toString().contains("Bye!"));
     }
 
+    @Test
+    void scoreCommandShowsSavedPointsAtMenuAndInsideAGame() throws IOException {
+        pointsStore.addPoints(7);
+        TestGame testGame = new TestGame();
+        commandHandler = createHandler(gameListWith(testGame));
+
+        commandHandler.processInput("score");
+        commandHandler.processInput("play test");
+        commandHandler.processInput("score");
+
+        assertEquals(2, output.toString().split("Total points: 7", -1).length - 1);
+    }
+
+    @Test
+    void gameActionPointsAreSavedOnceWithoutReadingTheResponse() throws IOException {
+        TestGame testGame = new TestGame();
+        commandHandler = createHandler(gameListWith(testGame));
+
+        commandHandler.processInput("play test");
+        commandHandler.processInput("award");
+        commandHandler.processInput("score");
+        commandHandler.processInput("score");
+
+        assertEquals(3, pointsStore.getTotalPoints());
+        assertTrue(output.toString().contains("You earned 3 points. Total points: 3."));
+    }
+
     /** A small game that makes it easy to check whether input was forwarded. */
     private static class TestGame implements Game {
         private boolean finished;
+        private int pointsEarnedForLastAction;
 
         @Override
         public String getGameId() {
@@ -105,10 +143,18 @@ class CommandHandlerTest {
 
         @Override
         public String handleInput(String input) {
+            pointsEarnedForLastAction = 0;
             if (input.equals("finish")) {
                 finished = true;
+            } else if (input.equals("award")) {
+                pointsEarnedForLastAction = 3;
             }
             return "Received: " + input;
+        }
+
+        @Override
+        public int getPointsEarnedForLastAction() {
+            return pointsEarnedForLastAction;
         }
 
         @Override
@@ -119,11 +165,25 @@ class CommandHandlerTest {
         @Override
         public void reset() {
             finished = false;
+            pointsEarnedForLastAction = 0;
         }
 
         @Override
         public String getDescription() {
             return "description";
         }
+    }
+
+    /** Creates a handler wired to the test profile. */
+    private CommandHandler createHandler(GameList gameList) {
+        return new CommandHandler(new Ui(), gameList, pointsStore);
+    }
+
+    /** Creates a game list containing only the supplied test game. */
+    private static GameList gameListWith(Game game) {
+        GameList gameList = new GameList();
+        gameList.getGames().clear();
+        gameList.getGames().add(game);
+        return gameList;
     }
 }

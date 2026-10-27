@@ -26,6 +26,9 @@ public class TicTacToeGame implements Game {
     /** The message shown when the player leaves the game. */
     private static final String EXIT_MESSAGE = "Returning to the main menu.";
 
+    /** Points awarded when the player wins a game. */
+    private static final int POINTS_FOR_WIN = 5;
+
     /** The ID used to select this game from the main menu. */
     private final String gameId;
 
@@ -39,6 +42,9 @@ public class TicTacToeGame implements Game {
 
     /** Whether the current game has ended. */
     private boolean finished;
+
+    /** Points earned by the most recent input, if it won the game. */
+    private int pointsEarnedForLastAction;
 
     /**
      * Creates a game with the given ID and a default random source.
@@ -101,6 +107,7 @@ public class TicTacToeGame implements Game {
      */
     @Override
     public String handleInput(String input) {
+        pointsEarnedForLastAction = 0;
         if (finished) {
             return "The game has ended. Start a new game to play again.";
         }
@@ -123,6 +130,7 @@ public class TicTacToeGame implements Game {
         String playerMove = "You played " + coordinate + " (X).";
         if (board.hasWinner(PLAYER_MARK)) {
             finished = true;
+            pointsEarnedForLastAction = POINTS_FOR_WIN;
             return formatRound(playerMove, "You win!");
         }
         if (board.isFull()) {
@@ -205,9 +213,15 @@ public class TicTacToeGame implements Game {
     }
 
     @Override
+    public int getPointsEarnedForLastAction() {
+        return pointsEarnedForLastAction;
+    }
+
+    @Override
     public void reset() {
         board.reset();
         finished = false;
+        pointsEarnedForLastAction = 0;
     }
 
     /**

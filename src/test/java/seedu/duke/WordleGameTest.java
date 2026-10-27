@@ -25,6 +25,7 @@ class WordleGameTest {
         game.handleInput(INCORRECT_GUESSES[INCORRECT_GUESSES.length - 1]);
 
         assertTrue(game.isFinished());
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -32,6 +33,7 @@ class WordleGameTest {
         WordleGame game = new WordleGame("1");
 
         assertEquals("Please enter a five-letter word.", game.handleInput("CAT"));
+        assertEquals(0, game.getPointsEarnedForLastAction());
         for (int attempt = 0; attempt < INCORRECT_GUESSES.length - 1; attempt++) {
             game.handleInput(INCORRECT_GUESSES[attempt]);
             assertFalse(game.isFinished());
@@ -130,6 +132,7 @@ class WordleGameTest {
         assertTrue(response.contains("Correct guess! You got it in 3 tries."));
         assertTrue(response.contains("Returning to the main menu."));
         assertTrue(game.isFinished());
+        assertEquals(5, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -140,6 +143,7 @@ class WordleGameTest {
 
         assertTrue(response.contains("Correct guess! You got it in 1 try."));
         assertTrue(response.contains("Returning to the main menu."));
+        assertEquals(5, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -149,6 +153,7 @@ class WordleGameTest {
         game.handleInput("QUIT");
 
         assertTrue(game.isFinished());
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test

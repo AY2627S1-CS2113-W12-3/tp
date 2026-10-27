@@ -68,6 +68,7 @@ public class Ui {
         System.out.println("  help  - Show this help message");
         System.out.println("  list  - Show all games and their IDs");
         System.out.println("  play <gameId>  - Start a game by its ID");
+        System.out.println("  score  - Show your saved points");
         System.out.println("  quit  - Leave the current game and return to this menu");
         System.out.println("  exit  - Exit the application");
 

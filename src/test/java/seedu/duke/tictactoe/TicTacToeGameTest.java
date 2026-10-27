@@ -60,6 +60,7 @@ class TicTacToeGameTest {
         assertTrue(response.contains("You win!"));
         assertFalse(response.contains("Computer played"));
         assertTrue(game.isFinished());
+        assertEquals(5, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -72,6 +73,7 @@ class TicTacToeGameTest {
 
         assertTrue(response.contains("The computer wins!"));
         assertTrue(game.isFinished());
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -86,6 +88,7 @@ class TicTacToeGameTest {
 
         assertTrue(response.contains("It's a draw!"));
         assertTrue(game.isFinished());
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -95,6 +98,7 @@ class TicTacToeGameTest {
         assertEquals("Returning to the main menu.", game.handleInput("quit"));
         assertTrue(game.isFinished());
         assertEquals("Returning to the main menu.", game.getExitMessage());
+        assertEquals(0, game.getPointsEarnedForLastAction());
 
         game.reset();
 
