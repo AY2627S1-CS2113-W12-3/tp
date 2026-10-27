@@ -90,6 +90,15 @@ Available games:
 
   [ID: 2] Calculator
       Solve randomly generated math equations
+
+  [ID: 3] Battleship
+      Locate and sink all enemy ships to win
+
+  [ID: 4] Tic Tac Toe
+      Get three marks in a row to win
+
+  [ID: 5] GTA -6
+      A choose-your-own-adventure game about a stolen car.
       
 ```
 
@@ -117,8 +126,21 @@ Example:
 > play abc
 Please enter a valid game ID.
 Available games:
-  Wordle | ID: 1
-  Calculator | ID: 2
+
+  [ID: 1] Wordle
+      Guess the hidden five-letter word in six attempts
+
+  [ID: 2] Calculator
+      Solve randomly generated math equations
+
+  [ID: 3] Battleship
+      Locate and sink all enemy ships to win
+
+  [ID: 4] Tic Tac Toe
+      Get three marks in a row to win
+
+  [ID: 5] GTA -6
+      A choose-your-own-adventure game about a stolen car.
 ```
 
 ### Checking points: `score`

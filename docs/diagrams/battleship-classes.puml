@@ -1,0 +1,45 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide empty members
+
+interface Game {
+  +handleInput(input: String): String
+  +reset(): void
+  +isFinished(): boolean
+}
+class BattleshipGame {
+  -playerBoard: BattleshipBoard
+  -enemyBoard: BattleshipBoard
+  -computerTargets: ArrayList<Integer>
+  +handleInput(input: String): String
+  +reset(): void
+}
+class BattleshipBoard {
+  -board: Cell[][]
+  -shipsRemaining: int
+  +hitAt(row: int, col: int): ShotResult
+  +allShipsSunk(): boolean
+}
+class Cell {
+  ~occupyingShip: Ship
+  ~isHit: boolean
+}
+class Ship {
+  -size: int
+  -hits: int
+  ~receiveDamage(): void
+  ~isSunk(): boolean
+}
+enum ShotResult {
+  MISS
+  HIT
+  SUNK
+}
+
+BattleshipGame ..|> Game
+BattleshipGame *-- "2" BattleshipBoard : player / enemy
+BattleshipBoard *-- "49" Cell : grid
+Cell --> "0..1" Ship : occupies
+BattleshipBoard ..> ShotResult : returns
+@enduml
