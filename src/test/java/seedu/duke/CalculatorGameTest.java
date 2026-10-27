@@ -62,6 +62,7 @@ class CalculatorGameTest {
         assertTrue(response.contains("Correct!"));
         assertEquals(1, game.getCorrectCount());
         assertEquals(1, game.getAttemptedCount());
+        assertEquals(1, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -75,6 +76,7 @@ class CalculatorGameTest {
                 "Wrong answers should reveal the correct answer");
         assertEquals(0, game.getCorrectCount());
         assertEquals(1, game.getAttemptedCount());
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -85,6 +87,7 @@ class CalculatorGameTest {
         assertTrue(response.contains("does not count"));
         assertEquals(0, game.getCorrectCount());
         assertEquals(0, game.getAttemptedCount());
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -116,6 +119,7 @@ class CalculatorGameTest {
         assertTrue(summary.contains("Rounds attempted : 1"));
         assertTrue(summary.contains("Correct          : 1"));
         assertTrue(summary.contains("Accuracy         : 100%"));
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -162,6 +166,7 @@ class CalculatorGameTest {
         assertFalse(game.isFinished(), "reset should make the game playable again");
         assertEquals(0, game.getCorrectCount());
         assertEquals(0, game.getAttemptedCount());
+        assertEquals(0, game.getPointsEarnedForLastAction());
         assertTrue(game.getStartMessage().contains("Round 1"),
                 "reset should return the game to round 1");
     }
