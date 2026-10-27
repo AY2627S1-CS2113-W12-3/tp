@@ -1,0 +1,19 @@
+@startuml
+skinparam defaultFontSize 16
+actor Player
+participant CommandHandler as Handler
+participant GtaGame as Game
+participant StoryNode as Node
+
+Player -> Handler: enters a choice
+Handler -> Game: handleInput(...)
+Game -> Node: get current node choices
+Node --> Game: choiceKeys[choice - 1]
+Game -> Node: look up next node
+Node --> Game: next node text
+alt ending node
+  Game -> Game: finished = true
+end
+Game --> Handler: formatted story text
+Handler --> Player: display result
+@enduml

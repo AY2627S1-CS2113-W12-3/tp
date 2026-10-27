@@ -18,7 +18,7 @@ public class GameList {
 
     /**
      * Creates the game list with Wordle as game 1, the calculator as game 2,
-     * Battleship as game 3, and Tic Tac Toe as game 4.
+     * Battleship as game 3,Tic Tac Toe as game 4, GTA -6 as game 5
      */
     public GameList() {
         games = new ArrayList<>();
@@ -26,6 +26,7 @@ public class GameList {
         games.add(new CalculatorGame("2"));
         games.add(new BattleshipGame("3"));
         games.add(new TicTacToeGame("4"));
+        games.add(new GtaGame("5"));
         assert !games.isEmpty() : "Game list must not be empty";
         LOGGER.fine("Registered " + games.size() + " games.");
     }

@@ -1,0 +1,24 @@
+@startuml
+skinparam defaultFontSize 16
+actor Player
+participant PlayStationMinusOne as App
+participant CommandHandler as Handler
+participant Parser
+participant GameList
+participant TicTacToeGame as Game
+participant Ui
+
+Player -> App: enters "play 4"
+App -> Handler: processInput(...)
+Handler -> Parser: parse(...)
+Parser --> Handler: command and game ID
+Handler -> GameList: findGameById(...)
+GameList --> Handler: selected game
+Handler -> Ui: showGameStarting(...)
+Ui --> Player: display game name
+Handler -> Game: getStartMessage()
+Game --> Handler: game instructions
+Handler -> Ui: show instructions
+Ui --> Player: display instructions
+Handler -> Handler: set active game
+@enduml
