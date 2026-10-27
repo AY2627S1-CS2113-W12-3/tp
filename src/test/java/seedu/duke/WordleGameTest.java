@@ -115,6 +115,7 @@ class WordleGameTest {
         String response = game.handleInput(INCORRECT_GUESSES[INCORRECT_GUESSES.length - 1]);
 
         assertTrue(response.contains("Wrong guess! You are out of tries."));
+        assertTrue(response.contains("The word was CRANE."));
         assertTrue(response.contains("Returning to the main menu."));
     }
 
