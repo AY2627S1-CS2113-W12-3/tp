@@ -4,9 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.duke.battleship.BattleshipGame;
+import seedu.duke.battleship.battleshipboard.BattleshipBoard;
 
 /** Tests Battleship commands, attack validation, turns, and resetting. */
 class BattleshipGameTest {
@@ -94,6 +99,7 @@ class BattleshipGameTest {
 
         assertTrue(response.contains("Returning to the main menu."));
         assertTrue(game.isFinished());
+        assertEquals(0, game.getPointsEarnedForLastAction());
     }
 
     @Test
@@ -141,5 +147,87 @@ class BattleshipGameTest {
         assertTrue(response.contains("Missed shots: 0"));
         assertTrue(response.contains("Accuracy: 0.00%"));
         assertTrue(game.isFinished());
+    }
+
+    @Test
+    void winningAwardsFivePoints() {
+        long seed = 2024;
+        Random layoutRandom = new Random(seed);
+        new BattleshipBoard(layoutRandom);
+        BattleshipBoard enemyBoard = new BattleshipBoard(layoutRandom);
+        BattleshipGame game = new BattleshipGame("3", new Random(seed));
+
+        for (String coordinate : coordinatesWithShips(enemyBoard)) {
+            game.handleInput(coordinate);
+            if (game.isFinished()) {
+                break;
+            }
+        }
+
+        assertTrue(game.isFinished());
+        assertEquals(5, game.getPointsEarnedForLastAction());
+    }
+
+    @Test
+    void invalidInputDoesNotAwardPoints() {
+        BattleshipGame game = new BattleshipGame("3", new Random(42));
+
+        game.handleInput("H1");
+
+        assertEquals(0, game.getPointsEarnedForLastAction());
+    }
+
+    @Test
+    void computerWinDoesNotAwardPoints() {
+        for (long seed = 0; seed < 100; seed++) {
+            Random layoutRandom = new Random(seed);
+            new BattleshipBoard(layoutRandom);
+            BattleshipBoard enemyBoard = new BattleshipBoard(layoutRandom);
+            BattleshipGame game = new BattleshipGame("3", new Random(seed));
+
+            for (String coordinate : coordinatesWithoutShips(enemyBoard)) {
+                game.handleInput(coordinate);
+                if (game.isFinished()) {
+                    break;
+                }
+            }
+
+            if (game.isFinished()) {
+                assertEquals(0, game.getPointsEarnedForLastAction());
+                return;
+            }
+        }
+
+        assertTrue(false, "A deterministic test game should let the computer win.");
+    }
+
+    /** Returns enemy ship coordinates from a board with a known random layout. */
+    private static List<String> coordinatesWithShips(BattleshipBoard board) {
+        String[] rows = board.stringFormattedBoard(false).split(System.lineSeparator());
+        List<String> coordinates = new ArrayList<>();
+        for (int row = 0; row < BattleshipBoard.SIDE_LENGTH; row++) {
+            String[] cells = rows[row + 1].trim().split("\\s+");
+            for (int column = 1; column <= BattleshipBoard.SIDE_LENGTH; column++) {
+                if (cells[column].equals("S")) {
+                    coordinates.add(String.valueOf((char) ('A' + row)) + column);
+                }
+            }
+        }
+        return coordinates;
+    }
+
+    /** Returns empty enemy-board coordinates for a game that the computer can win. */
+    private static List<String> coordinatesWithoutShips(BattleshipBoard board) {
+        String[] rows = board.stringFormattedBoard(false).split(System.lineSeparator());
+        List<String> coordinates = new ArrayList<>();
+        for (int row = 0; row < BattleshipBoard.SIDE_LENGTH; row++) {
+            String[] cells = rows[row + 1].trim().split("\\s+");
+            for (int column = 1; column <= BattleshipBoard.SIDE_LENGTH; column++) {
+                if (cells[column].equals("~")) {
+                    coordinates.add(String.valueOf((char) ('A' + row)) + column);
+                }
+            }
+        }
+        return coordinates;
     }
 }

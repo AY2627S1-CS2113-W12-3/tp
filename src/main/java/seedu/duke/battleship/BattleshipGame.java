@@ -23,6 +23,8 @@ public class BattleshipGame implements Game {
     private static final String QUIT_COMMAND = "quit";
     private static final String BOARD_COMMAND = "board";
     private static final String EXIT_GAME_MESSAGE = "Returning to the main menu.";
+    /** Points awarded when the player sinks every enemy ship. */
+    private static final int POINTS_FOR_WIN = 5;
 
     /** Random number generator used for ship placement and computer attacks. */
     private final Random random;
@@ -31,6 +33,8 @@ public class BattleshipGame implements Game {
     private final String gameName = "Battleship";
     private final String description = "Locate and sink all enemy ships to win";
     private boolean isGameOver = false;
+    /** Points earned by the most recent input, if it won the game. */
+    private int pointsEarnedForLastAction;
 
     private BattleshipBoard playerBoard;
     private BattleshipBoard enemyBoard;
@@ -50,8 +54,20 @@ public class BattleshipGame implements Game {
      * @param gameId the ID used to select this game
      */
     public BattleshipGame(String gameId) {
+        this(gameId, new Random());
+    }
+
+    /**
+     * Creates a Battleship game with a caller-supplied random source.
+     *
+     * <p>Tests can supply a repeatable source for ship placement and computer attacks.
+     *
+     * @param gameId the ID used to select this game
+     * @param random the source used for ship placement and computer attacks
+     */
+    public BattleshipGame(String gameId, Random random) {
         this.gameId = gameId;
-        random = new Random();
+        this.random = random;
         reset();
     }
 
@@ -94,6 +110,7 @@ public class BattleshipGame implements Game {
      */
     @Override
     public String handleInput(String input) {
+        pointsEarnedForLastAction = 0;
         String argument = input == null ? "" : input.trim();
 
         if (argument.equalsIgnoreCase(QUIT_COMMAND)) {
@@ -177,6 +194,7 @@ public class BattleshipGame implements Game {
 
         if (enemyBoard.allShipsSunk()) {
             isGameOver = true;
+            pointsEarnedForLastAction = POINTS_FOR_WIN;
             LOGGER.info("Player won after " + roundsPlayed + ".");
             message.append("You win! All enemy ships have been sunk!")
                     .append(System.lineSeparator())
@@ -295,6 +313,11 @@ public class BattleshipGame implements Game {
         return isGameOver;
     }
 
+    @Override
+    public int getPointsEarnedForLastAction() {
+        return pointsEarnedForLastAction;
+    }
+
     /**
      * Resets the game to its initial state for a new session.
      *
@@ -305,6 +328,7 @@ public class BattleshipGame implements Game {
     @Override
     public void reset() {
         isGameOver = false;
+        pointsEarnedForLastAction = 0;
         playerBoard = new BattleshipBoard(random);
         enemyBoard = new BattleshipBoard(random);
         roundsPlayed = 0;
