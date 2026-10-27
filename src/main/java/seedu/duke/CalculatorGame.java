@@ -34,6 +34,7 @@ public class CalculatorGame implements Game {
     private final String gameId;
 
     private final String gameName = "Calculator";
+    private final String description = "Solve randomly generated math equations";
 
     /** Source of randomness for problem generation, injectable so tests can seed it. */
     private final Random random;
@@ -271,5 +272,15 @@ public class CalculatorGame implements Game {
      */
     public int getCorrectCount() {
         return correctCount;
+    }
+
+    /**
+     * Returns a short description of the Calculator game
+     *
+     * @return description the description
+     */
+    @Override
+    public String getDescription() {
+        return description;
     }
 }

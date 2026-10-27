@@ -6,7 +6,9 @@ import java.util.Scanner;
  * Handles reading user input and displaying messages to the console.
  */
 public class Ui {
-    /** ASCII art banner displayed on startup. */
+    /**
+     * ASCII art banner displayed on startup.
+     */
     private static final String BANNER = "    ____  __                __        __  _                   ___ \n"
             + "   / __ \\/ /___ ___  ______/ /_____ _/ /_(_)___  ____   _   <  / \n"
             + "  / /_/ / / __ `/ / / / __/ __/ __ `/ __/ / __ \\/ __ \\ |_|  / /  \n"
@@ -98,7 +100,9 @@ public class Ui {
         System.out.println("Available games:");
 
         for (Game game : gameList.getGames()) {
-            System.out.println("  " + game.getGameName() + " | ID: " + game.getGameId());
+            System.out.println();
+            System.out.println("  [ID: " + game.getGameId() + "] " + game.getGameName());
+            System.out.println("      " + game.getDescription());
         }
     }
 }

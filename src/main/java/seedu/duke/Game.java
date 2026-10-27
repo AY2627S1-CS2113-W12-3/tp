@@ -66,4 +66,9 @@ public interface Game {
      * Changes the status of completion back to uncompleted so that replay is possible
      */
     void reset();
+
+    /**
+     * Returns a short description of the game
+     */
+    String getDescription();
 }
