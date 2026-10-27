@@ -44,6 +44,16 @@ public class GtaGame implements Game {
     }
 
     /**
+     * Returns a short description of this game.
+     *
+     * @return a one-line description
+     */
+    @Override
+    public String getDescription() {
+        return "A choose-your-own-adventure game about a stolen car.";
+    }
+
+    /**
      * Returns the opening scenario so the player sees the first scene and
      * choices before typing anything.
      *
