@@ -342,6 +342,17 @@ public class BattleshipGame implements Game {
     }
 
     /**
+     * Returns the commands belonging specifically to Battleship
+     * and their functions
+     *
+     * @return formatted string containing the commands and function
+     */
+    @Override
+    public String getCommands() {
+        return "  board  - View player's and opponent's boards" + System.lineSeparator();
+    }
+
+    /**
      * Returns a short description of the Battleship game
      *
      * @return description the description

@@ -165,6 +165,17 @@ public class WordleGame implements Game {
     }
 
     /**
+     * Returns the commands belonging specifically to Wordle
+     * and their functions
+     *
+     * @return formatted string containing the commands and function
+     */
+    @Override
+    public String getCommands() {
+        return "  list letters  - Show discovered Wordle letter hints" + System.lineSeparator();
+    }
+
+    /**
      * Returns a short description of the Wordle game
      *
      * @return description the description

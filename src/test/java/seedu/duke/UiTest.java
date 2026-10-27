@@ -57,7 +57,7 @@ class UiTest {
 
     @Test
     void showHelpInWordleListsWordleCommands() {
-        new Ui().showHelp(true);
+        new Ui().showHelp("list letters  - Show discovered Wordle letter hints\n");
 
         assertTrue(output.toString().contains("list letters  - Show discovered Wordle letter hints"));
     }

@@ -68,6 +68,13 @@ public interface Game {
     void reset();
 
     /**
+     * Returns the commands specifically belonging to the game
+     */
+     default String getCommands() {
+        return "";
+    }
+
+    /**
      * Returns a short description of the game
      */
     String getDescription();
