@@ -22,3 +22,6 @@ _temp/
 
 /text-ui-test/ACTUAL.TXT
 text-ui-test/EXPECTED-UNIX.TXT
+
+# Local diagram rendering tool (PlantUML jar, downloaded on demand)
+/.tools/

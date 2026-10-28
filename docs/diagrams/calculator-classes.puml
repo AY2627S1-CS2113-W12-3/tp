@@ -1,0 +1,32 @@
+@startuml
+skinparam defaultFontSize 16
+skinparam classAttributeIconSize 0
+hide empty members
+
+interface Game {
+  + handleInput(...): String
+  + reset(): void
+}
+class CalculatorGame {
+  + handleInput(...): String
+  + getStartMessage(): String
+  + getExitMessage(): String
+  + reset(): void
+}
+class ArithmeticProblem {
+  + {static} generate(Random): ArithmeticProblem
+  + getAnswer(): int
+  + toString(): String
+}
+enum Operator {
+  ADD
+  SUBTRACT
+  MULTIPLY
+  DIVIDE
+}
+
+CalculatorGame ..|> Game
+CalculatorGame *-- ArithmeticProblem : current problem
+ArithmeticProblem *-- Operator
+CalculatorGame ..> Random : generates problems
+@enduml
