@@ -42,10 +42,10 @@ public class GameList {
     /**
      * Returns the games currently in the list.
      *
-     * @return the list of games
+     * @return an unmodifiable list of the available games
      */
-    public ArrayList<Game> getGames() {
-        return games;
+    public List<Game> getGames() {
+        return List.copyOf(games);
     }
 
     /**
