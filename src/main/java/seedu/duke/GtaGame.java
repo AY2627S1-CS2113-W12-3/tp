@@ -124,33 +124,8 @@ public class GtaGame implements Game {
      */
     private Map<String, StoryNode> initializeStory() {
         Map<String, StoryNode> map = new HashMap<>();
-
-        map.put("start", new StoryNode(
-                "You wake up, stretch, and look out the window..."
-                        + " YOUR CAR IS GONE!"
-                        + System.lineSeparator()
-                        + "What do you do?",
-                new String[]{"Call the police", "Go outside to investigate"},
-                new String[]{"police", "investigate"},
-                false));
-
-        // ---- Path A: Call the police ----
-
-        map.put("police", new StoryNode(
-                "You call 911. The operator asks if you"
-                        + " saw anything suspicious last night.",
-                new String[]{"Mention the suspicious ice-cream truck", "Say you saw nothing"},
-                new String[]{"icecream_lead", "wait_home"},
-                false));
-
-        map.put("icecream_lead", new StoryNode(
-                "The police track down the ice-cream truck."
-                        + System.lineSeparator()
-                        + "It was your neighbor Bob! He 'borrowed' your car"
-                        + " to set up a surprise birthday party for you."
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: You get cake AND your car back. Happy birthday!",
-                new String[]{}, new String[]{}, true));
+        addOpeningNode(map);
+        addPolicePath(map);
 
         map.put("wait_home", new StoryNode(
                 "You wait at home. Hours pass. You get incredibly bored.",
@@ -234,5 +209,36 @@ public class GtaGame implements Game {
                 new String[]{}, new String[]{}, true));
 
         return map;
+    }
+
+    /** Adds the opening scene and its two choices to the story graph. */
+    private void addOpeningNode(Map<String, StoryNode> map) {
+        map.put("start", new StoryNode(
+                "You wake up, stretch, and look out the window..."
+                        + " YOUR CAR IS GONE!"
+                        + System.lineSeparator()
+                        + "What do you do?",
+                new String[]{"Call the police", "Go outside to investigate"},
+                new String[]{"police", "investigate"},
+                false));
+    }
+
+    /** Adds the police-report path and its immediate ending. */
+    private void addPolicePath(Map<String, StoryNode> map) {
+        map.put("police", new StoryNode(
+                "You call 911. The operator asks if you"
+                        + " saw anything suspicious last night.",
+                new String[]{"Mention the suspicious ice-cream truck", "Say you saw nothing"},
+                new String[]{"icecream_lead", "wait_home"},
+                false));
+
+        map.put("icecream_lead", new StoryNode(
+                "The police track down the ice-cream truck."
+                        + System.lineSeparator()
+                        + "It was your neighbor Bob! He 'borrowed' your car"
+                        + " to set up a surprise birthday party for you."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: You get cake AND your car back. Happy birthday!",
+                new String[]{}, new String[]{}, true));
     }
 }
