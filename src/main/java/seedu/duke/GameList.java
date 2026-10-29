@@ -1,6 +1,7 @@
 package seedu.duke;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import seedu.duke.battleship.BattleshipGame;
@@ -29,6 +30,13 @@ public class GameList {
         games.add(new GtaGame("5"));
         assert !games.isEmpty() : "Game list must not be empty";
         LOGGER.fine("Registered " + games.size() + " games.");
+    }
+
+    /** Creates a game list from supplied games for controlled test setups. */
+    GameList(List<Game> games) {
+        this.games = new ArrayList<>(games);
+        assert !this.games.isEmpty() : "Game list must not be empty";
+        LOGGER.fine("Registered " + this.games.size() + " games.");
     }
 
     /**
