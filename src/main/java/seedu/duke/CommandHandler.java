@@ -91,22 +91,12 @@ public class CommandHandler {
         }
 
         if (command.equals(COMMAND_LIST)) {
-            if (arguments.equalsIgnoreCase(LIST_ARGUMENT_LETTERS)) {
-                if (activeGame instanceof WordleGame) {
-                    handleGameInput(input);
-                } else {
-                    ui.showMessage(WordleException.listLettersOnlyInWordle());
-                }
-                return true;
-            }
-            LOGGER.info("List command received.");
-            ui.showListOfGames(gameList);
+            handleListCommand(arguments, input);
             return true;
         }
 
-        if (command.equals(COMMAND_QUIT) && activeGame == null) {
-            LOGGER.warning("Quit command received outside a game.");
-            ui.showMessage(QUIT_OUTSIDE_GAME_MESSAGE);
+        if (command.equals(COMMAND_QUIT)) {
+            handleQuitCommand(input);
             return true;
         }
 
@@ -149,6 +139,32 @@ public class CommandHandler {
         } else {
             ui.showHelp(activeGame.getCommands());
         }
+    }
+
+    /** Handles the game-list command and Wordle's letter-hint command. */
+    private void handleListCommand(String arguments, String input) {
+        if (arguments.equalsIgnoreCase(LIST_ARGUMENT_LETTERS)) {
+            if (activeGame instanceof WordleGame) {
+                handleGameInput(input);
+            } else {
+                ui.showMessage(WordleException.listLettersOnlyInWordle());
+            }
+            return;
+        }
+
+        LOGGER.info("List command received.");
+        ui.showListOfGames(gameList);
+    }
+
+    /** Leaves the current game, or explains that quit only works during a game. */
+    private void handleQuitCommand(String input) {
+        if (activeGame == null) {
+            LOGGER.warning("Quit command received outside a game.");
+            ui.showMessage(QUIT_OUTSIDE_GAME_MESSAGE);
+            return;
+        }
+
+        handleGameInput(input);
     }
 
     /** Handles one game action, saves any award, and returns to the menu if it ended. */
