@@ -105,20 +105,25 @@ public class CommandHandler {
             return true;
         }
 
+        handleOtherInput(command, input);
+        return true;
+    }
+
+    /** Handles blank input, active-game input, or an unknown menu command. */
+    private void handleOtherInput(String command, String input) {
         // A blank line is ignored instead of being sent to the active game.
         if (command.isEmpty()) {
-            return true;
+            return;
         }
 
         if (activeGame != null) {
             // Game input can be a guess or a number, so pass the full line unchanged.
             handleGameInput(input);
-            return true;
+            return;
         }
 
         LOGGER.warning("Unknown command received: " + command);
         ui.showMessage("Unknown command: " + command);
-        return true;
     }
 
     /** Leaves the active game, if any, and displays the application exit message. */
