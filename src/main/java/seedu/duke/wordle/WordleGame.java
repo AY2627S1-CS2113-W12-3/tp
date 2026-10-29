@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import seedu.duke.Game;
@@ -42,12 +43,33 @@ public class WordleGame implements Game {
     private final Set<String> guessedWords = new HashSet<>();
     /** Evaluates guesses and stores the letter hints discovered in this game. */
     private final WordleHelp wordleHelp = new WordleHelp();
+    /** Supplies the next secret word when a game session starts or resets. */
+    private final Supplier<String> secretWordChooser;
     /** The word the player must guess in the current game. */
     private String secretWord;
 
     public WordleGame(String gameId) {
+        this(gameId, WordleGame::chooseRandomWord);
+    }
+
+    /**
+     * Creates a game with a fixed secret word.
+     *
+     * <p>This constructor supports repeatable automated tests. Normal gameplay
+     * uses {@link #WordleGame(String)}, which chooses a random word.
+     *
+     * @param gameId the ID used to select this game
+     * @param secretWord the five-letter word to guess
+     */
+    public WordleGame(String gameId, String secretWord) {
+        this(gameId, () -> secretWord.toUpperCase(Locale.ROOT));
+    }
+
+    /** Creates a game that obtains secret words from the supplied chooser. */
+    private WordleGame(String gameId, Supplier<String> secretWordChooser) {
         this.gameId = gameId;
-        secretWord = chooseSecretWord();
+        this.secretWordChooser = secretWordChooser;
+        secretWord = secretWordChooser.get();
     }
 
     @Override
@@ -144,7 +166,7 @@ public class WordleGame implements Game {
      *
      * @return the randomly selected secret word
      */
-    private static String chooseSecretWord() {
+    private static String chooseRandomWord() {
         return SECRET_WORDS.get(ThreadLocalRandom.current().nextInt(SECRET_WORDS.size()));
     }
 
@@ -168,7 +190,7 @@ public class WordleGame implements Game {
         attemptsUsed = 0;
         guessedWords.clear();
         wordleHelp.reset();
-        secretWord = chooseSecretWord();
+        secretWord = secretWordChooser.get();
     }
 
     @Override

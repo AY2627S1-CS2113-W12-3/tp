@@ -15,7 +15,7 @@ class WordleGameTest {
 
     @Test
     void fiveIncorrectGuessesFinishTheGame() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         for (int attempt = 0; attempt < INCORRECT_GUESSES.length - 1; attempt++) {
             game.handleInput(INCORRECT_GUESSES[attempt]);
@@ -30,7 +30,7 @@ class WordleGameTest {
 
     @Test
     void invalidGuessDoesNotConsumeAnAttempt() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         assertEquals("Please enter a five-letter word.", game.handleInput("CAT"));
         assertEquals(0, game.getPointsEarnedForLastAction());
@@ -46,7 +46,7 @@ class WordleGameTest {
 
     @Test
     void repeatedGuessDoesNotConsumeAnAttempt() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         game.handleInput("WRONG");
         assertEquals("You have already guessed that word. Try a different five-letter word.",
@@ -63,7 +63,7 @@ class WordleGameTest {
 
     @Test
     void onlyTheSecretWordWins() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         assertTrue(game.handleInput("WORDS").contains("Wrong guess! You have 4 tries left."));
         assertFalse(game.isFinished());
@@ -71,7 +71,7 @@ class WordleGameTest {
 
     @Test
     void resetRestoresAllFiveAttempts() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
         for (String guess : INCORRECT_GUESSES) {
             game.handleInput(guess);
         }
@@ -89,7 +89,7 @@ class WordleGameTest {
 
     @Test
     void quitCommandFinishesTheGameAndReturnsToMenu() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         String response = game.handleInput("quit");
 
@@ -99,7 +99,7 @@ class WordleGameTest {
 
     @Test
     void wrongGuessShowsTriesLeft() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         assertTrue(game.handleInput("WRONG").contains("Wrong guess! You have 4 tries left."));
         game.handleInput("ALPHA");
@@ -109,7 +109,7 @@ class WordleGameTest {
 
     @Test
     void lastWrongGuessSaysOutOfTriesAndReturnsToMenu() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
         for (int attempt = 0; attempt < INCORRECT_GUESSES.length - 1; attempt++) {
             game.handleInput(INCORRECT_GUESSES[attempt]);
         }
@@ -123,7 +123,7 @@ class WordleGameTest {
 
     @Test
     void correctGuessShowsTriesTakenAndReturnsToMenu() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
         game.handleInput("WRONG");
         game.handleInput("ALPHA");
 
@@ -137,7 +137,7 @@ class WordleGameTest {
 
     @Test
     void correctFirstGuessUsesSingularTry() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         String response = game.handleInput("CRANE");
 
@@ -148,7 +148,7 @@ class WordleGameTest {
 
     @Test
     void quitCommandIsCaseInsensitive() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         game.handleInput("QUIT");
 
@@ -158,7 +158,7 @@ class WordleGameTest {
 
     @Test
     void feedbackMarksExactMisplacedAndAbsentLetters() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         String response = game.handleInput("CREAM");
 
@@ -168,8 +168,13 @@ class WordleGameTest {
 
     @Test
     void listLettersBeforeAnyGuessShowsError() {
-        WordleGame game = new WordleGame("1");
+        WordleGame game = createGame();
 
         assertEquals("Make a valid Wordle guess before listing letters.", game.handleInput("list letters"));
+    }
+
+    /** Creates a predictable game so these tests do not depend on random word selection. */
+    private static WordleGame createGame() {
+        return new WordleGame("1", "CRANE");
     }
 }
