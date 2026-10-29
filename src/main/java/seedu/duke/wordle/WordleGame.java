@@ -108,7 +108,7 @@ public class WordleGame implements Game {
             int triesTaken = attemptsUsed + 1;
             LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
             return feedback + System.lineSeparator()
-                    + correctGuess + " You got it in " + formatTries(triesTaken) + "."
+                    + correctGuess + " You completed Wordle in " + formatTries(triesTaken) + "."
                     + System.lineSeparator() + exitGameMessage;
         }
 

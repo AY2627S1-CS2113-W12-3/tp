@@ -129,7 +129,7 @@ class WordleGameTest {
 
         String response = game.handleInput("crane");
 
-        assertTrue(response.contains("Correct guess! You got it in 3 tries."));
+        assertTrue(response.contains("Correct guess! You completed Wordle in 3 tries."));
         assertTrue(response.contains("Returning to the main menu."));
         assertTrue(game.isFinished());
         assertEquals(5, game.getPointsEarnedForLastAction());
@@ -141,7 +141,7 @@ class WordleGameTest {
 
         String response = game.handleInput("CRANE");
 
-        assertTrue(response.contains("Correct guess! You got it in 1 try."));
+        assertTrue(response.contains("Correct guess! You completed Wordle in 1 try."));
         assertTrue(response.contains("Returning to the main menu."));
         assertEquals(5, game.getPointsEarnedForLastAction());
     }
