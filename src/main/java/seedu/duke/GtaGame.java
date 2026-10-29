@@ -126,45 +126,7 @@ public class GtaGame implements Game {
         Map<String, StoryNode> map = new HashMap<>();
         addOpeningNode(map);
         addPolicePath(map);
-
-        map.put("wait_home", new StoryNode(
-                "You wait at home. Hours pass. You get incredibly bored.",
-                new String[]{"Go for a walk to clear your head", "Check the neighborhood chat group"},
-                new String[]{"walk", "chat_group"},
-                false));
-
-        map.put("walk", new StoryNode(
-                "While walking, you spot your car parked outside"
-                        + " the local bakery with a giant bow on it!"
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: Your family got it detailed as a gift."
-                        + " Looks brand new!",
-                new String[]{}, new String[]{}, true));
-
-        map.put("chat_group", new StoryNode(
-                "The chat group is blowing up. Apparently a raccoon"
-                        + " was seen driving a car that looks just like yours.",
-                new String[]{"Go hunt for the raccoon", "Assume it's a joke and go back to sleep"},
-                new String[]{"raccoon_chase", "sleep_ending"},
-                false));
-
-        map.put("raccoon_chase", new StoryNode(
-                "You find the raccoon... driving your car through"
-                        + " a drive-through, ordering chicken nuggets."
-                        + " It crashes into a mailbox."
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: No nuggets were harmed, but your car"
-                        + " is totaled. Insurance doesn't cover raccoons.",
-                new String[]{}, new String[]{}, true));
-
-        map.put("sleep_ending", new StoryNode(
-                "You go back to sleep. When you wake up, your car"
-                        + " is back in the driveway with a full tank of gas"
-                        + " and a tiny thank-you note from a raccoon."
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: Sometimes doing nothing is the best"
-                        + " strategy. Free gas!",
-                new String[]{}, new String[]{}, true));
+        addWaitAtHomePath(map);
 
         // ---- Path B: Investigate ----
 
@@ -209,6 +171,48 @@ public class GtaGame implements Game {
                 new String[]{}, new String[]{}, true));
 
         return map;
+    }
+
+    /** Adds the waiting-at-home path and its branches. */
+    private void addWaitAtHomePath(Map<String, StoryNode> map) {
+        map.put("wait_home", new StoryNode(
+                "You wait at home. Hours pass. You get incredibly bored.",
+                new String[]{"Go for a walk to clear your head", "Check the neighborhood chat group"},
+                new String[]{"walk", "chat_group"},
+                false));
+
+        map.put("walk", new StoryNode(
+                "While walking, you spot your car parked outside"
+                        + " the local bakery with a giant bow on it!"
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: Your family got it detailed as a gift."
+                        + " Looks brand new!",
+                new String[]{}, new String[]{}, true));
+
+        map.put("chat_group", new StoryNode(
+                "The chat group is blowing up. Apparently a raccoon"
+                        + " was seen driving a car that looks just like yours.",
+                new String[]{"Go hunt for the raccoon", "Assume it's a joke and go back to sleep"},
+                new String[]{"raccoon_chase", "sleep_ending"},
+                false));
+
+        map.put("raccoon_chase", new StoryNode(
+                "You find the raccoon... driving your car through"
+                        + " a drive-through, ordering chicken nuggets."
+                        + " It crashes into a mailbox."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: No nuggets were harmed, but your car"
+                        + " is totaled. Insurance doesn't cover raccoons.",
+                new String[]{}, new String[]{}, true));
+
+        map.put("sleep_ending", new StoryNode(
+                "You go back to sleep. When you wake up, your car"
+                        + " is back in the driveway with a full tank of gas"
+                        + " and a tiny thank-you note from a raccoon."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: Sometimes doing nothing is the best"
+                        + " strategy. Free gas!",
+                new String[]{}, new String[]{}, true));
     }
 
     /** Adds the opening scene and its two choices to the story graph. */
