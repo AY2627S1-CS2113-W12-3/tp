@@ -1,0 +1,22 @@
+@startuml
+skinparam defaultFontSize 16
+actor Player
+participant CommandHandler as Handler
+participant CalculatorGame as Game
+participant ArithmeticProblem as Problem
+participant PointsStore as Points
+
+Player -> Handler: enters an answer
+Handler -> Game: handleInput(...)
+Game -> Game: parse a whole number
+Game -> Problem: getAnswer()
+Problem --> Game: expected answer
+Game -> Problem: generate(random)
+Problem --> Game: next problem
+Game --> Handler: feedback and next round prompt
+Handler -> Game: getPointsEarnedForLastAction()
+Game --> Handler: points earned
+Handler -> Points: addPoints(...)
+Points --> Handler: updated total
+Handler --> Player: display result and points
+@enduml

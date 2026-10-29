@@ -28,6 +28,20 @@ Source: [wordle-classes.puml](diagrams/wordle-classes.puml).
 
 Source: [wordle-guess-sequence.puml](diagrams/wordle-guess-sequence.puml).
 
+### Calculator game (Poonnat Wattanakul)
+
+`CalculatorGame` implements `Game` as game ID `2`. Each round shows one randomly generated arithmetic problem and grades a single line of input. `ArithmeticProblem.generate()` builds the problem and stores its own answer, so the game never recomputes it; division problems are built from a quotient and a divisor so the answer is always a whole number. The current problem, round number, and score are kept in fields instead of a loop inside the game, which is what lets the application stay at one shared command prompt.
+
+![Calculator class diagram](diagrams/calculator-classes.png)
+
+Source: [calculator-classes.puml](diagrams/calculator-classes.puml).
+
+Input that is not a whole number is not an attempt: the counters and the current problem are left unchanged and the round is re-asked, so a typo cannot cost the player a point. A graded answer advances the round and generates the next problem. A correct answer awards one point, which `CommandHandler` reads after the round and persists through `PointsStore`. Typing `quit` ends the session and reports the rounds attempted, the number correct, and the accuracy.
+
+![Sequence diagram of a Calculator round](diagrams/calculator-round-sequence.png)
+
+Source: [calculator-round-sequence.puml](diagrams/calculator-round-sequence.puml).
+
 ### Battleship game
 
 `BattleshipGame` implements `Game` as game ID `3`. It manages a turn-based game against the computer. Each participant has a 7 × 7 board containing four randomly placed ships of lengths 4, 3, 2 and 1. `BattleshipBoard` handles ship placement and attacks, while `Cell` and `Ship` track occupied positions and damage. `ShotResult` reports a miss, hit, or sunk ship. Invalid or repeated coordinates do not consume a turn. The computer draws its attacks from a shuffled list to avoid repeated shots.
