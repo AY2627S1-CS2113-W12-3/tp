@@ -28,8 +28,8 @@ public class StoryNode {
     public StoryNode(String text, String[] choiceLabels, String[] choiceKeys,
                      boolean isEnding) {
         this.text = text;
-        this.choiceLabels = choiceLabels;
-        this.choiceKeys = choiceKeys;
+        this.choiceLabels = choiceLabels.clone();
+        this.choiceKeys = choiceKeys.clone();
         this.isEnding = isEnding;
     }
 
@@ -45,19 +45,19 @@ public class StoryNode {
     /**
      * Returns the human-readable labels for the available choices.
      *
-     * @return the choice labels, or an empty array for ending nodes
+     * @return a copy of the choice labels, or an empty array for ending nodes
      */
     public String[] getChoiceLabels() {
-        return choiceLabels;
+        return choiceLabels.clone();
     }
 
     /**
      * Returns the map keys identifying the next node for each choice.
      *
-     * @return the choice keys, or an empty array for ending nodes
+     * @return a copy of the choice keys, or an empty array for ending nodes
      */
     public String[] getChoiceKeys() {
-        return choiceKeys;
+        return choiceKeys.clone();
     }
 
     /**
