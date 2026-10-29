@@ -127,48 +127,7 @@ public class GtaGame implements Game {
         addOpeningNode(map);
         addPolicePath(map);
         addWaitAtHomePath(map);
-
-        // ---- Path B: Investigate ----
-
-        map.put("investigate", new StoryNode(
-                "You go outside. There are tire marks and..."
-                        + " a trail of cheese puffs leading down the street.",
-                new String[]{"Follow the cheese puff trail", "Ask your neighbor if they saw anything"},
-                new String[]{"cheese_trail", "neighbor"},
-                false));
-
-        map.put("cheese_trail", new StoryNode(
-                "The trail leads to the park, where you find your car"
-                        + " covered in cheese puff dust. A family of raccoons"
-                        + " is living in the back seat.",
-                new String[]{"Shoo the raccoons away politely", "Offer the raccoons a ride home"},
-                new String[]{"raccoon_polite", "raccoon_ride"},
-                false));
-
-        map.put("raccoon_polite", new StoryNode(
-                "The raccoons leave peacefully, but your car now"
-                        + " permanently smells like cheese puffs."
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: You got your car back. Could be worse."
-                        + " At least it smells delicious.",
-                new String[]{}, new String[]{}, true));
-
-        map.put("raccoon_ride", new StoryNode(
-                "You drive the raccoons to the forest. They wave goodbye."
-                        + " One leaves you a tiny hand-written thank-you note."
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: You made friends with raccoons AND"
-                        + " got your car back. Best day ever.",
-                new String[]{}, new String[]{}, true));
-
-        map.put("neighbor", new StoryNode(
-                "Your neighbor says they saw someone in a banana costume"
-                        + " drive off in your car at 3 AM. The police never"
-                        + " find banana-costume guy."
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: You get the insurance money and buy a"
-                        + " bicycle. Healthier, honestly.",
-                new String[]{}, new String[]{}, true));
+        addInvestigationPath(map);
 
         return map;
     }
@@ -243,6 +202,49 @@ public class GtaGame implements Game {
                         + " to set up a surprise birthday party for you."
                         + System.lineSeparator() + System.lineSeparator()
                         + "ENDING: You get cake AND your car back. Happy birthday!",
+                new String[]{}, new String[]{}, true));
+    }
+
+    /** Adds the investigation path and its endings. */
+    private void addInvestigationPath(Map<String, StoryNode> map) {
+        map.put("investigate", new StoryNode(
+                "You go outside. There are tire marks and..."
+                        + " a trail of cheese puffs leading down the street.",
+                new String[]{"Follow the cheese puff trail", "Ask your neighbor if they saw anything"},
+                new String[]{"cheese_trail", "neighbor"},
+                false));
+
+        map.put("cheese_trail", new StoryNode(
+                "The trail leads to the park, where you find your car"
+                        + " covered in cheese puff dust. A family of raccoons"
+                        + " is living in the back seat.",
+                new String[]{"Shoo the raccoons away politely", "Offer the raccoons a ride home"},
+                new String[]{"raccoon_polite", "raccoon_ride"},
+                false));
+
+        map.put("raccoon_polite", new StoryNode(
+                "The raccoons leave peacefully, but your car now"
+                        + " permanently smells like cheese puffs."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: You got your car back. Could be worse."
+                        + " At least it smells delicious.",
+                new String[]{}, new String[]{}, true));
+
+        map.put("raccoon_ride", new StoryNode(
+                "You drive the raccoons to the forest. They wave goodbye."
+                        + " One leaves you a tiny hand-written thank-you note."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: You made friends with raccoons AND"
+                        + " got your car back. Best day ever.",
+                new String[]{}, new String[]{}, true));
+
+        map.put("neighbor", new StoryNode(
+                "Your neighbor says they saw someone in a banana costume"
+                        + " drive off in your car at 3 AM. The police never"
+                        + " find banana-costume guy."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: You get the insurance money and buy a"
+                        + " bicycle. Healthier, honestly.",
                 new String[]{}, new String[]{}, true));
     }
 }
