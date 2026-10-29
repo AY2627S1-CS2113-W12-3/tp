@@ -28,8 +28,8 @@ public class StoryNode {
     public StoryNode(String text, String[] choiceLabels, String[] choiceKeys,
                      boolean isEnding) {
         this.text = text;
-        this.choiceLabels = choiceLabels;
-        this.choiceKeys = choiceKeys;
+        this.choiceLabels = choiceLabels.clone();
+        this.choiceKeys = choiceKeys.clone();
         this.isEnding = isEnding;
     }
 
