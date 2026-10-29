@@ -76,23 +76,12 @@ public class CommandHandler {
 
         // Check menu commands first so they stay available while a game is running.
         if (command.equals(COMMAND_EXIT)) {
-            LOGGER.info("Exit command received.");
-            if (activeGame != null) {
-                showExitMessage(activeGame);
-                activeGame.reset();
-            }
-            ui.showGoodbye();
+            handleExitCommand();
             return false;
         }
 
         if (command.equals(COMMAND_HELP)) {
-            LOGGER.info("Help command received.");
-            if (activeGame == null) {
-                ui.showHelp();
-            } else {
-                ui.showHelp(activeGame.getCommands());
-            }
-
+            handleHelpCommand();
             return true;
         }
 
@@ -140,6 +129,26 @@ public class CommandHandler {
         LOGGER.warning("Unknown command received: " + command);
         ui.showMessage("Unknown command: " + command);
         return true;
+    }
+
+    /** Leaves the active game, if any, and displays the application exit message. */
+    private void handleExitCommand() {
+        LOGGER.info("Exit command received.");
+        if (activeGame != null) {
+            showExitMessage(activeGame);
+            activeGame.reset();
+        }
+        ui.showGoodbye();
+    }
+
+    /** Displays help for the menu or the currently active game. */
+    private void handleHelpCommand() {
+        LOGGER.info("Help command received.");
+        if (activeGame == null) {
+            ui.showHelp();
+        } else {
+            ui.showHelp(activeGame.getCommands());
+        }
     }
 
     /** Handles one game action, saves any award, and returns to the menu if it ended. */
