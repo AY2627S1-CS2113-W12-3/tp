@@ -57,6 +57,31 @@ class GtaGameTest {
     }
 
     @Test
+    void everyStoryBranchCanReachAnEnding() {
+        String[][] paths = {
+            {"1", "1"},
+            {"1", "2", "1"},
+            {"1", "2", "2", "1"},
+            {"1", "2", "2", "2"},
+            {"2", "1", "1"},
+            {"2", "1", "2"},
+            {"2", "2"}
+        };
+
+        for (String[] path : paths) {
+            GtaGame game = newGame();
+            String response = "";
+            for (String choice : path) {
+                response = game.handleInput(choice);
+            }
+
+            assertTrue(game.isFinished(), "Path should finish: " + String.join(" -> ", path));
+            assertTrue(response.contains("ENDING"), "Path should show an ending: "
+                    + String.join(" -> ", path));
+        }
+    }
+
+    @Test
     void exitGameCommandFinishesGame() {
         GtaGame game = newGame();
         String response = game.handleInput("exitgame");

@@ -124,34 +124,16 @@ public class GtaGame implements Game {
      */
     private Map<String, StoryNode> initializeStory() {
         Map<String, StoryNode> map = new HashMap<>();
+        addOpeningNode(map);
+        addPolicePath(map);
+        addWaitAtHomePath(map);
+        addInvestigationPath(map);
 
-        map.put("start", new StoryNode(
-                "You wake up, stretch, and look out the window..."
-                        + " YOUR CAR IS GONE!"
-                        + System.lineSeparator()
-                        + "What do you do?",
-                new String[]{"Call the police", "Go outside to investigate"},
-                new String[]{"police", "investigate"},
-                false));
+        return map;
+    }
 
-        // ---- Path A: Call the police ----
-
-        map.put("police", new StoryNode(
-                "You call 911. The operator asks if you"
-                        + " saw anything suspicious last night.",
-                new String[]{"Mention the suspicious ice-cream truck", "Say you saw nothing"},
-                new String[]{"icecream_lead", "wait_home"},
-                false));
-
-        map.put("icecream_lead", new StoryNode(
-                "The police track down the ice-cream truck."
-                        + System.lineSeparator()
-                        + "It was your neighbor Bob! He 'borrowed' your car"
-                        + " to set up a surprise birthday party for you."
-                        + System.lineSeparator() + System.lineSeparator()
-                        + "ENDING: You get cake AND your car back. Happy birthday!",
-                new String[]{}, new String[]{}, true));
-
+    /** Adds the waiting-at-home path and its branches. */
+    private void addWaitAtHomePath(Map<String, StoryNode> map) {
         map.put("wait_home", new StoryNode(
                 "You wait at home. Hours pass. You get incredibly bored.",
                 new String[]{"Go for a walk to clear your head", "Check the neighborhood chat group"},
@@ -190,9 +172,41 @@ public class GtaGame implements Game {
                         + "ENDING: Sometimes doing nothing is the best"
                         + " strategy. Free gas!",
                 new String[]{}, new String[]{}, true));
+    }
 
-        // ---- Path B: Investigate ----
+    /** Adds the opening scene and its two choices to the story graph. */
+    private void addOpeningNode(Map<String, StoryNode> map) {
+        map.put("start", new StoryNode(
+                "You wake up, stretch, and look out the window..."
+                        + " YOUR CAR IS GONE!"
+                        + System.lineSeparator()
+                        + "What do you do?",
+                new String[]{"Call the police", "Go outside to investigate"},
+                new String[]{"police", "investigate"},
+                false));
+    }
 
+    /** Adds the police-report path and its immediate ending. */
+    private void addPolicePath(Map<String, StoryNode> map) {
+        map.put("police", new StoryNode(
+                "You call 911. The operator asks if you"
+                        + " saw anything suspicious last night.",
+                new String[]{"Mention the suspicious ice-cream truck", "Say you saw nothing"},
+                new String[]{"icecream_lead", "wait_home"},
+                false));
+
+        map.put("icecream_lead", new StoryNode(
+                "The police track down the ice-cream truck."
+                        + System.lineSeparator()
+                        + "It was your neighbor Bob! He 'borrowed' your car"
+                        + " to set up a surprise birthday party for you."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "ENDING: You get cake AND your car back. Happy birthday!",
+                new String[]{}, new String[]{}, true));
+    }
+
+    /** Adds the investigation path and its endings. */
+    private void addInvestigationPath(Map<String, StoryNode> map) {
         map.put("investigate", new StoryNode(
                 "You go outside. There are tire marks and..."
                         + " a trail of cheese puffs leading down the street.",
@@ -232,7 +246,5 @@ public class GtaGame implements Game {
                         + "ENDING: You get the insurance money and buy a"
                         + " bicycle. Healthier, honestly.",
                 new String[]{}, new String[]{}, true));
-
-        return map;
     }
 }
