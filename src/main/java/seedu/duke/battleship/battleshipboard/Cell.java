@@ -8,14 +8,14 @@ package seedu.duke.battleship.battleshipboard;
  */
 class Cell {
     Ship occupyingShip;
-    boolean containsShip;
+    boolean hasShip;
     boolean isHit;
 
     /**
      * Creates an empty cell that has not been attacked.
      */
     Cell() {
-        containsShip = false;
+        hasShip = false;
         isHit = false;
     }
 
@@ -27,6 +27,6 @@ class Cell {
 
     void plantShip(Ship ship) {
         this.occupyingShip = ship;
-        containsShip = true;
+        hasShip = true;
     }
 }

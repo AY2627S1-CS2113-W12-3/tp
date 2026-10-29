@@ -31,7 +31,7 @@ public class TicTacToeBoard {
      * @param mark the mark to place, either {@code X} or {@code O}
      * @return true if the mark was placed, otherwise false
      */
-    public boolean placeMark(int row, int column, char mark) {
+    public boolean tryPlaceMark(int row, int column, char mark) {
         if (!isInBounds(row, column) || cells[row][column] != EMPTY || (mark != 'X' && mark != 'O')) {
             return false;
         }

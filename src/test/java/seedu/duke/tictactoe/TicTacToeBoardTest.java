@@ -24,11 +24,11 @@ class TicTacToeBoardTest {
     void onlyAnEmptySquareAndValidMarkCanBeUsed() {
         TicTacToeBoard board = new TicTacToeBoard();
 
-        assertTrue(board.placeMark(0, 0, 'X'));
-        assertFalse(board.placeMark(0, 0, 'O'));
-        assertFalse(board.placeMark(-1, 0, 'O'));
-        assertFalse(board.placeMark(0, 3, 'O'));
-        assertFalse(board.placeMark(1, 1, 'Y'));
+        assertTrue(board.tryPlaceMark(0, 0, 'X'));
+        assertFalse(board.tryPlaceMark(0, 0, 'O'));
+        assertFalse(board.tryPlaceMark(-1, 0, 'O'));
+        assertFalse(board.tryPlaceMark(0, 3, 'O'));
+        assertFalse(board.tryPlaceMark(1, 1, 'Y'));
         assertFalse(board.isCellEmpty(0, 0));
         assertFalse(board.isCellEmpty(3, 0));
         assertTrue(board.isCellEmpty(1, 1));
@@ -37,14 +37,14 @@ class TicTacToeBoardTest {
     @Test
     void detectsRowAndColumnWins() {
         TicTacToeBoard rowBoard = new TicTacToeBoard();
-        rowBoard.placeMark(0, 0, 'X');
-        rowBoard.placeMark(0, 1, 'X');
-        rowBoard.placeMark(0, 2, 'X');
+        rowBoard.tryPlaceMark(0, 0, 'X');
+        rowBoard.tryPlaceMark(0, 1, 'X');
+        rowBoard.tryPlaceMark(0, 2, 'X');
 
         TicTacToeBoard columnBoard = new TicTacToeBoard();
-        columnBoard.placeMark(0, 1, 'O');
-        columnBoard.placeMark(1, 1, 'O');
-        columnBoard.placeMark(2, 1, 'O');
+        columnBoard.tryPlaceMark(0, 1, 'O');
+        columnBoard.tryPlaceMark(1, 1, 'O');
+        columnBoard.tryPlaceMark(2, 1, 'O');
 
         assertTrue(rowBoard.hasWinner('X'));
         assertTrue(columnBoard.hasWinner('O'));
@@ -53,14 +53,14 @@ class TicTacToeBoardTest {
     @Test
     void detectsBothDiagonalWins() {
         TicTacToeBoard mainDiagonal = new TicTacToeBoard();
-        mainDiagonal.placeMark(0, 0, 'X');
-        mainDiagonal.placeMark(1, 1, 'X');
-        mainDiagonal.placeMark(2, 2, 'X');
+        mainDiagonal.tryPlaceMark(0, 0, 'X');
+        mainDiagonal.tryPlaceMark(1, 1, 'X');
+        mainDiagonal.tryPlaceMark(2, 2, 'X');
 
         TicTacToeBoard otherDiagonal = new TicTacToeBoard();
-        otherDiagonal.placeMark(0, 2, 'O');
-        otherDiagonal.placeMark(1, 1, 'O');
-        otherDiagonal.placeMark(2, 0, 'O');
+        otherDiagonal.tryPlaceMark(0, 2, 'O');
+        otherDiagonal.tryPlaceMark(1, 1, 'O');
+        otherDiagonal.tryPlaceMark(2, 0, 'O');
 
         assertTrue(mainDiagonal.hasWinner('X'));
         assertTrue(otherDiagonal.hasWinner('O'));
@@ -77,7 +77,7 @@ class TicTacToeBoardTest {
 
         for (int row = 0; row < draw.length; row++) {
             for (int column = 0; column < draw[row].length; column++) {
-                assertTrue(board.placeMark(row, column, draw[row][column]));
+                assertTrue(board.tryPlaceMark(row, column, draw[row][column]));
             }
         }
 

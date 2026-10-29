@@ -41,7 +41,7 @@ public class TicTacToeGame implements Game {
     private final TicTacToeBoard board;
 
     /** Whether the current game has ended. */
-    private boolean finished;
+    private boolean isFinished;
 
     /** Points earned by the most recent input, if it won the game. */
     private int pointsEarnedForLastAction;
@@ -108,13 +108,13 @@ public class TicTacToeGame implements Game {
     @Override
     public String handleInput(String input) {
         pointsEarnedForLastAction = 0;
-        if (finished) {
+        if (isFinished) {
             return "The game has ended. Start a new game to play again.";
         }
 
         String coordinate = input == null ? "" : input.trim().toUpperCase(Locale.ROOT);
         if (coordinate.equalsIgnoreCase(QUIT_COMMAND)) {
-            finished = true;
+            isFinished = true;
             return EXIT_MESSAGE;
         }
         if (!coordinate.matches("[A-C][1-3]")) {
@@ -123,35 +123,35 @@ public class TicTacToeGame implements Game {
 
         int row = coordinate.charAt(0) - 'A';
         int column = coordinate.charAt(1) - '1';
-        if (!board.placeMark(row, column, PLAYER_MARK)) {
+        if (!board.tryPlaceMark(row, column, PLAYER_MARK)) {
             return "That square is already occupied. Choose an empty square.";
         }
 
         String playerMove = "You played " + coordinate + " (X).";
         if (board.hasWinner(PLAYER_MARK)) {
-            finished = true;
+            isFinished = true;
             pointsEarnedForLastAction = POINTS_FOR_WIN;
             return formatRound(playerMove, "You win!");
         }
         if (board.isFull()) {
-            finished = true;
+            isFinished = true;
             return formatRound(playerMove, "It's a draw!");
         }
 
         int computerCell = chooseRandomEmptyCell();
         int computerRow = computerCell / TicTacToeBoard.SIZE;
         int computerColumn = computerCell % TicTacToeBoard.SIZE;
-        boolean movePlaced = board.placeMark(computerRow, computerColumn, COMPUTER_MARK);
-        assert movePlaced : "The computer must choose an empty square";
+        boolean isMovePlaced = board.tryPlaceMark(computerRow, computerColumn, COMPUTER_MARK);
+        assert isMovePlaced : "The computer must choose an empty square";
 
         String moves = playerMove + System.lineSeparator()
                 + "Computer played " + formatCoordinate(computerRow, computerColumn) + " (O).";
         if (board.hasWinner(COMPUTER_MARK)) {
-            finished = true;
+            isFinished = true;
             return formatRound(moves, "The computer wins!");
         }
         if (board.isFull()) {
-            finished = true;
+            isFinished = true;
             return formatRound(moves, "It's a draw!");
         }
         return formatRound(moves, "");
@@ -209,7 +209,7 @@ public class TicTacToeGame implements Game {
 
     @Override
     public boolean isFinished() {
-        return finished;
+        return isFinished;
     }
 
     @Override
@@ -220,7 +220,7 @@ public class TicTacToeGame implements Game {
     @Override
     public void reset() {
         board.reset();
-        finished = false;
+        isFinished = false;
         pointsEarnedForLastAction = 0;
     }
 

@@ -44,7 +44,7 @@ class CommandHandlerTest {
 
     @Test
     void listShowsAvailableGames() {
-        commandHandler.processInput("list");
+        commandHandler.shouldContinueAfterInput("list");
 
         assertTrue(output.toString().contains("[ID: 1] Wordle"));
         assertTrue(output.toString().contains("[ID: 2] Calculator"));
@@ -60,8 +60,8 @@ class CommandHandlerTest {
         gameList.getGames().add(testGame);
         commandHandler = createHandler(gameList);
 
-        commandHandler.processInput("play test");
-        commandHandler.processInput("hello");
+        commandHandler.shouldContinueAfterInput("play test");
+        commandHandler.shouldContinueAfterInput("hello");
 
         assertTrue(output.toString().contains("Received: hello"));
     }
@@ -74,9 +74,9 @@ class CommandHandlerTest {
         gameList.getGames().add(testGame);
         commandHandler = createHandler(gameList);
 
-        commandHandler.processInput("play test");
-        commandHandler.processInput("finish");
-        commandHandler.processInput("hello");
+        commandHandler.shouldContinueAfterInput("play test");
+        commandHandler.shouldContinueAfterInput("finish");
+        commandHandler.shouldContinueAfterInput("hello");
 
         assertTrue(output.toString().contains("Received: finish"));
         assertTrue(output.toString().contains("Unknown command: hello"));
@@ -84,8 +84,8 @@ class CommandHandlerTest {
 
     @Test
     void switchingGamesShowsThePreviousSessionSummary() {
-        commandHandler.processInput("play 2");
-        commandHandler.processInput("play 1");
+        commandHandler.shouldContinueAfterInput("play 2");
+        commandHandler.shouldContinueAfterInput("play 1");
 
         String printed = output.toString();
         assertTrue(printed.contains("Session summary"));
@@ -95,7 +95,7 @@ class CommandHandlerTest {
 
     @Test
     void exitStopsTheApplication() {
-        assertFalse(commandHandler.processInput("exit"));
+        assertFalse(commandHandler.shouldContinueAfterInput("exit"));
         assertTrue(output.toString().contains("Bye!"));
     }
 
@@ -105,9 +105,9 @@ class CommandHandlerTest {
         TestGame testGame = new TestGame();
         commandHandler = createHandler(gameListWith(testGame));
 
-        commandHandler.processInput("score");
-        commandHandler.processInput("play test");
-        commandHandler.processInput("score");
+        commandHandler.shouldContinueAfterInput("score");
+        commandHandler.shouldContinueAfterInput("play test");
+        commandHandler.shouldContinueAfterInput("score");
 
         assertEquals(2, output.toString().split("Total points: 7", -1).length - 1);
     }
@@ -117,10 +117,10 @@ class CommandHandlerTest {
         TestGame testGame = new TestGame();
         commandHandler = createHandler(gameListWith(testGame));
 
-        commandHandler.processInput("play test");
-        commandHandler.processInput("award");
-        commandHandler.processInput("score");
-        commandHandler.processInput("score");
+        commandHandler.shouldContinueAfterInput("play test");
+        commandHandler.shouldContinueAfterInput("award");
+        commandHandler.shouldContinueAfterInput("score");
+        commandHandler.shouldContinueAfterInput("score");
 
         assertEquals(3, pointsStore.getTotalPoints());
         assertTrue(output.toString().contains("You earned 3 points. Total points: 3."));
@@ -128,7 +128,7 @@ class CommandHandlerTest {
 
     /** A small game that makes it easy to check whether input was forwarded. */
     private static class TestGame implements Game {
-        private boolean finished;
+        private boolean isFinished;
         private int pointsEarnedForLastAction;
 
         @Override
@@ -145,7 +145,7 @@ class CommandHandlerTest {
         public String handleInput(String input) {
             pointsEarnedForLastAction = 0;
             if (input.equals("finish")) {
-                finished = true;
+                isFinished = true;
             } else if (input.equals("award")) {
                 pointsEarnedForLastAction = 3;
             }
@@ -159,12 +159,12 @@ class CommandHandlerTest {
 
         @Override
         public boolean isFinished() {
-            return finished;
+            return isFinished;
         }
 
         @Override
         public void reset() {
-            finished = false;
+            isFinished = false;
             pointsEarnedForLastAction = 0;
         }
 

@@ -68,7 +68,7 @@ public class CommandHandler {
      * @param input the line entered by the player
      * @return {@code true} while the application should continue, or {@code false} after {@code exit}
      */
-    public boolean processInput(String input) {
+    public boolean shouldContinueAfterInput(String input) {
         String[] parsed = Parser.parse(input);
         assert parsed.length == 2 : "Parser must return a command and its arguments";
         String command = parsed[0];

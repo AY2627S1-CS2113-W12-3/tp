@@ -33,7 +33,7 @@ public class PlayStationMinusOne {
                 break;
             }
 
-            if (!commandHandler.processInput(input)) {
+            if (!commandHandler.shouldContinueAfterInput(input)) {
                 break;
             }
         }

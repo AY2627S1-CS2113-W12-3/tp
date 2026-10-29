@@ -93,7 +93,7 @@ public class BattleshipBoard {
             int r = row + (isHorizontal ? 0 : i);
             int c = col + (isHorizontal ? i : 0);
 
-            if (board[r][c].containsShip) {
+            if (board[r][c].hasShip) {
                 return false;
             }
         }
@@ -123,8 +123,8 @@ public class BattleshipBoard {
                 Cell cell = this.board[row][col];
 
                 if (cell.isHit) {
-                    icon = cell.containsShip ? 'O' : 'X';
-                } else if (cell.containsShip && !isHidden) {
+                    icon = cell.hasShip ? 'O' : 'X';
+                } else if (cell.hasShip && !isHidden) {
                     icon = 'S';
                 } else {
                     icon = '~';
@@ -159,7 +159,7 @@ public class BattleshipBoard {
         assert(!cell.isHit);
 
         cell.isHit = true;
-        if (cell.containsShip) {
+        if (cell.hasShip) {
             Ship ship = cell.occupyingShip;
             ship.receiveDamage();
 
@@ -190,7 +190,7 @@ public class BattleshipBoard {
      *
      * @return true if no ships remain afloat, false otherwise
      */
-    public boolean allShipsSunk() {
+    public boolean areAllShipsSunk() {
         return shipsRemaining == 0;
     }
 }

@@ -58,7 +58,7 @@ public class CalculatorGame implements Game {
     private int attemptedCount = 0;
 
     /** Set once the player leaves the session, which ends the game. */
-    private boolean finished = false;
+    private boolean isFinished = false;
 
     /** Points earned by the most recent input, if it was correct. */
     private int pointsEarnedForLastAction;
@@ -139,7 +139,7 @@ public class CalculatorGame implements Game {
         pointsEarnedForLastAction = 0;
         if (input != null && input.trim().equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player left the calculator after " + attemptedCount + " rounds.");
-            finished = true;
+            isFinished = true;
             return buildSessionSummary();
         }
 
@@ -252,12 +252,12 @@ public class CalculatorGame implements Game {
 
     @Override
     public boolean isFinished() {
-        return finished;
+        return isFinished;
     }
 
     @Override
     public void reset() {
-        finished = false;
+        isFinished = false;
         pointsEarnedForLastAction = 0;
         roundNumber = 1;
         correctCount = 0;
