@@ -76,23 +76,12 @@ public class CommandHandler {
 
         // Check menu commands first so they stay available while a game is running.
         if (command.equals(COMMAND_EXIT)) {
-            LOGGER.info("Exit command received.");
-            if (activeGame != null) {
-                showExitMessage(activeGame);
-                activeGame.reset();
-            }
-            ui.showGoodbye();
+            handleExitCommand();
             return false;
         }
 
         if (command.equals(COMMAND_HELP)) {
-            LOGGER.info("Help command received.");
-            if (activeGame == null) {
-                ui.showHelp();
-            } else {
-                ui.showHelp(activeGame.getCommands());
-            }
-
+            handleHelpCommand();
             return true;
         }
 
@@ -102,22 +91,12 @@ public class CommandHandler {
         }
 
         if (command.equals(COMMAND_LIST)) {
-            if (arguments.equalsIgnoreCase(LIST_ARGUMENT_LETTERS)) {
-                if (activeGame instanceof WordleGame) {
-                    handleGameInput(input);
-                } else {
-                    ui.showMessage(WordleException.listLettersOnlyInWordle());
-                }
-                return true;
-            }
-            LOGGER.info("List command received.");
-            ui.showListOfGames(gameList);
+            handleListCommand(arguments, input);
             return true;
         }
 
-        if (command.equals(COMMAND_QUIT) && activeGame == null) {
-            LOGGER.warning("Quit command received outside a game.");
-            ui.showMessage(QUIT_OUTSIDE_GAME_MESSAGE);
+        if (command.equals(COMMAND_QUIT)) {
+            handleQuitCommand(input);
             return true;
         }
 
@@ -126,20 +105,71 @@ public class CommandHandler {
             return true;
         }
 
+        handleOtherInput(command, input);
+        return true;
+    }
+
+    /** Handles blank input, active-game input, or an unknown menu command. */
+    private void handleOtherInput(String command, String input) {
         // A blank line is ignored instead of being sent to the active game.
         if (command.isEmpty()) {
-            return true;
+            return;
         }
 
         if (activeGame != null) {
             // Game input can be a guess or a number, so pass the full line unchanged.
             handleGameInput(input);
-            return true;
+            return;
         }
 
         LOGGER.warning("Unknown command received: " + command);
         ui.showMessage("Unknown command: " + command);
-        return true;
+    }
+
+    /** Leaves the active game, if any, and displays the application exit message. */
+    private void handleExitCommand() {
+        LOGGER.info("Exit command received.");
+        if (activeGame != null) {
+            showExitMessage(activeGame);
+            activeGame.reset();
+        }
+        ui.showGoodbye();
+    }
+
+    /** Displays help for the menu or the currently active game. */
+    private void handleHelpCommand() {
+        LOGGER.info("Help command received.");
+        if (activeGame == null) {
+            ui.showHelp();
+        } else {
+            ui.showHelp(activeGame.getCommands());
+        }
+    }
+
+    /** Handles the game-list command and Wordle's letter-hint command. */
+    private void handleListCommand(String arguments, String input) {
+        if (arguments.equalsIgnoreCase(LIST_ARGUMENT_LETTERS)) {
+            if (activeGame instanceof WordleGame) {
+                handleGameInput(input);
+            } else {
+                ui.showMessage(WordleException.listLettersOnlyInWordle());
+            }
+            return;
+        }
+
+        LOGGER.info("List command received.");
+        ui.showListOfGames(gameList);
+    }
+
+    /** Leaves the current game, or explains that quit only works during a game. */
+    private void handleQuitCommand(String input) {
+        if (activeGame == null) {
+            LOGGER.warning("Quit command received outside a game.");
+            ui.showMessage(QUIT_OUTSIDE_GAME_MESSAGE);
+            return;
+        }
+
+        handleGameInput(input);
     }
 
     /** Handles one game action, saves any award, and returns to the menu if it ended. */
