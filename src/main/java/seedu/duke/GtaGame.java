@@ -19,7 +19,7 @@ public class GtaGame implements Game {
     /** Key of the story node the player is currently on. */
     private String currentNodeKey;
     /** Tracks whether the current session has ended. */
-    private boolean finished;
+    private boolean isFinished;
 
     /**
      * Creates a new GTA -6 game with the given ID and initialises the story.
@@ -30,7 +30,7 @@ public class GtaGame implements Game {
         this.gameId = gameId;
         this.storyMap = initializeStory();
         this.currentNodeKey = "start";
-        this.finished = false;
+        this.isFinished = false;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class GtaGame implements Game {
     @Override
     public String handleInput(String input) {
         if (input.equalsIgnoreCase(EXIT_GAME_COMMAND)) {
-            finished = true;
+            isFinished = true;
             return "Returning to the main menu.";
         }
 
@@ -100,7 +100,7 @@ public class GtaGame implements Game {
         StoryNode nextNode = storyMap.get(nextKey);
 
         if (nextNode.isEnding()) {
-            finished = true;
+            isFinished = true;
         }
 
         return nextNode.formatForDisplay();
@@ -108,13 +108,13 @@ public class GtaGame implements Game {
 
     @Override
     public boolean isFinished() {
-        return finished;
+        return isFinished;
     }
 
     @Override
     public void reset() {
         currentNodeKey = "start";
-        finished = false;
+        isFinished = false;
     }
 
     /**

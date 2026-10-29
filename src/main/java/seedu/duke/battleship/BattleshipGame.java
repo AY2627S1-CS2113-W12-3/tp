@@ -192,7 +192,7 @@ public class BattleshipGame implements Game {
                 .append(formatShotResult(playerResult))
                 .append(System.lineSeparator());
 
-        if (enemyBoard.allShipsSunk()) {
+        if (enemyBoard.areAllShipsSunk()) {
             isGameOver = true;
             pointsEarnedForLastAction = POINTS_FOR_WIN;
             LOGGER.info("Player won after " + roundsPlayed + ".");
@@ -241,7 +241,7 @@ public class BattleshipGame implements Game {
                 .append(formatShotResult(computerResult))
                 .append(System.lineSeparator());
 
-        if (playerBoard.allShipsSunk()) {
+        if (playerBoard.areAllShipsSunk()) {
             isGameOver = true;
             LOGGER.info("Player lost after " + roundsPlayed + ".");
             message.append("The computer wins. All your ships have been sunk.")

@@ -15,7 +15,7 @@ public class StoryNode {
     /** Map keys that identify the next StoryNode for each choice. */
     private final String[] choiceKeys;
     /** True if this node is a terminal ending with no further choices. */
-    private final boolean ending;
+    private final boolean isEnding;
 
     /**
      * Creates a story node with the given text, choices, and ending status.
@@ -23,14 +23,14 @@ public class StoryNode {
      * @param text         the scenario text shown to the player
      * @param choiceLabels the display labels for each choice
      * @param choiceKeys   the story-map keys for the next node each choice leads to
-     * @param ending       true if this node is a terminal ending
+     * @param isEnding     true if this node is a terminal ending
      */
     public StoryNode(String text, String[] choiceLabels, String[] choiceKeys,
-                     boolean ending) {
+                     boolean isEnding) {
         this.text = text;
         this.choiceLabels = choiceLabels;
         this.choiceKeys = choiceKeys;
-        this.ending = ending;
+        this.isEnding = isEnding;
     }
 
     /**
@@ -66,7 +66,7 @@ public class StoryNode {
      * @return true if this is an ending node
      */
     public boolean isEnding() {
-        return ending;
+        return isEnding;
     }
 
     /**
@@ -79,7 +79,7 @@ public class StoryNode {
      */
     public String formatForDisplay() {
         StringBuilder sb = new StringBuilder(text);
-        if (!ending) {
+        if (!isEnding) {
             String lineSep = System.lineSeparator();
             sb.append(lineSep);
             for (int i = 0; i < choiceLabels.length; i++) {

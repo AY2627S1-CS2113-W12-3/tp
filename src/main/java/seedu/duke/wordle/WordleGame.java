@@ -33,7 +33,7 @@ public class WordleGame implements Game {
     private final String wrongGuess = "Wrong guess!";
     private final String exitGameMessage = "Returning to the main menu.";
     /** Tracks whether the current game session has ended. */
-    private boolean finished = false;
+    private boolean isFinished = false;
     /** Points earned by the most recent input, if it won the game. */
     private int pointsEarnedForLastAction;
     /** Counts incorrect guesses in the current game session. */
@@ -84,7 +84,7 @@ public class WordleGame implements Game {
         String guess = input == null ? "" : input.trim();
         if (guess.equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player quit Wordle after " + attemptsUsed + " wrong guesses.");
-            finished = true;
+            isFinished = true;
             return exitGameMessage;
         }
 
@@ -103,7 +103,7 @@ public class WordleGame implements Game {
 
         String feedback = wordleHelp.evaluateGuess(normalizedGuess, secretWord);
         if (guess.equalsIgnoreCase(secretWord)) {
-            finished = true;
+            isFinished = true;
             pointsEarnedForLastAction = POINTS_FOR_WIN;
             int triesTaken = attemptsUsed + 1;
             LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
@@ -117,7 +117,7 @@ public class WordleGame implements Game {
         int triesLeft = MAX_ATTEMPTS - attemptsUsed;
         if (triesLeft == 0) {
             LOGGER.info("Player ran out of tries in Wordle.");
-            finished = true;
+            isFinished = true;
             return feedback + System.lineSeparator()
                     + wrongGuess + " You are out of tries."
                     + System.lineSeparator() + "The word was " + secretWord + "."
@@ -155,7 +155,7 @@ public class WordleGame implements Game {
      */
     @Override
     public boolean isFinished() {
-        return finished;
+        return isFinished;
     }
 
     /**
@@ -163,7 +163,7 @@ public class WordleGame implements Game {
      */
     @Override
     public void reset() {
-        finished = false;
+        isFinished = false;
         pointsEarnedForLastAction = 0;
         attemptsUsed = 0;
         guessedWords.clear();
