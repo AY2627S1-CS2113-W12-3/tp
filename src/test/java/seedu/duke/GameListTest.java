@@ -1,6 +1,7 @@
 package seedu.duke;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -53,5 +54,13 @@ class GameListTest {
         }
 
         assertEquals(gameList.getGames().size(), ids.size());
+    }
+
+    @Test
+    void gameListCannotBeChangedThroughGetter() {
+        GameList gameList = new GameList();
+
+        assertThrows(UnsupportedOperationException.class, () -> gameList.getGames().clear());
+        assertEquals(5, gameList.getGames().size());
     }
 }

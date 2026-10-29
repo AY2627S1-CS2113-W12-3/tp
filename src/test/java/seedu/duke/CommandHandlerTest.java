@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,9 +56,7 @@ class CommandHandlerTest {
     @Test
     void gameInputIsSentToTheActiveGame() {
         TestGame testGame = new TestGame();
-        GameList gameList = new GameList();
-        gameList.getGames().clear();
-        gameList.getGames().add(testGame);
+        GameList gameList = gameListWith(testGame);
         commandHandler = createHandler(gameList);
 
         commandHandler.shouldContinueAfterInput("play test");
@@ -69,9 +68,7 @@ class CommandHandlerTest {
     @Test
     void finishedGameReturnsToTheMenu() {
         TestGame testGame = new TestGame();
-        GameList gameList = new GameList();
-        gameList.getGames().clear();
-        gameList.getGames().add(testGame);
+        GameList gameList = gameListWith(testGame);
         commandHandler = createHandler(gameList);
 
         commandHandler.shouldContinueAfterInput("play test");
@@ -181,9 +178,6 @@ class CommandHandlerTest {
 
     /** Creates a game list containing only the supplied test game. */
     private static GameList gameListWith(Game game) {
-        GameList gameList = new GameList();
-        gameList.getGames().clear();
-        gameList.getGames().add(game);
-        return gameList;
+        return new GameList(List.of(game));
     }
 }
