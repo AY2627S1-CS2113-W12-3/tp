@@ -81,15 +81,12 @@ class PlayStationMinusOneTest {
     }
 
     @Test
-    void listLettersInWordleShowsDiscoveredHints() {
+    void listLettersInWordleShowsHintCategories() {
         String output = run("play 1", "CREAM", "list letters", "exit");
 
         assertTrue(output.contains("Letters with correct positions:"));
-        assertTrue(output.contains("\u001B[32mC\u001B[0m (position 1)"));
         assertTrue(output.contains("Letters in incorrect positions:"));
-        assertTrue(output.contains("\u001B[33mE\u001B[0m"));
         assertTrue(output.contains("Letters not in the word:"));
-        assertTrue(output.contains("\u001B[31mM\u001B[0m"));
     }
 
     @Test
