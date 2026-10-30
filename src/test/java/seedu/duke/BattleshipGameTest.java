@@ -22,7 +22,7 @@ class BattleshipGameTest {
     void invalidCoordinatesAreRejected() {
         BattleshipGame game = new BattleshipGame("3");
 
-        for (String coordinate : new String[] {"H1", "A8", "A0", "11", "A", "", "A10"}) {
+        for (String coordinate : new String[] {"H1", "A8", "A0", "11", "A", "", "A10", "AA1", "A-1", "A1B", "A 10"}) {
             assertEquals(INVALID_COORDINATE, game.handleInput(coordinate));
         }
         assertFalse(game.isFinished());
@@ -34,7 +34,7 @@ class BattleshipGameTest {
 
         String response = game.handleInput("A1");
 
-        assertTrue(response.contains("Your shot at A1:"));
+        assertTrue(response.contains("Player shot at A1:"));
         assertTrue(response.contains("Computer shot at "));
         assertFalse(game.isFinished());
     }
@@ -45,7 +45,7 @@ class BattleshipGameTest {
 
         String response = game.handleInput(" b 4 ");
 
-        assertTrue(response.contains("Your shot at B4:"));
+        assertTrue(response.contains("Player shot at B4:"));
     }
 
     @Test
@@ -55,17 +55,21 @@ class BattleshipGameTest {
 
         assertEquals(REPEATED_COORDINATE, game.handleInput("a1"));
         assertFalse(game.isFinished());
+
+        assertTrue(game.handleInput("quit").contains("Rounds played: 1"));
     }
 
     @Test
-    void invalidInputDoesNotUseUpACoordinate() {
+    void invalidInputStillAllowsGameToContinue() {
         BattleshipGame game = new BattleshipGame("3");
         assertEquals(INVALID_COORDINATE, game.handleInput("H1"));
 
         String response = game.handleInput("A1");
 
-        assertTrue(response.contains("Your shot at A1:"));
+        assertTrue(response.contains("Player shot at A1:"));
         assertTrue(response.contains("Computer shot at "));
+
+        assertTrue(game.handleInput("quit").contains("Rounds played: 1"));
     }
 
     @Test
@@ -79,6 +83,8 @@ class BattleshipGameTest {
         assertTrue(response.contains("S"));
         assertFalse(response.contains("Computer shot at "));
         assertFalse(game.isFinished());
+
+        assertTrue(game.handleInput("quit").contains("Rounds played: 0"));
     }
 
     @Test
@@ -122,7 +128,7 @@ class BattleshipGameTest {
 
         assertFalse(game.isFinished());
         String response = game.handleInput("A1");
-        assertTrue(response.contains("Your shot at A1:"));
+        assertTrue(response.contains("Player shot at A1:"));
         assertTrue(response.contains("Computer shot at "));
     }
 
