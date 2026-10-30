@@ -203,7 +203,7 @@ class BattleshipGameTest {
 
     /** Returns enemy ship coordinates from a board with a known random layout. */
     private static List<String> coordinatesWithShips(BattleshipBoard board) {
-        String[] rows = board.stringFormattedBoard(false).split(System.lineSeparator());
+        String[] rows = board.getFormattedBoard(false).split(System.lineSeparator());
         List<String> coordinates = new ArrayList<>();
         for (int row = 0; row < BattleshipBoard.SIDE_LENGTH; row++) {
             String[] cells = rows[row + 1].trim().split("\\s+");
@@ -218,7 +218,7 @@ class BattleshipGameTest {
 
     /** Returns empty enemy-board coordinates for a game that the computer can win. */
     private static List<String> coordinatesWithoutShips(BattleshipBoard board) {
-        String[] rows = board.stringFormattedBoard(false).split(System.lineSeparator());
+        String[] rows = board.getFormattedBoard(false).split(System.lineSeparator());
         List<String> coordinates = new ArrayList<>();
         for (int row = 0; row < BattleshipBoard.SIDE_LENGTH; row++) {
             String[] cells = rows[row + 1].trim().split("\\s+");

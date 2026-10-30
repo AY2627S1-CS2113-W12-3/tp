@@ -1,7 +1,7 @@
 package seedu.duke.battleship;
 
 /**
- * Provides Battleship validation messages for invalid player input.
+ * Provides Battleship error messages for invalid player input.
  *
  * <p>The methods live here rather than in {@link BattleshipGame} so that validation
  * messages remain consistent if other Battleship features need them later.
