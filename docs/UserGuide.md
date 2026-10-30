@@ -223,7 +223,7 @@ CREAM
 Wrong guess! You have 4 tries left.
 > crane
 CRANE
-Correct guess! You got it in 2 tries.
+Correct guess! You completed Wordle in 2 tries.
 Returning to the main menu.
 ```
 
