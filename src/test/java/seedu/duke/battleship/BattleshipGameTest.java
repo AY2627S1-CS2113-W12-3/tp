@@ -1,4 +1,4 @@
-package seedu.duke.battleshiptest;
+package seedu.duke.battleship;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
-
 import seedu.duke.battleship.battleshipboard.BattleshipBoard;
 
 /** Tests Battleship commands, attack validation, turns, and resetting. */

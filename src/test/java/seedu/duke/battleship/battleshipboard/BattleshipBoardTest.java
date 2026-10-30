@@ -1,7 +1,4 @@
-package seedu.duke.battleship;
-
-import seedu.duke.battleship.battleshipboard.BattleshipBoard;
-import seedu.duke.battleship.battleshipboard.ShotResult;
+package seedu.duke.battleship.battleshipboard;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
