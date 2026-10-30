@@ -35,6 +35,8 @@ public class BattleshipBoard {
         for (int size : SHIP_SIZES) {
             placeShip(random, new Ship(size), size);
         }
+
+        assert (shipsRemaining == SHIP_SIZES.length) : "All ships must be placed on the board";
     }
 
     /**
@@ -167,6 +169,10 @@ public class BattleshipBoard {
      *         or SUNK if the attack sinks a ship
      */
     public ShotResult hitAt(int row, int col) {
+        if (row < 0 || row >= SIDE_LENGTH || col < 0 || col >= SIDE_LENGTH) {
+            throw new IllegalArgumentException("Attack coordinates are outside the board.");
+        }
+
         Cell cell = board[row][col];
         assert(!cell.isHit);
 

@@ -249,6 +249,8 @@ public class BattleshipGame implements Game {
         ShotResult playerResult = enemyBoard.hitAt(row, col);
         updateStats(playerResult);
 
+        assert (roundsPlayed == playerHits + playerMisses) : "Player hit and miss counts must equal rounds played";
+
         StringBuilder message = new StringBuilder();
         message.append(formatShotMessage("Player", row, col, playerResult));
 

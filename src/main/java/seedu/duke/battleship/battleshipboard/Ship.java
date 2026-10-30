@@ -37,6 +37,10 @@ class Ship {
      * Records a hit on the ship by increasing its damage count.
      */
     void receiveDamage() {
+        if (isSunk()) {
+            throw new IllegalStateException("Cannot damage a ship that has already sunk.");
+        }
+
         hits++;
     }
 }
