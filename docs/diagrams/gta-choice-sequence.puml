@@ -1,19 +1,46 @@
 @startuml
-skinparam defaultFontSize 16
-actor Player
-participant CommandHandler as Handler
-participant GtaGame as Game
-participant StoryNode as Node
+!include style.iuml
 
-Player -> Handler: enters a choice
-Handler -> Game: handleInput(...)
-Game -> Node: get current node choices
-Node --> Game: choiceKeys[choice - 1]
-Game -> Node: look up next node
-Node --> Game: next node text
-alt ending node
-  Game -> Game: finished = true
+actor Player
+participant ":CommandHandler" as Handler
+participant ":GtaGame" as Game
+participant "currentNode:StoryNode" as Node
+participant "nextNode:StoryNode" as Next
+
+Player -> Handler : enters a choice
+activate Handler
+
+Handler -> Game : handleInput(...)
+activate Game
+
+Game -> Node : getChoiceKeys()
+activate Node
+Node --> Game : choice keys
+deactivate Node
+
+Game -> Game : look up the next node
+activate Game
+deactivate Game
+
+Game -> Next : formatForDisplay()
+activate Next
+Next --> Game : scenario text
+deactivate Next
+
+Game -> Next : isEnding()
+activate Next
+Next --> Game : boolean
+deactivate Next
+
+opt next node is an ending
+  Game -> Game : mark the session finished
+  activate Game
+  deactivate Game
 end
-Game --> Handler: formatted story text
-Handler --> Player: display result
+
+Game --> Handler : formatted story text
+deactivate Game
+
+Handler --> Player : display result
+deactivate Handler
 @enduml

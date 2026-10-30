@@ -1,0 +1,16 @@
+' Shared style for every Developer Guide diagram.
+' Included by all .puml files so the whole guide renders consistently.
+' Rendered with: java -jar .tools/plantuml.jar docs/diagrams/*.puml
+@startuml
+' Course notation uses <<interface>> / <<enumeration>> text, not type-icon circles.
+hide circle
+' Keep a class box compact when it has no attributes or no methods to show.
+hide empty members
+' Show visibility as +/- text rather than icons.
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 16
+' Spread boxes horizontally so association labels do not collide with the lines.
+skinparam nodesep 70
+skinparam ranksep 55
+@enduml

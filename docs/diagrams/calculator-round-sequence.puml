@@ -1,22 +1,46 @@
 @startuml
-skinparam defaultFontSize 16
-actor Player
-participant CommandHandler as Handler
-participant CalculatorGame as Game
-participant ArithmeticProblem as Problem
-participant PointsStore as Points
+!include style.iuml
 
-Player -> Handler: enters an answer
-Handler -> Game: handleInput(...)
-Game -> Game: parse a whole number
-Game -> Problem: getAnswer()
-Problem --> Game: expected answer
-Game -> Problem: generate(random)
-Problem --> Game: next problem
-Game --> Handler: feedback and next round prompt
-Handler -> Game: getPointsEarnedForLastAction()
-Game --> Handler: points earned
-Handler -> Points: addPoints(...)
-Points --> Handler: updated total
-Handler --> Player: display result and points
+actor Player
+participant ":CommandHandler" as Handler
+participant ":CalculatorGame" as Game
+participant "currentProblem:ArithmeticProblem" as Problem
+participant "<<class>>\nArithmeticProblem" as ProblemClass
+participant ":PointsStore" as Points
+
+Player -> Handler : enters an answer
+activate Handler
+
+Handler -> Game : handleInput(...)
+activate Game
+
+Game -> Game : parseWholeNumber(...)
+activate Game
+deactivate Game
+
+Game -> Problem : getAnswer()
+activate Problem
+Problem --> Game : expected answer
+deactivate Problem
+
+Game -> ProblemClass : generate(...)
+activate ProblemClass
+ProblemClass --> Game : next problem
+deactivate ProblemClass
+
+Game --> Handler : feedback and next round prompt
+deactivate Game
+
+Handler -> Game : getPointsEarnedForLastAction()
+activate Game
+Game --> Handler : points earned
+deactivate Game
+
+Handler -> Points : addPoints(...)
+activate Points
+Points --> Handler : updated total
+deactivate Points
+
+Handler --> Player : display result and points
+deactivate Handler
 @enduml

@@ -1,24 +1,50 @@
 @startuml
-skinparam defaultFontSize 16
-actor Player
-participant PlayStationMinusOne as App
-participant CommandHandler as Handler
-participant Parser
-participant GameList
-participant TicTacToeGame as Game
-participant Ui
+!include style.iuml
 
-Player -> App: enters "play 4"
-App -> Handler: processInput(...)
-Handler -> Parser: parse(...)
-Parser --> Handler: command and game ID
-Handler -> GameList: findGameById(...)
-GameList --> Handler: selected game
-Handler -> Ui: showGameStarting(...)
-Ui --> Player: display game name
-Handler -> Game: getStartMessage()
-Game --> Handler: game instructions
-Handler -> Ui: show instructions
-Ui --> Player: display instructions
-Handler -> Handler: set active game
+actor Player
+participant ":PlayStationMinusOne" as App
+participant ":CommandHandler" as Handler
+participant ":Parser" as Parser
+participant ":GameList" as GameList
+participant ":TicTacToeGame" as Game
+participant ":Ui" as Ui
+
+Player -> App : enters "play 4"
+activate App
+
+App -> Handler : processInput(...)
+activate Handler
+
+Handler -> Parser : parse(...)
+activate Parser
+Parser --> Handler : command and game ID
+deactivate Parser
+
+Handler -> GameList : findGameById(...)
+activate GameList
+GameList --> Handler : selected game
+deactivate GameList
+
+Handler -> Ui : showGameStarting(...)
+activate Ui
+Ui --> Player : display game name
+deactivate Ui
+
+Handler -> Game : getStartMessage()
+activate Game
+Game --> Handler : game instructions
+deactivate Game
+
+Handler -> Ui : showMessage(...)
+activate Ui
+Ui --> Player : display instructions
+deactivate Ui
+
+Handler -> Handler : set active game
+activate Handler
+deactivate Handler
+
+Handler --> App : input handled
+deactivate Handler
+deactivate App
 @enduml

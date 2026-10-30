@@ -1,23 +1,35 @@
 @startuml
-skinparam defaultFontSize 16
-skinparam classAttributeIconSize 0
+!include style.iuml
 
-interface Game {
-  + handleInput(...): String
-  + reset(): void
+interface Game <<interface>> {
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
 }
+
 class WordleGame {
-  + handleInput(...): String
+  -secretWord: String
+  -attemptsUsed: int
+  -guessedWords: Set<String>
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
 }
+
 class WordleHelp {
-  + evaluateGuess(...): String
-  + listLetters(): String
+  -correctPositionLetters: Map<Integer, Character>
+  -incorrectPositionLetters: Set<Character>
+  -absentLetters: Set<Character>
+  +evaluateGuess(guess: String, secretWord: String): String
+  +listLetters(): String
+  +reset(): void
 }
+
 class WordListReader {
-  + loadWords(): List<String>
+  +{static} loadWords(): List<String>
 }
 
 WordleGame ..|> Game
-WordleGame *-- WordleHelp
-WordleGame ..> WordListReader : loads answers
+WordleGame *--> "1" WordleHelp : tracks hints with >
+WordleGame ..> WordListReader : loads answers from <
 @enduml

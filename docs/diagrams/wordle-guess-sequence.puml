@@ -1,14 +1,25 @@
 @startuml
-skinparam defaultFontSize 16
-actor Player
-participant CommandHandler as Handler
-participant WordleGame as Game
-participant WordleHelp as Hints
+!include style.iuml
 
-Player -> Handler: enters a guess
-Handler -> Game: handleInput(...)
-Game -> Hints: evaluate guess
-Hints --> Game: colour feedback
-Game --> Handler: feedback and remaining tries
-Handler --> Player: display result
+actor Player
+participant ":CommandHandler" as Handler
+participant ":WordleGame" as Game
+participant ":WordleHelp" as Hints
+
+Player -> Handler : enters a guess
+activate Handler
+
+Handler -> Game : handleInput(...)
+activate Game
+
+Game -> Hints : evaluateGuess(...)
+activate Hints
+Hints --> Game : colour-coded feedback
+deactivate Hints
+
+Game --> Handler : feedback and remaining tries
+deactivate Game
+
+Handler --> Player : display result
+deactivate Handler
 @enduml

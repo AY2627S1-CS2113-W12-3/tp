@@ -1,27 +1,32 @@
 @startuml
-skinparam defaultFontSize 16
-skinparam classAttributeIconSize 0
+!include style.iuml
 
-interface Game {
-  + handleInput(...): String
-  + reset(): void
+interface Game <<interface>> {
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
 }
+
 class GtaGame {
-  - storyMap: Map<String, StoryNode>
-  - currentNodeKey: String
-  + handleInput(...): String
-  + getStartMessage(): String
-  + reset(): void
+  -storyMap: Map<String, StoryNode>
+  -currentNodeKey: String
+  -isFinished: boolean
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
 }
+
 class StoryNode {
-  - text: String
-  - choiceLabels: String[]
-  - choiceKeys: String[]
-  - ending: boolean
-  + formatForDisplay(): String
-  + isEnding(): boolean
+  -text: String
+  -choiceLabels: String[]
+  -choiceKeys: String[]
+  -isEnding: boolean
+  +getChoiceKeys(): String[]
+  +isEnding(): boolean
+  +formatForDisplay(): String
 }
 
 GtaGame ..|> Game
-GtaGame *-- "*" StoryNode : storyMap
+GtaGame *--> "*" StoryNode : stores story graph of <
+StoryNode --> "*" StoryNode : leads to >
 @enduml

@@ -1,25 +1,46 @@
 @startuml
+!include style.iuml
+
 actor Player
-participant "BattleshipGame" as Game
+participant ":BattleshipGame" as Game
 participant "enemyBoard:BattleshipBoard" as Enemy
 participant "playerBoard:BattleshipBoard" as Own
 
 Player -> Game : handleInput("B4")
-Game -> Game : validate coordinate; check not repeated
-Game -> Enemy : isCellHit(1, 3)
-Enemy --> Game : false
+activate Game
+
+Game -> Game : validate coordinate
+activate Game
+deactivate Game
+
 Game -> Enemy : hitAt(1, 3)
+activate Enemy
 Enemy --> Game : ShotResult
+deactivate Enemy
+
 Game -> Enemy : allShipsSunk()
+activate Enemy
 Enemy --> Game : boolean
-alt Enemy fleet sunk
+deactivate Enemy
+
+alt enemy fleet sunk
   Game --> Player : win message and statistics
-else Game continues
+else game continues
   Game -> Game : select next shuffled target
+  activate Game
+  deactivate Game
+
   Game -> Own : hitAt(row, col)
+  activate Own
   Own --> Game : ShotResult
+  deactivate Own
+
   Game -> Own : allShipsSunk()
+  activate Own
   Own --> Game : boolean
+  deactivate Own
+
   Game --> Player : player and computer shot results
 end
+deactivate Game
 @enduml
