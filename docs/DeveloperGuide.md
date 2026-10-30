@@ -6,7 +6,17 @@ Add links for any reused or adapted code, ideas, documentation, and third-party 
 
 ## Design & implementation
 
-The app reads one line at a time. `PlayStationMinusOne` owns the input loop; `CommandHandler` routes launcher commands and active-game input; `GameList` looks up games by ID; and `Ui` prints responses. Each game implements the shared `Game` interface.
+### Architecture
+
+The diagram below gives an overview of the main components and how they are connected.
+
+![Architecture diagram](diagrams/architecture.png)
+
+Source: [architecture.puml](diagrams/architecture.puml).
+
+`PlayStationMinusOne` is the entry point. It creates the `Ui`, `GameList`, and `CommandHandler`, then runs a single input loop. `CommandHandler` routes launcher commands (help, list, play, quit, score, exit) and forwards game input to the active `Game`. `Parser` splits each line into a command and its arguments. `GameList` stores the five games and looks them up by ID. `PointsStore` persists the player's total points to a local properties file.
+
+All five games — `WordleGame`, `CalculatorGame`, `BattleshipGame`, `TicTacToeGame`, and `GtaGame` — implement the `Game` interface, so `CommandHandler` can treat them uniformly without knowing their internals (Strategy pattern). A game never reads input directly; the shared loop reads each line and passes it through `handleInput()`, which keeps launcher commands reachable at every prompt.
 
 ### Command routing
 

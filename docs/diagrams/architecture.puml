@@ -1,0 +1,80 @@
+@startuml
+!include style.iuml
+
+package "Core" {
+  class PlayStationMinusOne {
+    +{static} main(args: String[]): void
+  }
+
+  class CommandHandler {
+    -activeGame: Game
+    +shouldContinueAfterInput(input: String): boolean
+    -startGame(gameId: String): Game
+    -handleGameInput(input: String): void
+    -savePointsEarnedBy(game: Game): void
+  }
+
+  class Parser {
+    +{static} parse(input: String): String[]
+  }
+
+  class Ui {
+    -scanner: Scanner
+    +readLine(): String
+    +showMessage(message: String): void
+    +showBanner(): void
+    +showHelp(): void
+    +showListOfGames(gameList: GameList): void
+  }
+
+  class GameList {
+    -games: ArrayList<Game>
+    +getGames(): List<Game>
+    +findGameById(gameId: String): Game
+  }
+
+  class PointsStore {
+    -filePath: Path
+    +getTotalPoints(): long
+    +addPoints(points: int): long
+  }
+}
+
+interface Game <<interface>> {
+  +getGameId(): String
+  +getGameName(): String
+  +getDescription(): String
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
+  +getPointsEarnedForLastAction(): int
+}
+
+package "Games" {
+  class WordleGame
+  class CalculatorGame
+  class BattleshipGame
+  class TicTacToeGame
+  class GtaGame
+}
+
+PlayStationMinusOne ..> Ui : creates >
+PlayStationMinusOne ..> GameList : creates >
+PlayStationMinusOne ..> CommandHandler : creates >
+
+CommandHandler *--> "1" Ui : prints via >
+CommandHandler *--> "1" GameList : looks up games in >
+CommandHandler *--> "1" PointsStore : persists points with >
+CommandHandler --> "0..1" Game : activeGame >
+CommandHandler ..> Parser : parses input with >
+
+GameList *--> "5" Game : stores >
+
+WordleGame ..|> Game
+CalculatorGame ..|> Game
+BattleshipGame ..|> Game
+TicTacToeGame ..|> Game
+GtaGame ..|> Game
+
+note right of PointsStore : Reads/writes\n~/.playstation-minus-one/\npoints.properties
+@enduml
