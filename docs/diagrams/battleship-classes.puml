@@ -1,45 +1,49 @@
 @startuml
-skinparam classAttributeIconSize 0
-skinparam shadowing false
-hide empty members
+!include style.iuml
 
-interface Game {
+interface Game <<interface>> {
   +handleInput(input: String): String
-  +reset(): void
   +isFinished(): boolean
+  +reset(): void
 }
+
 class BattleshipGame {
   -playerBoard: BattleshipBoard
   -enemyBoard: BattleshipBoard
   -computerTargets: ArrayList<Integer>
   +handleInput(input: String): String
+  +isFinished(): boolean
   +reset(): void
 }
+
 class BattleshipBoard {
   -board: Cell[][]
   -shipsRemaining: int
   +hitAt(row: int, col: int): ShotResult
   +allShipsSunk(): boolean
 }
+
 class Cell {
   ~occupyingShip: Ship
   ~isHit: boolean
 }
+
 class Ship {
   -size: int
   -hits: int
   ~receiveDamage(): void
   ~isSunk(): boolean
 }
-enum ShotResult {
+
+enum ShotResult <<enumeration>> {
   MISS
   HIT
   SUNK
 }
 
 BattleshipGame ..|> Game
-BattleshipGame *-- "2" BattleshipBoard : player / enemy
-BattleshipBoard *-- "49" Cell : grid
-Cell --> "0..1" Ship : occupies
-BattleshipBoard ..> ShotResult : returns
+BattleshipGame *--> "2" BattleshipBoard : owns player and enemy <
+BattleshipBoard *--> "49" Cell : is made of <
+Cell --> "0..1" Ship : is occupied by >
+BattleshipBoard ..> ShotResult : reports <
 @enduml

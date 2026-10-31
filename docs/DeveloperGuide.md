@@ -6,9 +6,19 @@ Add links for any reused or adapted code, ideas, documentation, and third-party 
 
 ## Design & implementation
 
-The app reads one line at a time. `PlayStationMinusOne` owns the input loop; `CommandHandler` routes launcher commands and active-game input; `GameList` looks up games by ID; and `Ui` prints responses. Each game implements the shared `Game` interface.
+### Architecture
 
-### Command routing (Lim Zi Jing)
+The diagram below gives an overview of the main components and how they are connected.
+
+![Architecture diagram](diagrams/architecture.png)
+
+Source: [architecture.puml](diagrams/architecture.puml).
+
+`PlayStationMinusOne` is the entry point. It creates the `Ui`, `GameList`, and `CommandHandler`, then runs a single input loop. `CommandHandler` routes launcher commands (help, list, play, quit, score, exit) and forwards game input to the active `Game`. `Parser` splits each line into a command and its arguments. `GameList` stores the five games and looks them up by ID. `PointsStore` persists the player's total points to a local properties file.
+
+All five games — `WordleGame`, `CalculatorGame`, `BattleshipGame`, `TicTacToeGame`, and `GtaGame` — implement the `Game` interface, so `CommandHandler` can treat them uniformly without knowing their internals (Strategy pattern). A game never reads input directly; the shared loop reads each line and passes it through `handleInput()`, which keeps launcher commands reachable at every prompt.
+
+### Command routing
 
 The `CommandHandler` refactor moved command routing and active-game state out of the application entry point. It parses launcher commands, selects a game for `play <gameId>`, forwards other input unchanged, and resets a game after it finishes.
 
@@ -28,7 +38,7 @@ Source: [wordle-classes.puml](diagrams/wordle-classes.puml).
 
 Source: [wordle-guess-sequence.puml](diagrams/wordle-guess-sequence.puml).
 
-### Calculator game (Poonnat Wattanakul)
+### Calculator game
 
 `CalculatorGame` implements `Game` as game ID `2`. Each round shows one randomly generated arithmetic problem and grades a single line of input. `ArithmeticProblem.generate()` builds the problem and stores its own answer, so the game never recomputes it; division problems are built from a quotient and a divisor so the answer is always a whole number. The current problem, round number, and score are kept in fields instead of a loop inside the game, which is what lets the application stay at one shared command prompt.
 
@@ -54,7 +64,7 @@ Source: [battleship-classes.puml](diagrams/battleship-classes.puml).
 
 Source: [battleship-attack-sequence.puml](diagrams/battleship-attack-sequence.puml).
 
-### Tic Tac Toe enhancement (Lim Zi Jing)
+### Tic Tac Toe game
 
 Tic Tac Toe is game ID `4`. The player uses `X`; the computer uses `O`. `TicTacToeGame` manages turns and session messages, while `TicTacToeBoard` stores the 3-by-3 grid and checks moves and outcomes. This separation keeps board rules in one class and turn flow in another.
 
@@ -70,7 +80,7 @@ Source: [tictactoe-turn-sequence.puml](diagrams/tictactoe-turn-sequence.puml).
 
 The computer chooses from a list of empty squares, so it cannot overwrite a mark. `TicTacToeGame` accepts an injected `Random` source, which lets tests make its moves repeatable.
 
-### GTA -6 game (Seow Cheng Si)
+### GTA -6 game
 
 GTA -6 is game ID `5`, a choose-your-own-adventure game. The player navigates a branching story by picking numbered choices. The story is modelled as a graph of `StoryNode` objects stored in a `Map<String, StoryNode>`. Each `StoryNode` holds scenario text, choice labels, and keys pointing to the next nodes. Ending nodes have no choices and finish the session.
 

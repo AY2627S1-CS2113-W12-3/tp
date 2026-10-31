@@ -1,24 +1,32 @@
 @startuml
-skinparam defaultFontSize 16
-skinparam classAttributeIconSize 0
-hide empty members
+!include style.iuml
 
-interface Game {
-  + handleInput(...): String
-  + reset(): void
+interface Game <<interface>> {
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
 }
+
 class CalculatorGame {
-  + handleInput(...): String
-  + getStartMessage(): String
-  + getExitMessage(): String
-  + reset(): void
+  -currentProblem: ArithmeticProblem
+  -roundNumber: int
+  -correctCount: int
+  -attemptedCount: int
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
 }
+
 class ArithmeticProblem {
-  + {static} generate(Random): ArithmeticProblem
-  + getAnswer(): int
-  + toString(): String
+  -leftOperand: int
+  -rightOperand: int
+  -answer: int
+  +{static} generate(random: Random): ArithmeticProblem
+  +getAnswer(): int
+  +toString(): String
 }
-enum Operator {
+
+enum Operator <<enumeration>> {
   ADD
   SUBTRACT
   MULTIPLY
@@ -26,7 +34,6 @@ enum Operator {
 }
 
 CalculatorGame ..|> Game
-CalculatorGame *-- ArithmeticProblem : current problem
-ArithmeticProblem *-- Operator
-CalculatorGame ..> Random : generates problems
+CalculatorGame *--> "1" ArithmeticProblem : asks <
+ArithmeticProblem --> "1" Operator : uses >
 @enduml
