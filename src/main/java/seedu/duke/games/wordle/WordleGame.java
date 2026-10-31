@@ -1,4 +1,4 @@
-package seedu.duke.wordle;
+package seedu.duke.games.wordle;
 
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
+
+import seedu.duke.Game;
 
 import seedu.duke.Game;
 

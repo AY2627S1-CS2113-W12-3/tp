@@ -8,7 +8,7 @@ import seedu.duke.battleship.BattleshipGame;
 import seedu.duke.games.calculator.CalculatorGame;
 import seedu.duke.games.gta.GtaGame;
 import seedu.duke.tictactoe.TicTacToeGame;
-import seedu.duke.wordle.WordleGame;
+import seedu.duke.games.wordle.WordleGame;
 
 /**
  * Stores the games available in the application.

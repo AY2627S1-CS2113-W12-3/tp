@@ -1,4 +1,4 @@
-package seedu.duke.wordle;
+package seedu.duke.games.wordle;
 
 /**
  * Provides Wordle validation messages for invalid player input.

@@ -1,4 +1,4 @@
-package seedu.duke.wordle;
+package seedu.duke.games.wordle;
 
 import java.io.BufferedReader;
 import java.io.IOException;

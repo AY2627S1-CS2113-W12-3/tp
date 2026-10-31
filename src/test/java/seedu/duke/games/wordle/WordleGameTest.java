@@ -1,12 +1,10 @@
-package seedu.duke;
+package seedu.duke.games.wordle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-
-import seedu.duke.wordle.WordleGame;
 
 /** Tests the number of attempts permitted by a Wordle game session. */
 class WordleGameTest {
