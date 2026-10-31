@@ -35,6 +35,8 @@ public class BattleshipBoard {
         for (int size : SHIP_SIZES) {
             placeShip(random, new Ship(size), size);
         }
+
+        assert (shipsRemaining == SHIP_SIZES.length) : "All ships must be placed on the board";
     }
 
     /**
@@ -111,33 +113,45 @@ public class BattleshipBoard {
      * @param isHidden whether to hide ships that have not been hit
      * @return the formatted board as a string
      */
-    public String stringFormattedBoard(boolean isHidden) {
-        StringBuilder board = new StringBuilder("   1 2 3 4 5 6 7"
-                + System.lineSeparator());
+    public String getFormattedBoard(boolean isHidden) {
+        StringBuilder boardDisplay = new StringBuilder("   1 2 3 4 5 6 7" + System.lineSeparator());
 
         for (int row = 0; row < SIDE_LENGTH; row++) {
-            board.append((char) ('A' + row)).append("  ");
+            boardDisplay.append((char) ('A' + row)).append("  ");
 
             for (int col = 0; col < SIDE_LENGTH; col++) {
-                char icon;
                 Cell cell = this.board[row][col];
 
-                if (cell.isHit) {
-                    icon = cell.hasShip ? 'O' : 'X';
-                } else if (cell.hasShip && !isHidden) {
-                    icon = 'S';
-                } else {
-                    icon = '~';
-                }
-
-                board.append(icon);
-                board.append(' ');
+                boardDisplay.append(getCellSymbol(cell, isHidden));
+                boardDisplay.append(' ');
             }
 
-            board.append(System.lineSeparator());
+            boardDisplay.append(System.lineSeparator());
         }
 
-        return board.toString();
+        return boardDisplay.toString();
+    }
+
+    /**
+     * Returns the symbol representing a cell's status.
+     *
+     * <p>Displays hits, misses, visible ships, or unknown cells.
+     * Unhit ships are hidden when isHidden is true.
+     *
+     * @param cell the cell whose status is being displayed
+     * @param isHidden whether to hide ships that have not been hit
+     * @return the character representing the cell's status
+     */
+    private static char getCellSymbol(Cell cell, boolean isHidden) {
+        if (cell.isHit) {
+            return cell.hasShip ? 'O' : 'X';
+        }
+
+        if (cell.hasShip && !isHidden) {
+            return 'S';
+        }
+
+        return '~';
     }
 
     /**
@@ -155,6 +169,10 @@ public class BattleshipBoard {
      *         or SUNK if the attack sinks a ship
      */
     public ShotResult hitAt(int row, int col) {
+        if (row < 0 || row >= SIDE_LENGTH || col < 0 || col >= SIDE_LENGTH) {
+            throw new IllegalArgumentException("Attack coordinates are outside the board.");
+        }
+
         Cell cell = board[row][col];
         assert(!cell.isHit);
 
