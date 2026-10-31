@@ -39,12 +39,12 @@ public class BattleshipGame implements Game {
     private BattleshipBoard playerBoard;
     private BattleshipBoard enemyBoard;
     private int roundsPlayed;
-    private int hits;
-    private int misses;
+    private int playerHits;
+    private int playerMisses;
 
     /** Shuffled list of coordinates available for computer attacks. */
     private ArrayList<Integer> computerTargets;
-    private int nextComputerTarget;
+    private int nextComputerTargetIndex;
 
 
     /**
@@ -98,12 +98,7 @@ public class BattleshipGame implements Game {
     }
 
     /**
-     * Processes a player command or attack coordinate.
-     *
-     * <p>Validates the coordinate before attacking the enemy board.
-     * Invalid or repeated coordinates do not consume a turn.
-     * After a valid attack, the computer takes its turn unless
-     * the player has already won.
+     * Processes player's input.
      *
      * @param input the command or coordinate entered by the player
      * @return the command response, validation message or round results
@@ -123,184 +118,7 @@ public class BattleshipGame implements Game {
             return getBoardDisplays();
         }
 
-        if (!argument.matches("[A-Ga-g]\\s*[1-7]")) {
-            LOGGER.warning("Invalid coordinate: " + argument);
-            return BattleshipException.invalidCoordinate();
-        }
-
-        String coordinate = argument.replaceAll("\\s+", "").toUpperCase();
-        int row = coordinate.charAt(0) - 'A';
-        int col = coordinate.charAt(1) - '1';
-
-        assert((row >= 0 && row < 7));
-        assert((col >= 0 && col < 7));
-
-        if (enemyBoard.isCellHit(row, col)) {
-            LOGGER.warning("Repeated coordinate: " + (char)('A' + row) + (col + 1));
-            return BattleshipException.repeatedCoordinate();
-        }
-
-        assert(!enemyBoard.isCellHit(row, col));
-
-        String roundResult = executePlayerTurn(row, col);
-        if (!isGameOver) {
-            roundResult += executeEnemyTurn();
-        }
-
-        return roundResult;
-    }
-
-    /**
-     * Builds a formatted display of the player's and computer's boards.
-     *
-     * <p>The player's ships are visible, while the computer's
-     * unhit ships remain hidden.
-     *
-     * @return the formatted representations of both boards
-     */
-    private String getBoardDisplays() {
-        return "Your board:"
-                + System.lineSeparator()
-                + playerBoard.stringFormattedBoard(false)
-                + System.lineSeparator()
-                + "Enemy's board:"
-                + System.lineSeparator()
-                + enemyBoard.stringFormattedBoard(true);
-    }
-
-    /**
-     * Executes the player's attack against the computer's board.
-     *
-     * <p>Increments the round counter and checks whether all enemy
-     * ships have been sunk after the attack.
-     *
-     * @param row the zero-based row of the target cell
-     * @param col the zero-based column of the target cell
-     * @return the attack result and a victory message if the player wins
-     */
-
-    private String executePlayerTurn(int row, int col) {
-        roundsPlayed++;
-
-        ShotResult playerResult = enemyBoard.hitAt(row, col);
-        updateStats(playerResult);
-
-        StringBuilder message = new StringBuilder();
-        message.append("Your shot at ")
-                .append(formatCoordinate(row, col))
-                .append(": ")
-                .append(formatShotResult(playerResult))
-                .append(System.lineSeparator());
-
-        if (enemyBoard.areAllShipsSunk()) {
-            isGameOver = true;
-            pointsEarnedForLastAction = POINTS_FOR_WIN;
-            LOGGER.info("Player won after " + roundsPlayed + ".");
-            message.append("You win! All enemy ships have been sunk!")
-                    .append(System.lineSeparator())
-                    .append(getExitMessage());
-
-        }
-
-        return message.toString();
-    }
-
-    /**
-     * Updates the player's hit-and-miss count this game
-     *
-     * @param playerResult the outcome of the player's shot
-     */
-    private void updateStats(ShotResult playerResult) {
-        if (playerResult == ShotResult.MISS) {
-            misses++;
-        } else {
-            hits++;
-        }
-    }
-
-    /**
-     * Executes the computer's attack against the player's board.
-     *
-     * <p>The computer selects the next coordinate from a shuffled
-     * list, ensuring that it does not attack the same cell twice.
-     * Checks whether all player ships have been sunk after the attack.
-     *
-     * @return the computer's attack result and a defeat message if the player loses
-     */
-    private String executeEnemyTurn() {
-        int target = computerTargets.get(nextComputerTarget++);
-        int row = target / BattleshipBoard.SIDE_LENGTH;
-        int col = target % BattleshipBoard.SIDE_LENGTH;
-
-        ShotResult computerResult = playerBoard.hitAt(row, col);
-        
-        StringBuilder message = new StringBuilder();
-        message.append("Computer shot at ")
-                .append(formatCoordinate(row, col))
-                .append(": ")
-                .append(formatShotResult(computerResult))
-                .append(System.lineSeparator());
-
-        if (playerBoard.areAllShipsSunk()) {
-            isGameOver = true;
-            LOGGER.info("Player lost after " + roundsPlayed + ".");
-            message.append("The computer wins. All your ships have been sunk.")
-                    .append(System.lineSeparator())
-                    .append(getExitMessage());
-        }
-        
-        return message.toString();
-    }
-
-    /**
-     * Converts zero-based row and column indices into a board coordinate.
-     *
-     * @param row the zero-based row index
-     * @param col the zero-based column index
-     * @return the formatted coordinate, such as A1 or G7
-     */
-    private static String formatCoordinate(int row, int col) {
-        return "" + (char) ('A' + row) + (col + 1);
-    }
-
-    /**
-     * Converts an attack result into a user-facing message.
-     *
-     * @param result the result of an attack
-     * @return the message describing a miss, hit or sunk ship
-     * @throws IllegalStateException if the result is not recognised
-     */
-    private static String formatShotResult(ShotResult result) {
-        switch (result) {
-        case MISS:
-            return "Miss.";
-        case HIT:
-            return "Hit!";
-        case SUNK:
-            return "Hit and sunk a ship!";
-        default:
-            LOGGER.warning("Unhandled shot result: " + result);
-            throw new IllegalStateException("Unhandled shot result: " + result);
-        }
-    }
-
-    /**
-     * Prepares a shuffled list of all possible computer attack coordinates.
-     *
-     * <p>Each cell is represented by a unique integer, ensuring
-     * that the computer attacks every coordinate at most once.
-     * Resets the target index to the beginning of the shuffled list.
-     */
-    void initialiseComputerTargets() {
-        computerTargets = new ArrayList<>();
-
-        int totalTargets = BattleshipBoard.SIDE_LENGTH * BattleshipBoard.SIDE_LENGTH;
-        for (int i = 0; i < totalTargets; i++) {
-            computerTargets.add(i);
-        }
-
-        Collections.shuffle(computerTargets, random);
-        nextComputerTarget = 0;
+        return handleAttack(argument);
     }
 
     /**
@@ -332,37 +150,9 @@ public class BattleshipGame implements Game {
         playerBoard = new BattleshipBoard(random);
         enemyBoard = new BattleshipBoard(random);
         roundsPlayed = 0;
-        hits = 0;
-        misses = 0;
+        playerHits = 0;
+        playerMisses = 0;
         initialiseComputerTargets();
-    }
-
-    /**
-     * Formats the player's statistics in the current game.
-     *
-     * @return the formatted statistic chart
-     */
-    private String formatGameStats() {
-        int totalShots = hits + misses;
-        double accuracy = totalShots == 0 ? 0.0 : (double) hits / totalShots * 100;
-
-        String chart = "-------------------------"
-                + System.lineSeparator()
-                + "Rounds played: " + roundsPlayed
-                + System.lineSeparator()
-                + "Successful hits: " + hits
-                + System.lineSeparator()
-                + "Missed shots: " + misses
-                + System.lineSeparator()
-                + "Total shots: " + totalShots
-                + System.lineSeparator()
-                + String.format("Accuracy: %.2f%%", accuracy)
-                + System.lineSeparator()
-                + "-------------------------"
-                + System.lineSeparator();
-
-
-        return chart;
     }
 
     /**
@@ -373,7 +163,7 @@ public class BattleshipGame implements Game {
      */
     @Override
     public String getCommands() {
-        return "  board  - View player's and opponent's boards" + System.lineSeparator();
+        return "  board  - View player's and computer's boards" + System.lineSeparator();
     }
 
     /**
@@ -384,5 +174,236 @@ public class BattleshipGame implements Game {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Processes the player's requested attack coordinate.
+     *
+     * <p>Validates the coordinate before attacking the enemy board.
+     * Invalid or repeated coordinates do not consume a turn.
+     * After a valid attack, the computer takes its turn unless
+     * the player has already won.
+     *
+     * @param coordinate the coordinate entered by the player
+     * @return the results of the round, or an error message if the coordinate is invalid
+     */
+    private String handleAttack(String coordinate) {
+        if (!coordinate.matches("[A-Ga-g]\\s*[1-7]")) {
+            LOGGER.warning("Invalid coordinate: " + coordinate);
+            return BattleshipErrorMessages.invalidCoordinate();
+        }
+
+        coordinate = coordinate.replaceAll("\\s+", "").toUpperCase();
+        int row = coordinate.charAt(0) - 'A';
+        int col = coordinate.charAt(1) - '1';
+
+        assert((row >= 0 && row < BattleshipBoard.SIDE_LENGTH));
+        assert((col >= 0 && col < BattleshipBoard.SIDE_LENGTH));
+
+        if (enemyBoard.isCellHit(row, col)) {
+            LOGGER.warning("Repeated coordinate: " + formatCoordinate(row, col));
+            return BattleshipErrorMessages.repeatedCoordinate();
+        }
+
+        assert(!enemyBoard.isCellHit(row, col));
+
+        String roundResult = executePlayerTurn(row, col);
+        if (!isGameOver) {
+            roundResult += executeEnemyTurn();
+        }
+
+        return roundResult;
+    }
+
+    /**
+     * Builds a formatted display of the player's and computer's boards.
+     *
+     * <p>The player's ships are visible, while the computer's
+     * unhit ships remain hidden.
+     *
+     * @return the formatted representations of both boards
+     */
+    private String getBoardDisplays() {
+        return "Your board:"
+                + System.lineSeparator()
+                + playerBoard.getFormattedBoard(false)
+                + System.lineSeparator()
+                + "Enemy's board:"
+                + System.lineSeparator()
+                + enemyBoard.getFormattedBoard(true);
+    }
+
+    /**
+     * Executes the player's attack against the computer's board.
+     *
+     * <p>Increments the round counter and checks whether all enemy
+     * ships have been sunk after the attack.
+     *
+     * @param row the zero-based row of the target cell
+     * @param col the zero-based column of the target cell
+     * @return the attack result and a victory message if the player wins
+     */
+    private String executePlayerTurn(int row, int col) {
+        roundsPlayed++;
+
+        ShotResult playerResult = enemyBoard.hitAt(row, col);
+        updateStats(playerResult);
+
+        assert (roundsPlayed == playerHits + playerMisses) : "Player hit and miss counts must equal rounds played";
+
+        StringBuilder message = new StringBuilder();
+        message.append(formatShotMessage("Player", row, col, playerResult));
+
+        if (enemyBoard.areAllShipsSunk()) {
+            isGameOver = true;
+            pointsEarnedForLastAction = POINTS_FOR_WIN;
+            LOGGER.info("Player won after " + roundsPlayed + ".");
+            message.append("You win! All enemy ships have been sunk!")
+                    .append(System.lineSeparator())
+                    .append(getExitMessage());
+
+        }
+
+        return message.toString();
+    }
+
+    /**
+     * Updates the player's hit-and-miss count this game
+     *
+     * @param playerResult the outcome of the player's shot
+     */
+    private void updateStats(ShotResult playerResult) {
+        if (playerResult == ShotResult.MISS) {
+            playerMisses++;
+        } else {
+            playerHits++;
+        }
+    }
+
+    /**
+     * Executes the computer's attack against the player's board.
+     *
+     * <p>The computer selects the next coordinate from a shuffled
+     * list, ensuring that it does not attack the same cell twice.
+     * Checks whether all player ships have been sunk after the attack.
+     *
+     * @return the computer's attack result and a defeat message if the player loses
+     */
+    private String executeEnemyTurn() {
+        int target = computerTargets.get(nextComputerTargetIndex++);
+        int row = target / BattleshipBoard.SIDE_LENGTH;
+        int col = target % BattleshipBoard.SIDE_LENGTH;
+
+        ShotResult computerResult = playerBoard.hitAt(row, col);
+        
+        StringBuilder message = new StringBuilder();
+        message.append(formatShotMessage("Computer", row, col, computerResult));
+
+        if (playerBoard.areAllShipsSunk()) {
+            isGameOver = true;
+            LOGGER.info("Player lost after " + roundsPlayed + ".");
+            message.append("The computer wins. All your ships have been sunk.")
+                    .append(System.lineSeparator())
+                    .append(getExitMessage());
+        }
+        
+        return message.toString();
+    }
+
+    /**
+     * Formats a message describing the result of an attack.
+     *
+     * @param attacker the player or computer performing the attack
+     * @param row the zero-based row of the targeted cell
+     * @param col the zero-based column of the targeted cell
+     * @param result the outcome of the attack
+     * @return the formatted message describing the attack and its result
+     */
+    private String formatShotMessage(String attacker, int row, int col, ShotResult result) {
+        return attacker
+                + " shot at "
+                + formatCoordinate(row, col)
+                + ": "
+                + formatShotResult(result)
+                + System.lineSeparator();
+    }
+
+    /**
+     * Converts zero-based row and column indices into a board coordinate.
+     *
+     * @param row the zero-based row index
+     * @param col the zero-based column index
+     * @return the formatted coordinate, such as A1 or G7
+     */
+    private static String formatCoordinate(int row, int col) {
+        return "" + (char) ('A' + row) + (col + 1);
+    }
+
+    /**
+     * Converts an attack result into a user-facing message.
+     *
+     * @param result the result of an attack
+     * @return the message describing a miss, hit or sunk ship
+     * @throws IllegalStateException if the result is not recognised
+     */
+    private static String formatShotResult(ShotResult result) {
+        switch (result) {
+            case MISS:
+                return "Miss.";
+            case HIT:
+                return "Hit!";
+            case SUNK:
+                return "Hit and sunk a ship!";
+            default:
+                LOGGER.warning("Unhandled shot result: " + result);
+                throw new IllegalStateException("Unhandled shot result: " + result);
+        }
+    }
+
+    /**
+     * Prepares a shuffled list of all possible computer attack coordinates.
+     *
+     * <p>Each cell is represented by a unique integer, ensuring
+     * that the computer attacks every coordinate at most once.
+     * Resets the target index to the beginning of the shuffled list.
+     */
+    void initialiseComputerTargets() {
+        computerTargets = new ArrayList<>();
+
+        int totalTargets = BattleshipBoard.SIDE_LENGTH * BattleshipBoard.SIDE_LENGTH;
+        for (int i = 0; i < totalTargets; i++) {
+            computerTargets.add(i);
+        }
+
+        Collections.shuffle(computerTargets, random);
+        nextComputerTargetIndex = 0;
+    }
+
+    /**
+     * Formats the player's statistics in the current game.
+     *
+     * @return the formatted statistic chart
+     */
+    private String formatGameStats() {
+        int totalShots = playerHits + playerMisses;
+        double accuracy = totalShots == 0 ? 0.0 : (double) playerHits / totalShots * 100;
+
+        String chart = "-------------------------"
+                + System.lineSeparator()
+                + "Rounds played: " + roundsPlayed
+                + System.lineSeparator()
+                + "Successful hits: " + playerHits
+                + System.lineSeparator()
+                + "Missed shots: " + playerMisses
+                + System.lineSeparator()
+                + "Total shots: " + totalShots
+                + System.lineSeparator()
+                + String.format("Accuracy: %.2f%%", accuracy)
+                + System.lineSeparator()
+                + "-------------------------"
+                + System.lineSeparator();
+
+
+        return chart;
     }
 }
