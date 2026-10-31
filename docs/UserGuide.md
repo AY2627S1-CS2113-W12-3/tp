@@ -353,15 +353,6 @@ Displays both boards without consuming a turn. Your ships are visible, while unh
 
 Format: `board`
 
-The following symbols represent the status of each cell:
-
-| Symbol | Meaning |
-|---|---|
-| `S` | An unhit ship segment on your board |
-| `O` | A ship segment that has been hit |
-| `X` | A missed attack |
-| `~` | An unknown or empty cell |
-
 Example:
 
 ```text
@@ -387,6 +378,14 @@ F  ~ ~ ~ ~ ~ ~ ~
 G  ~ ~ ~ ~ ~ ~ ~
 ```
 
+The following symbols represent the status of each cell:
+
+| Symbol | Meaning |
+|---|---|
+| `S` | An unhit ship segment on your board |
+| `O` | A ship segment that has been hit |
+| `X` | A missed attack |
+| `~` | An unknown or empty cell |
 
 #### Ending the game
 

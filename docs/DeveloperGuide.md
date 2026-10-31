@@ -54,15 +54,21 @@ Source: [calculator-round-sequence.puml](diagrams/calculator-round-sequence.puml
 
 ### Battleship game
 
-`BattleshipGame` implements `Game` as game ID `3`. It manages a turn-based game against the computer. Each participant has a 7 × 7 board containing four randomly placed ships of lengths 4, 3, 2 and 1. `BattleshipBoard` handles ship placement and attacks, while `Cell` and `Ship` track occupied positions and damage. `ShotResult` reports a miss, hit, or sunk ship. Invalid or repeated coordinates do not consume a turn. The computer draws its attacks from a shuffled list to avoid repeated shots.
+BattleshipGame implements Game as game ID 3 and manages turn-based gameplay against the computer. Each player has a 7 × 7 BattleshipBoard containing four randomly placed ships of lengths 4, 3, 2 and 1.
+
+BattleshipBoard manages ship placement and attack outcomes. Each Cell records whether it contains a ship and whether it has been attacked, while Ship tracks damage and sinking. Attacks return a ShotResult (MISS, HIT or SUNK), separating board logic from gameplay and user-facing messages.
 
 ![Battleship class diagram](diagrams/battleship-classes.png)
 
-Source: [battleship-classes.puml](diagrams/battleship-classes.puml).
+Source: [battleship-classes.puml](diagrams/battleship-classes.puml).  
+
+When a player enters a coordinate, BattleshipGame validates it before calling BattleshipBoard.hitAt(). Invalid or repeated coordinates do not consume a turn. After a valid attack, the game updates the player's statistics and checks for victory. If the game continues, the computer attacks using the next coordinate from a shuffled list of all 49 cells, ensuring that it never targets the same cell twice.
 
 ![Sequence diagram of a Battleship attack](diagrams/battleship-attack-sequence.png)
 
-Source: [battleship-attack-sequence.puml](diagrams/battleship-attack-sequence.puml).
+Source: [battleship-attack-sequence.puml](diagrams/battleship-attack-sequence.puml).  
+
+The game ends when either side sinks all opposing ships or the player quits. Session statistics are displayed and the game is reset.
 
 ### Tic Tac Toe game
 
