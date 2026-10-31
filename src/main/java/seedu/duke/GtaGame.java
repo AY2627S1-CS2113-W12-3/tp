@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class GtaGame implements Game {
     /** Command that exits the game and returns to the main menu. */
-    private static final String EXIT_GAME_COMMAND = "exitgame";
+    private static final String EXIT_GAME_COMMAND = "quit";
 
     /** Identifies this game in the application. */
     private final String gameId;
@@ -65,7 +65,7 @@ public class GtaGame implements Game {
     }
 
     /**
-     * Processes one line of player input: either the exitgame command or
+     * Processes one line of player input: either the quit command or
      * a numbered choice that advances the story.
      *
      * @param input the text entered by the player
