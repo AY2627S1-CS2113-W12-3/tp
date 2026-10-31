@@ -1,7 +1,9 @@
-package seedu.duke;
+package seedu.duke.games.gta;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import seedu.duke.Game;
 
 /**
  * A choose-your-own-adventure game where the player navigates a branching

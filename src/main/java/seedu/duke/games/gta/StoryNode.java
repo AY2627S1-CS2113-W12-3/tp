@@ -1,4 +1,4 @@
-package seedu.duke;
+package seedu.duke.games.gta;
 
 /**
  * Represents a single node in a choose-your-own-adventure story graph.

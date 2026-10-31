@@ -1,4 +1,4 @@
-package seedu.duke;
+package seedu.duke.games.gta;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
