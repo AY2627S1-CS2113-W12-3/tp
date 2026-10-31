@@ -1,4 +1,4 @@
-package seedu.duke.tictactoe;
+package seedu.duke.games.tictactoe;
 
 import java.util.Arrays;
 

@@ -1,9 +1,11 @@
-package seedu.duke.tictactoe;
+package seedu.duke.games.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+
+import seedu.duke.Game;
 
 import seedu.duke.Game;
 
