@@ -1,4 +1,4 @@
-package seedu.duke;
+package seedu.duke.games.calculator;
 
 import java.util.Random;
 

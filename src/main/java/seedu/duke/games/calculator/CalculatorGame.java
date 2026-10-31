@@ -1,7 +1,9 @@
-package seedu.duke;
+package seedu.duke.games.calculator;
 
 import java.util.Random;
 import java.util.logging.Logger;
+
+import seedu.duke.Game;
 
 /**
  * A mental-arithmetic drill. Each round presents one randomly generated problem,

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import seedu.duke.battleship.BattleshipGame;
+import seedu.duke.games.calculator.CalculatorGame;
 import seedu.duke.tictactoe.TicTacToeGame;
 import seedu.duke.wordle.WordleGame;
 
