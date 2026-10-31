@@ -1,4 +1,4 @@
-package seedu.duke.battleship.battleshipboard;
+package seedu.duke.games.battleship.board;
 
 import java.util.Random;
 

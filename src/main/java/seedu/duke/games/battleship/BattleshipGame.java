@@ -1,13 +1,13 @@
-package seedu.duke.battleship;
-
-import seedu.duke.Game;
-import seedu.duke.battleship.battleshipboard.BattleshipBoard;
-import seedu.duke.battleship.battleshipboard.ShotResult;
+package seedu.duke.games.battleship;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.logging.Logger;
+
+import seedu.duke.Game;
+import seedu.duke.games.battleship.board.BattleshipBoard;
+import seedu.duke.games.battleship.board.ShotResult;
 
 /**
  * Provides a Battleship game where the player competes against a computer.

@@ -1,4 +1,4 @@
-package seedu.duke.battleship.battleshipboard;
+package seedu.duke.games.battleship.board;
 
 /**
  * Represents a single cell on the Battleship board.

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import seedu.duke.battleship.BattleshipGame;
+import seedu.duke.games.battleship.BattleshipGame;
 import seedu.duke.games.calculator.CalculatorGame;
 import seedu.duke.games.gta.GtaGame;
 import seedu.duke.games.tictactoe.TicTacToeGame;

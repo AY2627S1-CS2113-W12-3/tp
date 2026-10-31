@@ -1,4 +1,4 @@
-package seedu.duke.battleship;
+package seedu.duke.games.battleship;
 
 /**
  * Provides Battleship error messages for invalid player input.
