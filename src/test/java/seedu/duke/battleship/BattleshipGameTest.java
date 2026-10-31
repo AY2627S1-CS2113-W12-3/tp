@@ -1,4 +1,4 @@
-package seedu.duke;
+package seedu.duke.battleship;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
-
-import seedu.duke.battleship.BattleshipGame;
 import seedu.duke.battleship.battleshipboard.BattleshipBoard;
 
 /** Tests Battleship commands, attack validation, turns, and resetting. */
@@ -22,7 +20,7 @@ class BattleshipGameTest {
     void invalidCoordinatesAreRejected() {
         BattleshipGame game = new BattleshipGame("3");
 
-        for (String coordinate : new String[] {"H1", "A8", "A0", "11", "A", "", "A10"}) {
+        for (String coordinate : new String[] {"H1", "A8", "A0", "11", "A", "", "A10", "AA1", "A-1", "A1B", "A 10"}) {
             assertEquals(INVALID_COORDINATE, game.handleInput(coordinate));
         }
         assertFalse(game.isFinished());
@@ -34,7 +32,7 @@ class BattleshipGameTest {
 
         String response = game.handleInput("A1");
 
-        assertTrue(response.contains("Your shot at A1:"));
+        assertTrue(response.contains("Player shot at A1:"));
         assertTrue(response.contains("Computer shot at "));
         assertFalse(game.isFinished());
     }
@@ -45,7 +43,7 @@ class BattleshipGameTest {
 
         String response = game.handleInput(" b 4 ");
 
-        assertTrue(response.contains("Your shot at B4:"));
+        assertTrue(response.contains("Player shot at B4:"));
     }
 
     @Test
@@ -55,17 +53,21 @@ class BattleshipGameTest {
 
         assertEquals(REPEATED_COORDINATE, game.handleInput("a1"));
         assertFalse(game.isFinished());
+
+        assertTrue(game.handleInput("quit").contains("Rounds played: 1"));
     }
 
     @Test
-    void invalidInputDoesNotUseUpACoordinate() {
+    void invalidInputStillAllowsGameToContinue() {
         BattleshipGame game = new BattleshipGame("3");
         assertEquals(INVALID_COORDINATE, game.handleInput("H1"));
 
         String response = game.handleInput("A1");
 
-        assertTrue(response.contains("Your shot at A1:"));
+        assertTrue(response.contains("Player shot at A1:"));
         assertTrue(response.contains("Computer shot at "));
+
+        assertTrue(game.handleInput("quit").contains("Rounds played: 1"));
     }
 
     @Test
@@ -79,6 +81,8 @@ class BattleshipGameTest {
         assertTrue(response.contains("S"));
         assertFalse(response.contains("Computer shot at "));
         assertFalse(game.isFinished());
+
+        assertTrue(game.handleInput("quit").contains("Rounds played: 0"));
     }
 
     @Test
@@ -122,7 +126,7 @@ class BattleshipGameTest {
 
         assertFalse(game.isFinished());
         String response = game.handleInput("A1");
-        assertTrue(response.contains("Your shot at A1:"));
+        assertTrue(response.contains("Player shot at A1:"));
         assertTrue(response.contains("Computer shot at "));
     }
 
@@ -203,7 +207,7 @@ class BattleshipGameTest {
 
     /** Returns enemy ship coordinates from a board with a known random layout. */
     private static List<String> coordinatesWithShips(BattleshipBoard board) {
-        String[] rows = board.stringFormattedBoard(false).split(System.lineSeparator());
+        String[] rows = board.getFormattedBoard(false).split(System.lineSeparator());
         List<String> coordinates = new ArrayList<>();
         for (int row = 0; row < BattleshipBoard.SIDE_LENGTH; row++) {
             String[] cells = rows[row + 1].trim().split("\\s+");
@@ -218,7 +222,7 @@ class BattleshipGameTest {
 
     /** Returns empty enemy-board coordinates for a game that the computer can win. */
     private static List<String> coordinatesWithoutShips(BattleshipBoard board) {
-        String[] rows = board.stringFormattedBoard(false).split(System.lineSeparator());
+        String[] rows = board.getFormattedBoard(false).split(System.lineSeparator());
         List<String> coordinates = new ArrayList<>();
         for (int row = 0; row < BattleshipBoard.SIDE_LENGTH; row++) {
             String[] cells = rows[row + 1].trim().split("\\s+");
