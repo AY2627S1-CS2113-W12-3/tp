@@ -1,5 +1,7 @@
 package seedu.duke;
 
+import java.util.Locale;
+
 /**
  * Parses user input into a command name and its arguments.
  */
@@ -18,7 +20,7 @@ public class Parser {
             return new String[]{"", ""};
         }
         String[] parts = input.trim().split("\\s+", 2);
-        String command = parts[0].toLowerCase();
+        String command = parts[0].toLowerCase(Locale.ROOT);
         String arguments = parts.length > 1 ? parts[1] : "";
         String[] parsedInput = new String[]{command, arguments};
         assert parsedInput.length == 2 : "A parsed command must contain a command and arguments";
