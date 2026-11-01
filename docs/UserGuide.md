@@ -86,7 +86,7 @@ Example:
 Available games:
 
   [ID: 1] Wordle
-      Guess the hidden five-letter word in six attempts
+      Guess the hidden five-letter word in five attempts
 
   [ID: 2] Calculator
       Solve randomly generated math equations
@@ -128,7 +128,7 @@ Please enter a valid game ID.
 Available games:
 
   [ID: 1] Wordle
-      Guess the hidden five-letter word in six attempts
+      Guess the hidden five-letter word in five attempts
 
   [ID: 2] Calculator
       Solve randomly generated math equations
