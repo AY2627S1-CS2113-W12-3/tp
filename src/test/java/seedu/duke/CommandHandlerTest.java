@@ -49,7 +49,7 @@ class CommandHandlerTest {
 
         assertTrue(output.toString().contains("[ID: 1] Wordle"));
         assertTrue(output.toString().contains("[ID: 2] Calculator"));
-        assertTrue(output.toString().contains("Guess the hidden five-letter word in six attempts"));
+        assertTrue(output.toString().contains("Guess the hidden five-letter word in five attempts"));
         assertTrue(output.toString().contains("Solve randomly generated math equations"));
     }
 
