@@ -3,8 +3,8 @@ package seedu.duke;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import seedu.duke.wordle.WordleException;
-import seedu.duke.wordle.WordleGame;
+import seedu.duke.games.wordle.WordleException;
+import seedu.duke.games.wordle.WordleGame;
 
 /**
  * Decides what to do with each line of player input.
