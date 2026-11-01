@@ -10,8 +10,6 @@ import java.util.logging.Logger;
 
 import seedu.duke.Game;
 
-import seedu.duke.Game;
-
 /**
  * Provides a Wordle-style game with up to five guesses per session.
  */
