@@ -84,7 +84,7 @@ class GtaGameTest {
     @Test
     void exitGameCommandFinishesGame() {
         GtaGame game = newGame();
-        String response = game.handleInput("exitgame");
+        String response = game.handleInput("quit");
         assertEquals("Returning to the main menu.", response);
         assertTrue(game.isFinished());
     }
@@ -92,7 +92,7 @@ class GtaGameTest {
     @Test
     void exitGameCommandIsCaseInsensitive() {
         GtaGame game = newGame();
-        String response = game.handleInput("EXITGAME");
+        String response = game.handleInput("QUIT");
         assertEquals("Returning to the main menu.", response);
         assertTrue(game.isFinished());
     }
