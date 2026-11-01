@@ -174,6 +174,10 @@ public class BattleshipBoard {
         }
 
         Cell cell = board[row][col];
+        if (cell.isHit) {
+            throw new IllegalStateException("Cell has already been attacked.");
+        }
+
         assert(!cell.isHit);
 
         cell.isHit = true;
