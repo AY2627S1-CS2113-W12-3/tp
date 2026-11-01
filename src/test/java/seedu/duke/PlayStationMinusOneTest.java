@@ -60,7 +60,7 @@ class PlayStationMinusOneTest {
         assertTrue(output.contains("[ID: 3] Battleship"));
         assertTrue(output.contains("[ID: 4] Tic Tac Toe"));
 
-        assertTrue(output.contains("Guess the hidden five-letter word in six attempts"));
+        assertTrue(output.contains("Guess the hidden five-letter word in five attempts"));
         assertTrue(output.contains("Solve randomly generated math equations"));
         assertTrue(output.contains("Locate and sink all enemy ships to win"));
         assertTrue(output.contains("Get three marks in a row to win"));
