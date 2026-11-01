@@ -25,6 +25,9 @@ PlayStation -1 includes five games:
   * [Game: Wordle](#game-wordle)
     * [Viewing Wordle letter hints: `list letters`](#viewing-wordle-letter-hints-list-letters)
   * [Game: Calculator](#game-calculator)
+  * [Game: Battleship](#game-battleship)
+    * [Viewing game boards: `board`](#viewing-boards-board)
+  * [Game: Tic Tac Toe](#game-tic-tac-toe)
   * [Game: GTA -6](#game-gta--6)
 * [FAQ](#faq)
 * [Command Summary](#command-summary)
@@ -57,8 +60,7 @@ PlayStation -1 includes five games:
 
 ### Viewing help: `help`
 
-Shows the available commands. While you are playing Wordle, it also shows the Wordle-only
-`list letters` command.
+Shows the available commands. While you are playing a game, it also shows the game's commands if it has any.
 
 Format: `help`
 
@@ -311,75 +313,99 @@ Starting Calculator...
 If you quit before answering any problem, accuracy shows `-` instead of a percentage.
 
 
+
 ### Game: Battleship
 
 **ID:** 3. Start it with `play 3`.
 
-Play Battleship against the computer in a turn-based strategy game. 
-Your objective is to sink all four enemy ships before the computer sinks yours.
+Play Battleship against the computer. Locate and sink all four enemy ships before the computer sinks yours.
 
-* Both players have a 7 × 7 board (A–G, 1–7).
-* Each board has four randomly placed ships of lengths 4, 3, 2 and 1.
-* You and the computer take turns attacking.
-* The first to sink all enemy ships wins.
+* Both players have a 7 × 7 board, with rows labelled A–G and columns numbered 1–7.
+* Each board contains four randomly placed ships of lengths 4, 3, 2 and 1.
+* You attack first, followed by the computer. The computer randomly selects a cell it has not previously attacked.
+* The first player to sink all four opposing ships wins.
 
 #### Attacking ships
 
-Enter a coordinate from `A1` to `G7`.
+Attacks a specified coordinate on the enemy's board.
 
 Format: `COORDINATE`
 
+* `COORDINATE` must be between `A1` and `G7`.
+* Coordinates are case-insensitive and can contain spaces (e.g., b 4)
+* Invalid or repeated coordinates do not consume a turn.
+
+Possible attack results are `Miss.`, `Hit!` and `Hit and sunk a ship!`.
+
 Example:
+
 ```text
 > B4
-Your shot at B4: Hit!
+Player shot at B4: Hit!
 Computer shot at F2: Miss.
 ```
 
-Possible results:
-
-* `Miss.` — No ship was hit.
-* `Hit!` — An enemy ship was hit.
-* `Hit and sunk a ship!` — An enemy ship was sunk.
-
-Invalid or repeated coordinates do not consume a turn.
+For invalid or repeated coordinates, the game displays an error message and prompts you to try again.
 
 #### Viewing boards: `board`
 
-Displays your board and the enemy board.
+Displays both boards without consuming a turn. Your ships are visible, while unhit enemy ships remain hidden.
 
 Format: `board`
 
-| Symbol | Meaning |
-|--------|---------|
-| `S` | Your unhit ship |
-| `O` | Ship hit |
-| `X` | Missed attack |
-| `~` | Unknown or empty cell |
+Example:
 
-Your ships are visible, but unhit enemy ships are hidden.
+```text
+> board
+Your board:
+   1 2 3 4 5 6 7
+A  S S S S ~ ~ ~
+B  ~ ~ ~ ~ ~ ~ ~
+C  S S ~ ~ ~ ~ ~
+D  ~ ~ ~ ~ S ~ ~
+E  ~ ~ ~ ~ S ~ ~
+F  S ~ ~ ~ S ~ ~
+G  ~ ~ ~ ~ ~ ~ ~
+
+Enemy's board:
+   1 2 3 4 5 6 7
+A  ~ ~ ~ ~ ~ ~ ~
+B  ~ ~ ~ ~ ~ ~ ~
+C  ~ ~ ~ ~ ~ ~ ~
+D  ~ ~ ~ ~ ~ ~ ~
+E  ~ ~ ~ ~ ~ ~ ~
+F  ~ ~ ~ ~ ~ ~ ~
+G  ~ ~ ~ ~ ~ ~ ~
+```
+
+The following symbols represent the status of each cell:
+
+| Symbol | Meaning |
+|---|---|
+| `S` | An unhit ship segment on your board |
+| `O` | A ship segment that has been hit |
+| `X` | A missed attack |
+| `~` | An unknown or empty cell |
 
 #### Ending the game
 
-The game ends when either player sinks all four opposing ships.
+The game ends when either player sinks all four opposing ships.  
+Session statistics are displayed when you win, lose or quit Battleship.
 
-* **Win:** `You win! All enemy ships have been sunk!`
-* **Lose:** `The computer wins. All your ships have been sunk.`
-
-You can also type `quit` to return to the main menu.
-
-When the game ends, your statistics are displayed:
+Example:
 
 ```text
+-------------------------
 Rounds played: 5
 Successful hits: 3
 Missed shots: 2
 Total shots: 5
 Accuracy: 60.00%
+-------------------------
+Returning to the main menu.
 ```
 
-Statistics and boards reset when you start a new game.
-
+All ship positions, attack records and statistics reset when a new Battleship game begins.
 
 ### Game: GTA -6
 
