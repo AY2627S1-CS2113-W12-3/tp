@@ -7,8 +7,6 @@ import java.util.Random;
 
 import seedu.duke.Game;
 
-import seedu.duke.Game;
-
 /**
  * Runs a simple Tic Tac Toe game between the player and a computer opponent.
  *
