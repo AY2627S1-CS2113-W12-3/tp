@@ -348,15 +348,15 @@ public class BattleshipGame implements Game {
      */
     private static String formatShotResult(ShotResult result) {
         switch (result) {
-            case MISS:
-                return "Miss.";
-            case HIT:
-                return "Hit!";
-            case SUNK:
-                return "Hit and sunk a ship!";
-            default:
-                LOGGER.warning("Unhandled shot result: " + result);
-                throw new IllegalStateException("Unhandled shot result: " + result);
+        case MISS:
+            return "Miss.";
+        case HIT:
+            return "Hit!";
+        case SUNK:
+            return "Hit and sunk a ship!";
+        default:
+            LOGGER.warning("Unhandled shot result: " + result);
+            throw new IllegalStateException("Unhandled shot result: " + result);
         }
     }
 
