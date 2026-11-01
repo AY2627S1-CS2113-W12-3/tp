@@ -12,6 +12,11 @@ class WordleGameTest {
     private static final String[] INCORRECT_GUESSES = {"WRONG", "ALPHA", "BRAVO", "DELTA", "EAGLE"};
 
     @Test
+    void descriptionMatchesTheFiveAttemptLimit() {
+        assertEquals("Guess the hidden five-letter word in five attempts", createGame().getDescription());
+    }
+
+    @Test
     void fiveIncorrectGuessesFinishTheGame() {
         WordleGame game = createGame();
 
