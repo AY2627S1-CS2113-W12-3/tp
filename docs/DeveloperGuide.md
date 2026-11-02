@@ -127,7 +127,14 @@ PlayStation -1 is a set of short terminal games for people who want a quick brea
 ## Appendix E: Instructions for Manual Testing
 
 1. Start the app and enter `list`; confirm Tic Tac Toe appears as game ID `4`.
-2. Enter `play 4`; confirm the instructions and empty board appear.
-3. Enter an invalid coordinate such as `Z9`, then an occupied square; confirm neither causes a computer move.
-4. Enter valid coordinates until the game ends; confirm the result and updated board appear.
-5. Enter `play 4` again; confirm the board is empty for the new session.
+2. Enter `play 1`, then enter `AAAAA`; confirm Wordle displays feedback. Enter `list letters`, then enter
+   `AAAAA` again; confirm the repeated guess is rejected. Enter `quit` to return to the menu.
+3. Enter `play 2`, then enter `hello`; confirm the Calculator reports that the input is not a whole number and
+   re-displays the same problem. Enter `quit`; confirm the session summary appears.
+4. Enter `play 3`, then enter `Z9`; confirm the coordinate is rejected. Enter `A1`, then enter `A1` again;
+   confirm the repeated coordinate is rejected. Enter `quit`; confirm statistics appear.
+5. Enter `play 4`; confirm the instructions and empty board appear. Enter `Z9`, then `A1`, then `A1` again;
+   confirm the invalid and occupied squares do not trigger a computer move. Enter valid coordinates until the
+   game ends, then enter `play 4` again; confirm the board is empty for the new session.
+6. Enter `play 5`, then enter `9`; confirm the current scenario and valid choice range are shown again. Enter
+   `1` to advance the story, then enter `quit`; confirm the app returns to the menu.
