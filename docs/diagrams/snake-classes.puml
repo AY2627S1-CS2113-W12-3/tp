@@ -1,0 +1,49 @@
+@startuml
+!include style.iuml
+
+interface Game <<interface>> {
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
+}
+
+class SnakeGame {
+  -isFinished: boolean
+  -pointsEarnedForLastAction: int
+  -score: int
+  +handleInput(input: String): String
+  +isFinished(): boolean
+  +reset(): void
+}
+
+class SnakeBoard {
+  -body: LinkedList<int[]>
+  -currentDirection: Direction
+  -foodRow: int
+  -foodCol: int
+  -isGameOver: boolean
+  +tryChangeDirection(newDirection: Direction): boolean
+  +advance(): MoveResult
+  +render(): String
+  +reset(): void
+}
+
+enum Direction <<enumeration>> {
+  UP
+  DOWN
+  LEFT
+  RIGHT
+  +opposite(): Direction
+}
+
+enum MoveResult <<enumeration>> {
+  MOVED
+  ATE_FOOD
+  COLLISION
+}
+
+SnakeGame ..|> Game
+SnakeGame *--> "1" SnakeBoard : owns >
+SnakeBoard --> Direction : tracks current direction >
+SnakeBoard +-- MoveResult
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+!include style.iuml
+
+actor Player
+participant ":CommandHandler" as Handler
+participant ":SnakeGame" as Game
+participant ":SnakeBoard" as Board
+
+Player -> Handler : enters direction (e.g. "d")
+activate Handler
+
+Handler -> Game : handleInput("d")
+activate Game
+
+Game -> Game : parseDirection("d")
+activate Game
+Game --> Game : Direction.RIGHT
+deactivate Game
+
+Game -> Board : tryChangeDirection(RIGHT)
+activate Board
+Board --> Game : true
+deactivate Board
+
+Game -> Board : advance()
+activate Board
+
+alt food eaten
+  Board --> Game : ATE_FOOD
+else wall or self collision
+  Board --> Game : COLLISION
+else normal move
+  Board --> Game : MOVED
+end
+
+deactivate Board
+
+Game -> Board : render()
+activate Board
+Board --> Game : ASCII board string
+deactivate Board
+
+Game --> Handler : board and score
+deactivate Game
+
+Handler --> Player : display result
+deactivate Handler
+@enduml

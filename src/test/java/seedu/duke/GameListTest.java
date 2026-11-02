@@ -44,6 +44,14 @@ class GameListTest {
     }
 
     @Test
+    void containsSnakeAsGameSix() {
+        Game game = new GameList().getGames().get(5);
+
+        assertEquals("6", game.getGameId());
+        assertEquals("Snake", game.getGameName());
+    }
+
+    @Test
     void gameIdsAreUnique() {
         GameList gameList = new GameList();
 
@@ -61,6 +69,6 @@ class GameListTest {
         GameList gameList = new GameList();
 
         assertThrows(UnsupportedOperationException.class, () -> gameList.getGames().clear());
-        assertEquals(5, gameList.getGames().size());
+        assertEquals(6, gameList.getGames().size());
     }
 }

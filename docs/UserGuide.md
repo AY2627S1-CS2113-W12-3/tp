@@ -6,13 +6,14 @@ PlayStation -1 is a collection of small games that you play by typing in a termi
 spend their day at a command line and want a short break that has a clear end, without opening a
 graphical game. Each game finishes in a few minutes, and you can leave any game at any time.
 
-PlayStation -1 includes five games:
+PlayStation -1 includes six games:
 
 * **Wordle**: guess the secret word in 5 tries.
 * **Calculator**: answer quick mental-arithmetic problems and track your score.
 * **Battleship**: sink the computer's ships before it sinks yours.
 * **Tic Tac Toe**: get three X marks in a row against the computer.
 * **GTA -6**: navigate a branching story about a stolen car by picking choices.
+* **Snake**: steer a growing snake to eat food without crashing into walls or itself.
 
 * [Quick Start](#quick-start)
 * [Features](#features)
@@ -29,6 +30,7 @@ PlayStation -1 includes five games:
     * [Viewing game boards: `board`](#viewing-boards-board)
   * [Game: Tic Tac Toe](#game-tic-tac-toe)
   * [Game: GTA -6](#game-gta--6)
+  * [Game: Snake](#game-snake)
 * [FAQ](#faq)
 * [Command Summary](#command-summary)
 
@@ -101,7 +103,9 @@ Available games:
 
   [ID: 5] GTA -6
       A choose-your-own-adventure game about a stolen car.
-      
+
+  [ID: 6] Snake
+      Guide the snake to eat food and grow without crashing
 ```
 
 ### Starting a game: `play`
@@ -122,6 +126,7 @@ Examples:
 * `play 3` starts Battleship.
 * `play 4` starts Tic Tac Toe.
 * `play 5` starts GTA -6.
+* `play 6` starts Snake.
 
 Example:
 ```
@@ -143,6 +148,9 @@ Available games:
 
   [ID: 5] GTA -6
       A choose-your-own-adventure game about a stolen car.
+
+  [ID: 6] Snake
+      Guide the snake to eat food and grow without crashing
 ```
 
 ### Checking points: `score`
@@ -166,6 +174,7 @@ The app reports points after an action that earns them. The scoring rules are:
 | Win Wordle | 5 |
 | Win Battleship | 5 |
 | Win Tic Tac Toe | 5 |
+| Eat food in Snake | 1 |
 | Wrong answer, invalid input, loss, draw, or quit | 0 |
 
 ### Leaving a game: `quit`
@@ -479,6 +488,79 @@ It was your neighbor Bob! He 'borrowed' your car to set up
 a surprise birthday party for you.
 
 ENDING: You get cake AND your car back. Happy birthday!
+```
+
+### Game: Snake
+
+**ID:** 6. Start it with `play 6`.
+
+Guide a snake around a 10 × 10 board. Eat food (`*`) to grow and earn points. The game ends if the
+snake hits a wall or its own body.
+
+* The snake moves one step each turn. Type a direction key and press Enter:
+  * `w` — up
+  * `a` — left
+  * `s` — down
+  * `d` — right
+  * `f` — continue in the current direction
+* The snake cannot reverse into itself. For example, if you are moving right, pressing `a` (left) is
+  rejected. Use `f` or turn perpendicular instead.
+* The board shows `@` for the snake's head, `#` for its body, `*` for food, and `.` for empty cells.
+* Each piece of food eaten earns **1 point**.
+* Type `quit` at any time to return to the main menu.
+
+Example:
+
+```text
+> play 6
+Starting Snake...
+Control the snake to eat food (*) and grow!
+Commands: w (up), a (left), s (down), d (right), f (forward)
+The snake moves one step each turn. Type 'quit' to leave.
+
++----------+
+|..........|
+|..........|
+|..........|
+|..........|
+|..@##.....|
+|......*...|
+|..........|
+|..........|
+|..........|
+|..........|
++----------+
+> d
++----------+
+|..........|
+|..........|
+|..........|
+|..........|
+|...@##....|
+|......*...|
+|..........|
+|..........|
+|..........|
+|..........|
++----------+
+Score: 0
+> s
++----------+
+|..........|
+|..........|
+|..........|
+|..........|
+|....##....|
+|...@..*...|
+|..........|
+|..........|
+|..........|
+|..........|
++----------+
+Score: 0
+> quit
+Final score: 0
+Returning to the main menu.
 ```
 
 ## FAQ

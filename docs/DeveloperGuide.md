@@ -11,6 +11,7 @@
   - [Battleship game](#battleship-game)
   - [Tic Tac Toe game](#tic-tac-toe-game)
   - [GTA -6 game](#gta--6-game)
+  - [Snake game](#snake-game)
 - [Appendix A: Product Scope](#appendix-a-product-scope)
 - [Appendix B: User Stories](#appendix-b-user-stories)
 - [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
@@ -48,9 +49,9 @@ The diagram below gives an overview of the main components and how they are conn
 
 Source: [architecture.puml](diagrams/architecture.puml).
 
-`PlayStationMinusOne` is the entry point. It creates the `Ui`, `GameList`, and `CommandHandler`, then runs a single input loop. `CommandHandler` routes launcher commands (help, list, play, quit, score, exit) and forwards game input to the active `Game`. `Parser` splits each line into a command and its arguments. `GameList` stores the five games and looks them up by ID. `PointsStore` persists the player's total points to a local properties file.
+`PlayStationMinusOne` is the entry point. It creates the `Ui`, `GameList`, and `CommandHandler`, then runs a single input loop. `CommandHandler` routes launcher commands (help, list, play, quit, score, exit) and forwards game input to the active `Game`. `Parser` splits each line into a command and its arguments. `GameList` stores the six games and looks them up by ID. `PointsStore` persists the player's total points to a local properties file.
 
-All five games — `WordleGame`, `CalculatorGame`, `BattleshipGame`, `TicTacToeGame`, and `GtaGame` — implement the `Game` interface, so `CommandHandler` can treat them uniformly without knowing their internals (Strategy pattern). A game never reads input directly; the shared loop reads each line and passes it through `handleInput()`, which keeps launcher commands reachable at every prompt.
+All six games — `WordleGame`, `CalculatorGame`, `BattleshipGame`, `TicTacToeGame`, `GtaGame`, and `SnakeGame` — implement the `Game` interface, so `CommandHandler` can treat them uniformly without knowing their internals (Strategy pattern). A game never reads input directly; the shared loop reads each line and passes it through `handleInput()`, which keeps launcher commands reachable at every prompt.
 
 ### Command routing
 
@@ -135,9 +136,27 @@ When the player enters a choice number, `GtaGame.handleInput()` looks up the cur
 
 Source: [gta-choice-sequence.puml](diagrams/gta-choice-sequence.puml).
 
+### Snake game
+
+Snake is game ID `6`, a turn-based adaptation of the classic snake game. The player steers the snake one step per input using `w`/`a`/`s`/`d` (direction) or `f` (continue forward). The snake grows when it eats food and the game ends on a wall or self collision.
+
+`SnakeGame` implements `Game` and delegates board state to `SnakeBoard`. `SnakeBoard` stores the snake body as a `LinkedList<int[]>` for O(1) head and tail operations, tracks the current `Direction`, and manages food placement via an injectable `Random`. The `Direction` enum stores row/column deltas and provides an `opposite()` method to reject 180-degree reversals. `SnakeBoard.advance()` returns a `MoveResult` enum (`MOVED`, `ATE_FOOD`, or `COLLISION`) so that `SnakeGame` can decide the response without inspecting board internals.
+
+![Snake class diagram](diagrams/snake-classes.png)
+
+Source: [snake-classes.puml](diagrams/snake-classes.puml).
+
+When the player enters a direction, `SnakeGame.handleInput()` parses it, attempts a direction change via `tryChangeDirection()`, and advances the snake. The sequence diagram below shows the three possible outcomes after `advance()`.
+
+![Sequence diagram of a Snake turn](diagrams/snake-turn-sequence.png)
+
+Source: [snake-turn-sequence.puml](diagrams/snake-turn-sequence.puml).
+
+Invalid inputs and reversed directions are rejected without advancing the snake, matching the pattern used by Tic Tac Toe for invalid coordinates. `SnakeGame` accepts an injected `Random` source so tests can control food placement deterministically.
+
 ## Appendix A: Product Scope
 
-PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, Tic Tac Toe, and GTA -6.
+PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, Tic Tac Toe, GTA -6, and Snake.
 
 ## Appendix B: User Stories
 
@@ -146,6 +165,7 @@ PlayStation -1 is a set of short terminal games for people who want a quick brea
 | new user | see the available games | choose one to play |
 | player | start a game by ID | play without leaving the terminal |
 | player | play Tic Tac Toe against the computer | enjoy a short turn-based game |
+| player | play a turn-based Snake game | enjoy a quick arcade-style game in the terminal |
 | player | quit a game | return to the launcher |
 
 ## Appendix C: Non-Functional Requirements
@@ -173,3 +193,7 @@ PlayStation -1 is a set of short terminal games for people who want a quick brea
    game ends, then enter `play 4` again; confirm the board is empty for the new session.
 6. Enter `play 5`, then enter `9`; confirm the current scenario and valid choice range are shown again. Enter
    `1` to advance the story, then enter `quit`; confirm the app returns to the menu.
+7. Enter `play 6`; confirm the instructions and initial board appear with the snake (`@##`) and food (`*`).
+   Enter `x`; confirm the invalid command is rejected. Enter `a`; confirm the reversal is rejected (starting
+   direction is right). Enter `d` a few times; confirm the snake moves right. Enter `s` then `d` to turn;
+   confirm the snake changes direction. Enter `quit`; confirm the final score is shown.

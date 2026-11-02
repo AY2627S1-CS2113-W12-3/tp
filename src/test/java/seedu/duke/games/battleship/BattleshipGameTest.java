@@ -18,6 +18,13 @@ class BattleshipGameTest {
     private static final String REPEATED_COORDINATE = "You have already hit that cell. Try a different coordinate.";
 
     @Test
+    void nullInputDoesNotCrash() {
+        BattleshipGame game = new BattleshipGame("3");
+        assertEquals(INVALID_COORDINATE, game.handleInput(null));
+        assertFalse(game.isFinished());
+    }
+
+    @Test
     void invalidCoordinatesAreRejected() {
         BattleshipGame game = new BattleshipGame("3");
 

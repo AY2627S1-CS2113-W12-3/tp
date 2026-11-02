@@ -257,7 +257,7 @@ public class BattleshipGame implements Game {
         if (enemyBoard.areAllShipsSunk()) {
             isGameOver = true;
             pointsEarnedForLastAction = POINTS_FOR_WIN;
-            LOGGER.info("Player won after " + roundsPlayed + ".");
+            LOGGER.info("Player won after " + roundsPlayed + " rounds.");
             message.append("You win! All enemy ships have been sunk!")
                     .append(System.lineSeparator())
                     .append(getExitMessage());
@@ -290,6 +290,7 @@ public class BattleshipGame implements Game {
      * @return the computer's attack result and a defeat message if the player loses
      */
     private String executeEnemyTurn() {
+        assert nextComputerTargetIndex < computerTargets.size() : "Computer has run out of targets";
         int target = computerTargets.get(nextComputerTargetIndex++);
         int row = target / BattleshipBoard.SIDE_LENGTH;
         int col = target % BattleshipBoard.SIDE_LENGTH;
