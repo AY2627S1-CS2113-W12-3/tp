@@ -2,7 +2,7 @@
 
 ### Project: PlayStation -1
 
-PlayStation -1 is a command-line collection of short games for people who want a quick break without leaving the terminal. Players can start Wordle, Calculator, Battleship, Tic Tac Toe, or GTA -6, then return to the menu when they finish.
+PlayStation -1 is a command-line collection of short games for people who want a quick break without leaving the terminal. Players can start Wordle, Calculator, Battleship, Tic Tac Toe, GTA -6, or Snake, then return to the menu when they finish.
 
 Given below are my contributions to the project.
 
@@ -18,6 +18,11 @@ Given below are my contributions to the project.
   - Highlights: The story is modelled as a graph of `StoryNode` objects stored in a map. Each node holds scenario text, choice labels, and keys pointing to the next nodes. Ending nodes have no choices and finish the session.
   - PR: [#122](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/122)
 
+- **New Feature: Snake game**
+  - What it does: A turn-based CLI snake game (game ID 6) where the player steers a snake using `w`/`a`/`s`/`d`/`f` to eat food and grow on a 10 × 10 ASCII board. The game ends when the snake hits a wall or itself.
+  - Justification: Adds an arcade-style game that is structurally different from the existing games, adapted from real-time gameplay to the turn-based `Game` interface by advancing one step per input.
+  - Highlights: The snake body is stored as a `LinkedList<int[]>` for O(1) head/tail operations. A `Direction` enum with `opposite()` prevents 180-degree reversals. `SnakeBoard.advance()` returns a `MoveResult` enum to cleanly separate board logic from game-flow decisions.
+
 - **New Feature: `list` command**
   - What it does: Displays all available games with their IDs and descriptions so the player knows what to play.
   - PR: [#75](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/75)
@@ -31,7 +36,7 @@ Given below are my contributions to the project.
 
 - **Documentation:**
   - User Guide: Wrote the initial v1.0 User Guide covering quick-start steps, all launcher commands, and the Wordle and Calculator game sections. Later added the GTA -6 section with gameplay instructions and an example walkthrough.
-  - Developer Guide: Added the GTA -6 class diagram and choice-sequence diagram in PlantUML, along with the accompanying design description. Created the overall architecture diagram showing all core components and their relationships. ([PR #125](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/125))
+  - Developer Guide: Added the GTA -6 class diagram and choice-sequence diagram in PlantUML, along with the accompanying design description. Created the overall architecture diagram showing all core components and their relationships. ([PR #125](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/125)) Added the Snake game section with a class diagram and turn-sequence diagram in PlantUML, plus manual testing instructions.
 
 - **Community:**
   - Reviewed and merged teammates' PRs: Calculator game ([PR #71](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/71)), CommandHandler refactor ([PR #95](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/95)), persistent points ([PR #118](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/118)), diagram standardisation ([PR #150](https://github.com/AY2627S1-CS2113-W12-3/tp/pull/150))
