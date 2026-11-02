@@ -2,7 +2,24 @@
 
 ## Acknowledgements
 
-Add links for any reused or adapted code, ideas, documentation, and third-party libraries.
+PlayStation -1 builds on the [CS2113 team-project template](https://github.com/NUS-CS2113-AY2627-S1/tp),
+whose history includes the [SE-EDU Duke starter](https://github.com/se-edu/duke). The project adapts
+the starter's Gradle wrapper and build layout, Checkstyle configuration, GitHub Actions workflow, and
+documentation scaffolding; the PlayStation -1 games and their documentation are maintained in this
+repository.
+
+The project uses [Gradle](https://gradle.org/) for builds, [JUnit 5](https://junit.org/junit5/) for
+automated tests, [JaCoCo](https://www.jacoco.org/jacoco/) for test coverage, [Checkstyle](https://checkstyle.org/)
+for coding-convention checks, and the [Shadow plugin](https://gradleup.com/shadow/) to package the
+executable JAR. Dependency versions and plugin configuration are recorded in `build.gradle`.
+
+The UML diagrams are authored with [PlantUML](https://plantuml.com/). Their editable `.puml` sources
+and shared style file are included in `docs/diagrams`; the diagrams follow the
+[SE-EDU PlantUML guide](https://se-education.org/guides/tutorials/plantUml.html).
+
+LLMs such as [ChatGPT](https://chatgpt.com/) and [Claude](https://www.anthropic.com/claude) assisted
+with reviewing and refining selected implementation, tests, and Developer Guide updates. These changes
+were reviewed and verified in the project repository.
 
 ## Design & implementation
 
