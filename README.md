@@ -2,9 +2,12 @@
 
 PlayStation -1 is a lightweight collection of keyboard-driven command-line games for quick breaks in the terminal. The project keeps the experience simple: choose a game, play without leaving the shell, and return to the menu when you are finished.
 
-## MVP
+## Project summary
 
-The minimum viable product contains one Wordle-style word-guessing game. Players receive feedback after each guess and can complete a short game session entirely from the command line.
+PlayStation -1 provides five short command-line games: Wordle, Calculator,
+Battleship, Tic Tac Toe, and GTA -6. Players can choose a game from the menu,
+play using keyboard input, view their saved points, and return to the launcher
+without restarting the application.
 
 ## Setting up in Intellij
 
