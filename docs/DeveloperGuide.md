@@ -102,7 +102,7 @@ Source: [gta-choice-sequence.puml](diagrams/gta-choice-sequence.puml).
 
 ## Appendix A: Product Scope
 
-PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, and Tic Tac Toe.
+PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, Tic Tac Toe, and GTA -6.
 
 ## Appendix B: User Stories
 
