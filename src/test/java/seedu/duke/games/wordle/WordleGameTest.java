@@ -186,6 +186,13 @@ class WordleGameTest {
     }
 
     @Test
+    void nullInputDoesNotCrash() {
+        WordleGame game = createGame();
+        assertEquals("Please enter a five-letter word.", game.handleInput(null));
+        assertFalse(game.isFinished());
+    }
+
+    @Test
     void listLettersBeforeAnyGuessShowsError() {
         WordleGame game = createGame();
 
