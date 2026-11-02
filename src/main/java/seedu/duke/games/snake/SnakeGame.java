@@ -176,6 +176,13 @@ public class SnakeGame implements Game {
     private String handleFoodEaten() {
         score++;
         pointsEarnedForLastAction = POINTS_PER_FOOD;
+        if (board.isBoardFull()) {
+            isFinished = true;
+            return "You filled the entire board! Congratulations!" + System.lineSeparator()
+                    + board.render() + System.lineSeparator()
+                    + "Final score: " + score + System.lineSeparator()
+                    + EXIT_MESSAGE;
+        }
         return "Yum! Food eaten." + System.lineSeparator()
                 + board.render() + System.lineSeparator()
                 + "Score: " + score;

@@ -35,6 +35,8 @@ public class SnakeBoard {
     private int foodCol;
     /** Whether the snake has collided and the game is over. */
     private boolean isGameOver;
+    /** Whether the snake fills the entire board (win condition). */
+    private boolean boardFull;
     /** Random source for food placement — injectable for tests. */
     private final Random random;
 
@@ -97,7 +99,11 @@ public class SnakeBoard {
         body.addFirst(new int[]{newRow, newCol});
 
         if (newRow == foodRow && newCol == foodCol) {
-            placeFood();
+            if (body.size() < HEIGHT * WIDTH) {
+                placeFood();
+            } else {
+                boardFull = true;
+            }
             return MoveResult.ATE_FOOD;
         }
 
@@ -128,7 +134,9 @@ public class SnakeBoard {
         }
         int[] head = body.getFirst();
         grid[head[0]][head[1]] = HEAD_CHAR;
-        grid[foodRow][foodCol] = FOOD_CHAR;
+        if (!boardFull) {
+            grid[foodRow][foodCol] = FOOD_CHAR;
+        }
 
         StringBuilder sb = new StringBuilder();
         String horizontalBorder = "+" + "-".repeat(WIDTH) + "+";
@@ -147,6 +155,11 @@ public class SnakeBoard {
     /** Returns whether the game is over due to a collision. */
     public boolean isGameOver() {
         return isGameOver;
+    }
+
+    /** Returns whether the snake fills the entire board (win condition). */
+    public boolean isBoardFull() {
+        return boardFull;
     }
 
     /** Returns the current direction the snake is travelling. */
@@ -178,6 +191,7 @@ public class SnakeBoard {
         body.add(new int[]{4, 0}); // tail
         currentDirection = Direction.RIGHT;
         isGameOver = false;
+        boardFull = false;
         placeFood();
     }
 
