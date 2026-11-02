@@ -8,6 +8,7 @@ import seedu.duke.games.battleship.BattleshipGame;
 import seedu.duke.games.calculator.CalculatorGame;
 import seedu.duke.games.gta.GtaGame;
 import seedu.duke.games.tictactoe.TicTacToeGame;
+import seedu.duke.games.snake.SnakeGame;
 import seedu.duke.games.wordle.WordleGame;
 
 /**
@@ -21,7 +22,7 @@ public class GameList {
 
     /**
      * Creates the game list with Wordle as game 1, the calculator as game 2,
-     * Battleship as game 3,Tic Tac Toe as game 4, GTA -6 as game 5
+     * Battleship as game 3, Tic Tac Toe as game 4, GTA -6 as game 5, Snake as game 6
      */
     public GameList() {
         games = new ArrayList<>();
@@ -30,6 +31,7 @@ public class GameList {
         games.add(new BattleshipGame("3"));
         games.add(new TicTacToeGame("4"));
         games.add(new GtaGame("5"));
+        games.add(new SnakeGame("6"));
         assert !games.isEmpty() : "Game list must not be empty";
         LOGGER.fine("Registered " + games.size() + " games.");
     }
