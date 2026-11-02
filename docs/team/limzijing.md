@@ -2,7 +2,7 @@
 
 ## Overview
 
-PlayStation -1 is a keyboard-first command-line collection of five short games for people who want a quick break without leaving the terminal. Players can start Wordle, Calculator, Battleship, Tic Tac Toe, or GTA -6, then return to the menu when they finish.
+PlayStation -1 is a keyboard-first command-line collection of six short games for people who want a quick break without leaving the terminal. Players can start Wordle, Calculator, Battleship, Tic Tac Toe, GTA -6, or Snake, then return to the menu when they finish.
 
 ## Summary of Contributions
 

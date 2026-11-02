@@ -2,8 +2,8 @@
 
 ## Overview
 
-PlayStation -1 is a command-line collection of five short games for people who want a quick break without
-leaving the terminal. Players can start Wordle, Calculator, Battleship, Tic Tac Toe, or GTA -6 from a single
+PlayStation -1 is a command-line collection of six short games for people who want a quick break without
+leaving the terminal. Players can start Wordle, Calculator, Battleship, Tic Tac Toe, GTA -6, or Snake from a single
 shared prompt, and every launcher command stays reachable while a game is in progress.
 
 ## Summary of Contributions

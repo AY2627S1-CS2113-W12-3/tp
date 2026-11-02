@@ -3,7 +3,7 @@
 ## Overview
 
 PlayStation -1 is a collection of short terminal games designed for people who want a quick break without
-leaving the command line. It includes Wordle, Calculator, Battleship, Tic Tac Toe, and GTA -6; each game
+leaving the command line. It includes Wordle, Calculator, Battleship, Tic Tac Toe, GTA -6 and Snake; each game
 can be completed or exited within a few minutes.
 
 ## Summary of Contributions
