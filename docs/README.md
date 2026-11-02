@@ -4,10 +4,11 @@ PlayStation -1 is a keyboard-first command-line arcade for people who enjoy quic
 
 ## Project summary
 
-PlayStation -1 is a terminal arcade with five games: **Wordle**,
-**Calculator**, **Battleship**, **Tic Tac Toe**, and **GTA -6**. Players can
-view help and game information, start a game from the menu, earn points for
-selected achievements, and keep their total points between application runs.
+PlayStation -1 is a terminal arcade with six games: **Wordle**,
+**Calculator**, **Battleship**, **Tic Tac Toe**, **GTA -6**, and **Snake**.
+Players can view help and game information, start a game from the menu, earn
+points for selected achievements, and keep their total points between
+application runs.
 
 ## Documentation
 
