@@ -4,10 +4,10 @@ PlayStation -1 is a lightweight collection of keyboard-driven command-line games
 
 ## Project summary
 
-PlayStation -1 provides five short command-line games: Wordle, Calculator,
-Battleship, Tic Tac Toe, and GTA -6. Players can choose a game from the menu,
-play using keyboard input, view their saved points, and return to the launcher
-without restarting the application.
+PlayStation -1 provides six short command-line games: Wordle, Calculator,
+Battleship, Tic Tac Toe, GTA -6, and Snake. Players can choose a game from the
+menu, play using keyboard input, view their saved points, and return to the
+launcher without restarting the application.
 
 ## Setting up in Intellij
 
