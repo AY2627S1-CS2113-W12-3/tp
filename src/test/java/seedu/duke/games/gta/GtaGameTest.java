@@ -103,6 +103,14 @@ class GtaGameTest {
     }
 
     @Test
+    void nullInputDoesNotCrash() {
+        GtaGame game = newGame();
+        String response = game.handleInput(null);
+        assertTrue(response.contains("Please enter a valid choice number."));
+        assertFalse(game.isFinished());
+    }
+
+    @Test
     void invalidInputNonNumericReDisplaysCurrentNode() {
         GtaGame game = newGame();
         String response = game.handleInput("hello");

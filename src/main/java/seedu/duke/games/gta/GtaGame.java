@@ -77,7 +77,8 @@ public class GtaGame implements Game {
      */
     @Override
     public String handleInput(String input) {
-        if (input.equalsIgnoreCase(EXIT_GAME_COMMAND)) {
+        String trimmed = input == null ? "" : input.trim();
+        if (trimmed.equalsIgnoreCase(EXIT_GAME_COMMAND)) {
             isFinished = true;
             return EXIT_GAME_MESSAGE;
         }
@@ -87,7 +88,7 @@ public class GtaGame implements Game {
 
         int choice;
         try {
-            choice = Integer.parseInt(input.trim());
+            choice = Integer.parseInt(trimmed);
         } catch (NumberFormatException e) {
             return "Please enter a valid choice number."
                     + lineSep + currentNode.formatForDisplay();
