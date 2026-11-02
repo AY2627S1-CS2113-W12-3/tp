@@ -96,13 +96,22 @@ class WordleGameTest {
 
         String response = game.handleInput("quit");
 
-        assertEquals("Returning to the main menu.", response);
+        assertTrue(response.contains("Tries taken to guess: 0"));
+        assertTrue(response.contains("Returning to the main menu."));
         assertTrue(game.isFinished());
     }
 
     @Test
-    void applicationExitReturnsToMenu() {
-        assertEquals("Returning to the main menu.", createGame().getExitMessage());
+    void applicationExitShowsTriesTakenAndReturnsToMenu() {
+        WordleGame game = createGame();
+        game.handleInput("WRONG");
+        game.handleInput("CAT");
+        game.handleInput("wrong");
+
+        String response = game.getExitMessage();
+
+        assertTrue(response.contains("Tries taken to guess: 1"));
+        assertTrue(response.contains("Returning to the main menu."));
     }
 
     @Test
@@ -126,6 +135,7 @@ class WordleGameTest {
 
         assertTrue(response.contains("Wrong guess! You are out of tries."));
         assertTrue(response.contains("The word was CRANE."));
+        assertTrue(response.contains("Tries taken to guess: 5"));
         assertTrue(response.contains("Returning to the main menu."));
     }
 
@@ -138,6 +148,7 @@ class WordleGameTest {
         String response = game.handleInput("crane");
 
         assertTrue(response.contains("Correct guess! You completed Wordle in 3 tries."));
+        assertTrue(response.contains("Tries taken to guess: 3"));
         assertTrue(response.contains("Returning to the main menu."));
         assertTrue(game.isFinished());
         assertEquals(5, game.getPointsEarnedForLastAction());

@@ -28,7 +28,8 @@ Source: [command-routing.puml](diagrams/command-routing.puml).
 
 ### Wordle game
 
-`WordleGame` implements `Game` as game ID `1`. It selects one answer from the bundled word list for each session. Guesses must contain five letters; malformed or repeated guesses do not use a try. `WordleHelp` provides coloured feedback and tracks hints for `list letters`.
+`WordleGame` implements `Game` as game ID `1`. It selects one answer from the bundled word list for each session. Guesses must contain five letters; malformed or repeated guesses do not use a try. `WordleHelp` provides coloured feedback and tracks hints for `list letters`. When a session ends, the player quits, or the application exits during play, Wordle reports the number of valid guesses as
+`Tries taken to guess: <count>`.
 
 ![Wordle class diagram](diagrams/wordle-classes.png)
 

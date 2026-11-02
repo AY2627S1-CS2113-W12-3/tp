@@ -107,7 +107,7 @@ public class WordleGame implements Game {
         if (guess.equalsIgnoreCase(QUIT_COMMAND)) {
             LOGGER.info("Player quit Wordle after " + attemptsUsed + " wrong guesses.");
             isFinished = true;
-            return exitGameMessage;
+            return buildSessionSummary() + System.lineSeparator() + exitGameMessage;
         }
 
         if (guess.equalsIgnoreCase(LIST_LETTERS_COMMAND)) {
@@ -131,6 +131,7 @@ public class WordleGame implements Game {
             LOGGER.info("Player won Wordle in " + formatTries(triesTaken) + ".");
             return feedback + System.lineSeparator()
                     + correctGuess + " You completed Wordle in " + formatTries(triesTaken) + "."
+                    + System.lineSeparator() + buildSessionSummary()
                     + System.lineSeparator() + exitGameMessage;
         }
 
@@ -143,6 +144,7 @@ public class WordleGame implements Game {
             return feedback + System.lineSeparator()
                     + wrongGuess + " You are out of tries."
                     + System.lineSeparator() + "The word was " + secretWord + "."
+                    + System.lineSeparator() + buildSessionSummary()
                     + System.lineSeparator() + exitGameMessage;
         }
         LOGGER.fine("Wrong guess: " + input + ", " + formatTries(triesLeft) + " left.");
@@ -159,6 +161,18 @@ public class WordleGame implements Game {
     private static String formatTries(int count) {
         assert count >= 0 : "Number of tries cannot be negative";
         return count + (count == 1 ? " try" : " tries");
+    }
+
+    /**
+     * Returns the number of valid guesses made in the current session.
+     *
+     * <p>Invalid and repeated guesses are intentionally excluded because they do not
+     * consume a Wordle try.
+     *
+     * @return a one-line session summary
+     */
+    private String buildSessionSummary() {
+        return "Tries taken to guess: " + guessedWords.size();
     }
 
     /**
@@ -180,10 +194,10 @@ public class WordleGame implements Game {
         return isFinished;
     }
 
-    /** Returns the closing message when the application exits during a Wordle game. */
+    /** Returns the Wordle session summary and closing message for an application exit. */
     @Override
     public String getExitMessage() {
-        return exitGameMessage;
+        return buildSessionSummary() + System.lineSeparator() + exitGameMessage;
     }
 
     /**
