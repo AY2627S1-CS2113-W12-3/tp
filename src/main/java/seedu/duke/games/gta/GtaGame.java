@@ -12,6 +12,8 @@ import seedu.duke.Game;
 public class GtaGame implements Game {
     /** Command that exits the game and returns to the main menu. */
     private static final String EXIT_GAME_COMMAND = "quit";
+    /** Message displayed when a GTA -6 session ends. */
+    private static final String EXIT_GAME_MESSAGE = "Returning to the main menu.";
 
     /** Identifies this game in the application. */
     private final String gameId;
@@ -77,7 +79,7 @@ public class GtaGame implements Game {
     public String handleInput(String input) {
         if (input.equalsIgnoreCase(EXIT_GAME_COMMAND)) {
             isFinished = true;
-            return "Returning to the main menu.";
+            return EXIT_GAME_MESSAGE;
         }
 
         StoryNode currentNode = storyMap.get(currentNodeKey);
@@ -111,6 +113,16 @@ public class GtaGame implements Game {
     @Override
     public boolean isFinished() {
         return isFinished;
+    }
+
+    /**
+     * Returns the closing message when the application exits during a GTA -6 session.
+     *
+     * @return the game exit message
+     */
+    @Override
+    public String getExitMessage() {
+        return EXIT_GAME_MESSAGE;
     }
 
     @Override

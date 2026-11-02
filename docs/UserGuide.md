@@ -407,6 +407,45 @@ Returning to the main menu.
 
 All ship positions, attack records and statistics reset when a new Battleship game begins.
 
+### Game: Tic Tac Toe
+
+**ID:** 4. Start it with `play 4`.
+
+Play Tic Tac Toe against the computer on a 3 × 3 board. You use **X** and move first; the computer
+uses **O**.
+
+* Enter a square using its row letter and column number, from `A1` to `C3` (for example, `B2`).
+  Coordinates are case-insensitive. The board shows the row letters and column numbers, and an
+  empty square is shown as `.`.
+* Invalid coordinates and occupied squares are rejected without making a move. After each valid
+  move that does not end the game, the computer chooses a random empty square.
+* The first player to get three marks in a row horizontally, vertically or diagonally wins.
+* If the board is full and neither player has won, the game is a draw.
+* Type `quit` at any time to return to the main menu.
+
+Example (the computer's move is random):
+```text
+> play 4
+Starting Tic Tac Toe...
+You are X; the computer is O.
+Enter a square from A1 to C3 (for example, B2).
+The computer picks a random empty square after your move.
+Type 'quit' to leave the game.
+
+  1 2 3
+A . . .
+B . . .
+C . . .
+> B2
+You played B2 (X).
+Computer played A1 (O).
+Board:
+  1 2 3
+A O . .
+B . X .
+C . . .
+```
+
 ### Game: GTA -6
 
 **ID:** 5. Start it with `play 5`.

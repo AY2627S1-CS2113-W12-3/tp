@@ -1,8 +1,42 @@
 # Developer Guide
 
+## Table of contents
+
+- [Acknowledgements](#acknowledgements)
+- [Design & implementation](#design--implementation)
+  - [Architecture](#architecture)
+  - [Command routing](#command-routing)
+  - [Wordle game](#wordle-game)
+  - [Calculator game](#calculator-game)
+  - [Battleship game](#battleship-game)
+  - [Tic Tac Toe game](#tic-tac-toe-game)
+  - [GTA -6 game](#gta--6-game)
+- [Appendix A: Product Scope](#appendix-a-product-scope)
+- [Appendix B: User Stories](#appendix-b-user-stories)
+- [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
+- [Appendix D: Glossary](#appendix-d-glossary)
+- [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
+
 ## Acknowledgements
 
-Add links for any reused or adapted code, ideas, documentation, and third-party libraries.
+PlayStation -1 builds on the [CS2113 team-project template](https://github.com/NUS-CS2113-AY2627-S1/tp),
+whose history includes the [SE-EDU Duke starter](https://github.com/se-edu/duke). The project adapts
+the starter's Gradle wrapper and build layout, Checkstyle configuration, GitHub Actions workflow, and
+documentation scaffolding; the PlayStation -1 games and their documentation are maintained in this
+repository.
+
+The project uses [Gradle](https://gradle.org/) for builds, [JUnit 5](https://junit.org/junit5/) for
+automated tests, [JaCoCo](https://www.jacoco.org/jacoco/) for test coverage, [Checkstyle](https://checkstyle.org/)
+for coding-convention checks, and the [Shadow plugin](https://gradleup.com/shadow/) to package the
+executable JAR. Dependency versions and plugin configuration are recorded in `build.gradle`.
+
+The UML diagrams are authored with [PlantUML](https://plantuml.com/). Their editable `.puml` sources
+and shared style file are included in `docs/diagrams`; the diagrams follow the
+[SE-EDU PlantUML guide](https://se-education.org/guides/tutorials/plantUml.html).
+
+LLMs such as [ChatGPT](https://chatgpt.com/) and [Claude](https://www.anthropic.com/claude) assisted
+with reviewing and refining selected implementation, tests, and Developer Guide updates. These changes
+were reviewed and verified in the project repository.
 
 ## Design & implementation
 
@@ -28,7 +62,8 @@ Source: [command-routing.puml](diagrams/command-routing.puml).
 
 ### Wordle game
 
-`WordleGame` implements `Game` as game ID `1`. It selects one answer from the bundled word list for each session. Guesses must contain five letters; malformed or repeated guesses do not use a try. `WordleHelp` provides coloured feedback and tracks hints for `list letters`.
+`WordleGame` implements `Game` as game ID `1`. It selects one answer from the bundled word list for each session. Guesses must contain five letters; malformed or repeated guesses do not use a try. `WordleHelp` provides coloured feedback and tracks hints for `list letters`. When a session ends, the player quits, or the application exits during play, Wordle reports the number of valid guesses as
+`Tries taken to guess: <count>`.
 
 ![Wordle class diagram](diagrams/wordle-classes.png)
 
@@ -102,7 +137,7 @@ Source: [gta-choice-sequence.puml](diagrams/gta-choice-sequence.puml).
 
 ## Appendix A: Product Scope
 
-PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, and Tic Tac Toe.
+PlayStation -1 is a set of short terminal games for people who want a quick break at the command line. The current games are Wordle, Calculator, Battleship, Tic Tac Toe, and GTA -6.
 
 ## Appendix B: User Stories
 
@@ -127,7 +162,14 @@ PlayStation -1 is a set of short terminal games for people who want a quick brea
 ## Appendix E: Instructions for Manual Testing
 
 1. Start the app and enter `list`; confirm Tic Tac Toe appears as game ID `4`.
-2. Enter `play 4`; confirm the instructions and empty board appear.
-3. Enter an invalid coordinate such as `Z9`, then an occupied square; confirm neither causes a computer move.
-4. Enter valid coordinates until the game ends; confirm the result and updated board appear.
-5. Enter `play 4` again; confirm the board is empty for the new session.
+2. Enter `play 1`, then enter `AAAAA`; confirm Wordle displays feedback. Enter `list letters`, then enter
+   `AAAAA` again; confirm the repeated guess is rejected. Enter `quit` to return to the menu.
+3. Enter `play 2`, then enter `hello`; confirm the Calculator reports that the input is not a whole number and
+   re-displays the same problem. Enter `quit`; confirm the session summary appears.
+4. Enter `play 3`, then enter `Z9`; confirm the coordinate is rejected. Enter `A1`, then enter `A1` again;
+   confirm the repeated coordinate is rejected. Enter `quit`; confirm statistics appear.
+5. Enter `play 4`; confirm the instructions and empty board appear. Enter `Z9`, then `A1`, then `A1` again;
+   confirm the invalid and occupied squares do not trigger a computer move. Enter valid coordinates until the
+   game ends, then enter `play 4` again; confirm the board is empty for the new session.
+6. Enter `play 5`, then enter `9`; confirm the current scenario and valid choice range are shown again. Enter
+   `1` to advance the story, then enter `quit`; confirm the app returns to the menu.
