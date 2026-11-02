@@ -1,5 +1,22 @@
 # Developer Guide
 
+## Table of contents
+
+- [Acknowledgements](#acknowledgements)
+- [Design & implementation](#design--implementation)
+  - [Architecture](#architecture)
+  - [Command routing](#command-routing)
+  - [Wordle game](#wordle-game)
+  - [Calculator game](#calculator-game)
+  - [Battleship game](#battleship-game)
+  - [Tic Tac Toe game](#tic-tac-toe-game)
+  - [GTA -6 game](#gta--6-game)
+- [Appendix A: Product Scope](#appendix-a-product-scope)
+- [Appendix B: User Stories](#appendix-b-user-stories)
+- [Appendix C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
+- [Appendix D: Glossary](#appendix-d-glossary)
+- [Appendix E: Instructions for Manual Testing](#appendix-e-instructions-for-manual-testing)
+
 ## Acknowledgements
 
 PlayStation -1 builds on the [CS2113 team-project template](https://github.com/NUS-CS2113-AY2627-S1/tp),
