@@ -180,6 +180,12 @@ public class WordleGame implements Game {
         return isFinished;
     }
 
+    /** Returns the closing message when the application exits during a Wordle game. */
+    @Override
+    public String getExitMessage() {
+        return exitGameMessage;
+    }
+
     /**
      * Changes the status of completion back to uncompleted so that replay is possible.
      */

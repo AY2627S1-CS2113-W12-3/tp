@@ -101,6 +101,11 @@ class WordleGameTest {
     }
 
     @Test
+    void applicationExitReturnsToMenu() {
+        assertEquals("Returning to the main menu.", createGame().getExitMessage());
+    }
+
+    @Test
     void wrongGuessShowsTriesLeft() {
         WordleGame game = createGame();
 

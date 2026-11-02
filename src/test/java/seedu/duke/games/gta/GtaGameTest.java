@@ -98,6 +98,11 @@ class GtaGameTest {
     }
 
     @Test
+    void applicationExitShowsTheGameExitMessage() {
+        assertEquals("Returning to the main menu.", newGame().getExitMessage());
+    }
+
+    @Test
     void invalidInputNonNumericReDisplaysCurrentNode() {
         GtaGame game = newGame();
         String response = game.handleInput("hello");
